@@ -1,0 +1,27 @@
+Copyright (c) 2026 TCViz (Laurentino Callarisa). All rights reserved.
+
+Risk Matrix Pro is proprietary software. It is distributed through
+Microsoft AppSource and is governed by the Terms of Service published at:
+
+    https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html
+
+PERMITTED
+  - Using the visual inside Microsoft Power BI under the Free tier, or under a
+    valid Pro licence purchased through Microsoft AppSource.
+  - Reading this source code for evaluation, security review and Microsoft
+    Power BI certification purposes.
+
+NOT PERMITTED without prior written permission from TCViz
+  - Copying, redistributing, sublicensing or selling this software or
+    derivative works.
+  - Publishing a modified build to AppSource or any other marketplace.
+  - Removing or circumventing the licence checks that separate the Free and Pro
+    tiers.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Contact: support@tcviz.com

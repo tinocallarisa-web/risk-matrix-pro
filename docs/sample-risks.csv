@@ -1,0 +1,26 @@
+RiskID,Risk,Category,Likelihood,Impact,ResidualLikelihood,ResidualImpact,TargetLikelihood,TargetImpact,Owner,Exposure
+R01,Supplier failure,Operational,1,5,1,5,1,4,Owner 1,756000
+R02,FX exposure,Financial,3,2,1,1,1,1,Owner 2,589000
+R03,GDPR breach,Compliance,4,4,2,4,2,3,Owner 3,437000
+R04,Ransomware,Cyber,4,4,4,3,3,3,Owner 4,521000
+R05,Market entry delay,Strategic,5,5,5,4,4,3,Owner 1,931000
+R06,Key staff loss,Operational,4,4,3,3,3,3,Owner 2,918000
+R07,Credit default,Financial,2,2,1,2,1,1,Owner 3,237000
+R08,Audit finding,Compliance,2,3,2,2,1,2,Owner 4,602000
+R09,Phishing,Cyber,4,5,4,5,4,4,Owner 1,605000
+R10,Price war,Strategic,3,3,3,2,2,2,Owner 2,149000
+R11,Plant outage,Operational,2,2,1,1,1,1,Owner 3,563000
+R12,Liquidity gap,Financial,1,3,1,3,1,3,Owner 4,482000
+R13,Sanctions,Compliance,2,3,1,3,1,2,Owner 1,916000
+R14,Cloud outage,Cyber,3,5,2,4,1,4,Owner 2,565000
+R15,M&A integration,Strategic,3,4,1,4,1,3,Owner 3,737000
+R16,Safety incident,Operational,2,3,1,3,1,3,Owner 4,452000
+R17,Interest rate rise,Financial,4,5,4,4,3,3,Owner 1,170000
+R18,Tax dispute,Compliance,3,1,3,1,3,1,Owner 2,298000
+R19,Data leak,Cyber,4,1,3,1,2,1,Owner 3,224000
+R20,Brand damage,Strategic,5,5,3,4,2,4,Owner 4,917000
+R21,Logistics delay,Operational,4,2,4,2,4,1,Owner 1,168000
+R22,Budget overrun,Financial,1,4,1,3,1,3,Owner 2,540000
+R23,Licence expiry,Compliance,4,2,2,2,1,1,Owner 3,437000
+R24,Insider threat,Cyber,5,1,4,1,4,1,Owner 4,922000
+R25,Tech obsolescence,Strategic,4,5,4,4,3,3,Owner 1,269000

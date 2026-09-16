@@ -1,0 +1,20 @@
+{
+  "Role_Risk": "Risk",
+  "Role_Category": "Category",
+  "Role_Likelihood": "Likelihood",
+  "Role_Impact": "Impact",
+  "Role_ResidualLikelihood": "Residual likelihood (Pro)",
+  "Role_ResidualImpact": "Residual impact (Pro)",
+  "Role_Tooltips": "Tooltips",
+  "Obj_Grid": "Grid",
+  "Obj_Bands": "Score bands",
+  "Obj_Appetite": "Risk appetite (Pro)",
+  "Obj_Markers": "Markers",
+  "Obj_Movement": "Movement and target (Pro)",
+  "Obj_Detail": "Cell detail panel (Pro)",
+  "Obj_Axes": "Axes",
+  "Obj_Legend": "Legend",
+  "Obj_CategoryColors": "Category colors",
+  "Role_TargetLikelihood": "Target likelihood (Pro)",
+  "Role_TargetImpact": "Target impact (Pro)"
+}

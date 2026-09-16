@@ -1,0 +1,101 @@
+name: Bug report
+description: Something in the visual does not behave as documented
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please do not paste confidential data —
+        a screenshot with sensitive values blurred is fine.
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Licence tier
+      options:
+        - Free
+        - Pro
+    validations:
+      required: true
+
+  - type: input
+    id: visual-version
+    attributes:
+      label: Visual version
+      description: Format pane → About, or the version shown in AppSource
+      placeholder: 1.0.0.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where does it happen?
+      multiple: true
+      options:
+        - Power BI Desktop
+        - Power BI Service (browser)
+        - Power BI Mobile
+        - Embedded
+    validations:
+      required: true
+
+  - type: input
+    id: desktop-version
+    attributes:
+      label: Power BI Desktop version
+      description: Help → About
+      placeholder: 2.145.1105.0
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Drag ... into Risk, ... into Likelihood and Impact
+        2. Set Grid size to ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: fields
+    attributes:
+      label: Field setup
+      description: Which fields are in each well, how is each one summarised, and how many risks are there?
+      placeholder: |
+        Risk: risk_id (120 risks)
+        Category: owner
+        Likelihood / Impact: levels 1–5, Don't summarize
+        Residual / Target: ...
+        Grid size: Auto
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag images in here. Blur anything confidential first.
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser console output
+      description: In the Service, press F12 and copy any red errors. Leave blank if not applicable.
+      render: text

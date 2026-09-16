@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support &amp; Documentation — Risk Matrix Pro by TCViz</title>
+<style>
+  :root{--bg:#FAF9F5;--bg2:#EDE9DE;--line:#DAD9D4;
+        --t1:#3D3929;--t2:#535146;--t3:#83827D;--acc:#C96442;--accd:#B05730;
+        --acc2:#9C87F5;--acc2l:#DBD3F0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--t1);
+       font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.65}
+  .wrap{max-width:900px;margin:0 auto;padding:48px 24px 80px}
+  header{border-bottom:3px solid var(--acc);padding-bottom:20px;margin-bottom:28px}
+  h1{margin:0 0 6px;font-size:32px;letter-spacing:-.5px}
+  h2{margin:40px 0 12px;font-size:22px;color:var(--accd)}
+  h3{margin:26px 0 8px;font-size:16px}
+  .sub{color:var(--t3);font-size:14px;margin:0}
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--bg2);font-weight:600}
+  code{background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:13px}
+  .note{background:var(--bg2);border-left:4px solid var(--acc);padding:16px 20px;
+        border-radius:0 8px 8px 0;margin:20px 0}
+  .pro{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
+       background:var(--acc2l);color:#4A3B8C;border:1px solid var(--acc2);
+       text-transform:uppercase;letter-spacing:.4px}
+  .steps{counter-reset:s;list-style:none;padding:0}
+  .steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;margin:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;
+    border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center}
+  .video{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
+    border-radius:10px;border:1px solid var(--line);margin:20px 0}
+  .video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600}
+  ul{padding-left:22px}li{margin:6px 0}
+  a{color:var(--accd)}
+  .search{display:flex;gap:10px;align-items:center;margin:0 0 8px;flex-wrap:wrap}
+  .search input{flex:1;min-width:220px;font:inherit;padding:10px 14px;border:1px solid var(--line);
+    border-radius:8px;background:#fff;color:var(--t1)}
+  .search input:focus{outline:2px solid var(--acc);outline-offset:1px}
+  .search-count{color:var(--t3);font-size:13px}
+  [data-hidden]{display:none!important}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);
+         color:var(--t3);font-size:13px;display:flex;gap:18px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Support &amp; Documentation</h1>
+  <p class="sub">Risk Matrix Pro — a Power BI custom visual by TCViz · Version 1.0.0.0 · Last updated: 16 September 2026</p>
+</header>
+
+<div class="search" role="search">
+  <label for="q" class="search-count" style="flex-basis:100%">Search this page</label>
+  <input id="q" type="search" placeholder="e.g. residual, appetite, grid size, keyboard…" aria-describedby="qcount">
+  <span id="qcount" class="search-count" aria-live="polite"></span>
+</div>
+
+<section data-block>
+<p>Risk Matrix Pro places every risk of a register on a likelihood × impact grid, coloured by score
+band. Pro adds where each risk is going: its residual position after controls, its target, how far
+it still is from that target, and your risk appetite drawn across the matrix.</p>
+</section>
+
+<section data-block>
+<h2>Video walkthrough</h2>
+<div class="video">
+  <iframe src="https://www.youtube-nocookie.com/embed/0ps6t6t70JY"
+          title="Risk Matrix Pro — walkthrough"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen loading="lazy"></iframe>
+</div>
+<p>Also on YouTube: <a href="https://youtu.be/0ps6t6t70JY">youtu.be/0ps6t6t70JY</a></p>
+</section>
+
+<section data-block>
+<h2>Quick start</h2>
+<ol class="steps">
+  <li>Drop the visual on the canvas.</li>
+  <li>Drag the risk ID or name into <strong>Risk</strong>. Each row becomes one marker.</li>
+  <li>Drag the likelihood into <strong>Likelihood</strong> and the impact into <strong>Impact</strong>. The matrix appears, sized from your data.</li>
+  <li>Optional: add a <strong>Category</strong> (type, owner, status) to colour the markers and build the legend.</li>
+  <li>Optional <span class="pro">Pro</span>: add <strong>Residual</strong> and <strong>Target</strong> likelihood and impact to show movement and targets.</li>
+</ol>
+</section>
+
+<section data-block>
+<h2>Field wells</h2>
+<div class="tablewrap"><table>
+  <tr><th>Well</th><th>Accepts</th><th>Limit</th><th>Purpose</th></tr>
+  <tr><td>Risk</td><td>Any text or ID field</td><td>1 field</td><td>One marker per value. Short IDs (R01, R02…) read best inside the marker.</td></tr>
+  <tr><td>Category</td><td>Any grouping field</td><td>1 field</td><td>Marker colours, legend and, in Pro, marker shapes.</td></tr>
+  <tr><td>Likelihood</td><td>Measure or numeric column</td><td>1 field</td><td>Horizontal position.</td></tr>
+  <tr><td>Impact</td><td>Measure or numeric column</td><td>1 field</td><td>Vertical position.</td></tr>
+  <tr><td>Residual likelihood / impact <span class="pro">Pro</span></td><td>Measure or numeric column</td><td>1 field each</td><td>Position after controls. Both are needed.</td></tr>
+  <tr><td>Target likelihood / impact <span class="pro">Pro</span></td><td>Measure or numeric column</td><td>1 field each</td><td>Position you aim to reach. Both are needed.</td></tr>
+  <tr><td>Tooltips</td><td>Measures</td><td>up to 5</td><td>Extra values in the tooltip, with the model's format.</td></tr>
+</table></div>
+<p>Up to <strong>1,000 risks</strong> are loaded. The limits are the same in Free and Pro.</p>
+</section>
+
+<section data-block>
+<h2>Input values and grid size</h2>
+<p>Likelihood and impact can arrive in any of these forms — the visual detects which one with
+<strong>Grid → Input values → Auto</strong>, or you can set it:</p>
+<div class="tablewrap"><table>
+  <tr><th>Input values</th><th>Example</th><th>Placed at</th></tr>
+  <tr><td>Levels</td><td>3</td><td>Level 3</td></tr>
+  <tr><td>Fraction (0 to 1)</td><td>0.45 on a 5 × 5 grid</td><td>Level 3</td></tr>
+  <tr><td>Percent (0 to 100)</td><td>45 on a 5 × 5 grid</td><td>Level 3</td></tr>
+</table></div>
+<p><strong>Grid size → Auto (from data)</strong> uses the highest level in your data, from 3 × 3 to
+10 × 10. With fractions or percentages there is no natural maximum, so it uses 5 × 5. Choose a fixed
+size to override it.</p>
+</section>
+
+<section data-block>
+<h2>How scores and bands work</h2>
+<p>A cell's score is <strong>likelihood × impact</strong>. The cell colour comes from its band:</p>
+<div class="tablewrap"><table>
+  <tr><th>Band</th><th>Automatic rule</th><th>On a 5 × 5 grid</th></tr>
+  <tr><td>Low</td><td>up to 16% of the maximum score</td><td>1 – 4</td></tr>
+  <tr><td>Medium</td><td>up to 36%</td><td>5 – 9</td></tr>
+  <tr><td>High</td><td>up to 64%</td><td>10 – 16</td></tr>
+  <tr><td>Critical</td><td>above 64%</td><td>20 – 25</td></tr>
+</table></div>
+<p>With <strong>Custom thresholds</strong> <span class="pro">Pro</span> you set the score where Medium,
+High and Critical start, to match your own methodology.</p>
+</section>
+
+<section data-block>
+<h2>Inherent, residual and target <span class="pro">Pro</span></h2>
+<ul>
+  <li><strong>Inherent</strong> — the risk before controls (Likelihood and Impact).</li>
+  <li><strong>Residual</strong> — the risk with today's controls.</li>
+  <li><strong>Target</strong> — where you aim to be once planned actions are done.</li>
+</ul>
+<p>By default the matrix stays clean: point at a risk, focus it with the keyboard or select it, and
+its path appears — a solid arrow for what has been achieved, a dashed arrow for what remains, a small
+circle for the other positions and a diamond for the target. Set <strong>Movement arrows → All
+risks</strong> to show every path at once.</p>
+<p>A risk whose current score (residual, or inherent if there is none) is still above its target
+score carries a <strong>dashed red ring</strong>. The tooltip and the cell detail panel say whether
+the target is reached.</p>
+</section>
+
+<section data-block>
+<h2>Format pane</h2>
+<div class="tablewrap"><table>
+  <tr><th>Card</th><th>Setting</th><th>What it does</th></tr>
+  <tr><td rowspan="5">Grid</td><td>Grid size</td><td>Auto (from data), or 3 × 3 to 10 × 10.</td></tr>
+  <tr><td>Input values</td><td>Auto, levels, fraction or percent.</td></tr>
+  <tr><td>Cell gap / corner radius</td><td>Spacing and rounding of the cells.</td></tr>
+  <tr><td>Show cell score / risk count</td><td>Score top-left, number of risks top-right, and their colour.</td></tr>
+  <tr><td>Data warnings</td><td>While editing (default), always or off. See <em>Data warnings</em> below.</td></tr>
+  <tr><td rowspan="2">Score bands</td><td>Low / Medium / High / Critical</td><td>Colour of each band.</td></tr>
+  <tr><td>Custom thresholds <span class="pro">Pro</span></td><td>Score where each band starts.</td></tr>
+  <tr><td>Risk appetite <span class="pro">Pro</span></td><td>Appetite score, line colour and width</td><td>A stepped line separating cells with a score up to the appetite from the rest.</td></tr>
+  <tr><td rowspan="4">Markers</td><td>Marker size</td><td>Markers shrink to fit a busy cell; beyond that a <strong>+n</strong> badge shows the rest.</td></tr>
+  <tr><td>Show labels / max characters / label color</td><td>Text inside the marker, fitted to its size.</td></tr>
+  <tr><td>Marker color (fx: Pro)</td><td>Colour without a Category. With <strong>fx</strong> <span class="pro">Pro</span>, a rule or field value per risk.</td></tr>
+  <tr><td>Shape by category <span class="pro">Pro</span></td><td>Circle, square, diamond and triangle per category.</td></tr>
+  <tr><td>Category colors</td><td>One colour per category</td><td>Shown when a Category field is present.</td></tr>
+  <tr><td rowspan="4">Movement and target <span class="pro">Pro</span></td><td>Movement arrows</td><td>Selected and hovered risks (default), all risks, or off.</td></tr>
+  <tr><td>Place markers at</td><td>Inherent, residual or target position.</td></tr>
+  <tr><td>Arrow color</td><td>Colour of arrows and position symbols.</td></tr>
+  <tr><td>Flag risks above target / ring color</td><td>Dashed ring on risks that have not reached their target.</td></tr>
+  <tr><td>Cell detail panel <span class="pro">Pro</span></td><td>Open on cell click, background, text color, font size</td><td>Side panel listing every risk in the clicked cell.</td></tr>
+  <tr><td>Axes</td><td>Titles, level labels, font, size, color</td><td>Level labels are comma separated: <code>Rare, Unlikely, Possible, Likely, Almost certain</code>.</td></tr>
+  <tr><td>Legend</td><td>Show, position, font, size, text color</td><td>Click a legend entry to select all its risks.</td></tr>
+</table></div>
+</section>
+
+<section data-block>
+<h2>Free, Pro and the Pro preview</h2>
+<p>Paid settings and field wells are marked <strong>(Pro)</strong> in Power BI. Without a licence:</p>
+<ul>
+  <li><strong>While you edit a report</strong>, Pro capabilities you use are shown working under a
+      <strong>Pro preview</strong> watermark, and Power BI shows how to get a licence.</li>
+  <li><strong>In reading view and published reports</strong>, the free result is shown: inherent
+      positions, automatic bands, no appetite line, no movement, no detail panel. No watermark.</li>
+  <li>Where Power BI cannot check licences (Publish to Web, embedding, PDF/PowerPoint export) the free
+      result is shown, even for Pro customers.</li>
+</ul>
+</section>
+
+<section data-block>
+<h2>Interaction</h2>
+<ul>
+  <li><strong>Click a marker</strong> — selects the risk and filters the rest of the page.</li>
+  <li><strong>Ctrl / Cmd + click</strong> — adds risks to the selection.</li>
+  <li><strong>Click a cell</strong> — selects every risk in it (and opens the detail panel in Pro).</li>
+  <li><strong>Click a legend entry</strong> — selects every risk in that category.</li>
+  <li><strong>Click empty space</strong> — clears the selection.</li>
+  <li><strong>Right click</strong> — the standard Power BI menu (Include, Exclude, Drill through).</li>
+  <li>Filters from other visuals dim the risks that do not match instead of hiding them.</li>
+</ul>
+</section>
+
+<section data-block>
+<h2>Accessibility</h2>
+<ul>
+  <li><strong>Keyboard</strong> — Tab enters the matrix; arrow keys move to the nearest risk in that
+      direction; Home / End jump to the first and last; Page Up / Page Down move ten at a time;
+      Enter or Space selects (Ctrl adds); Escape clears; Shift + F10 opens the context menu. The
+      tooltip also appears on focus.</li>
+  <li><strong>Screen readers</strong> — each risk announces its name, category, likelihood, impact,
+      score, band and, in Pro, residual score and whether the target is reached.</li>
+  <li><strong>High contrast</strong> — system colours only; the band is encoded as border thickness
+      instead of fill, and the appetite line becomes dashed.</li>
+</ul>
+</section>
+
+<section data-block>
+<h2>Data warnings</h2>
+<p>A yellow strip at the bottom-left tells you when:</p>
+<ul>
+  <li>risks have no likelihood or impact and cannot be plotted;</li>
+  <li>values fall outside the scale (a 7 on a 5 × 5 grid, 1.4 as a fraction) and were placed at the edge;</li>
+  <li>a residual or target field was added without its pair.</li>
+</ul>
+<p>By default it shows only while editing, because it is meant for the report author.</p>
+</section>
+
+<section data-block>
+<h2>Troubleshooting</h2>
+
+<details><summary>All risks sit in the bottom-left corner</summary>
+<p>The grid is bigger than your data. Set <strong>Grid → Grid size → Auto (from data)</strong>, or the
+size that matches your scale.</p></details>
+
+<details><summary>Every risk is in the same column or row</summary>
+<p>The input scale was detected differently from what you expect — for example probabilities stored as
+whole percentages. Set <strong>Grid → Input values</strong> explicitly.</p></details>
+
+<details><summary>The field shows "Sum of Likelihood" and values look too high</summary>
+<p>Power BI is adding the likelihood of several rows. Make sure each risk appears once in your table,
+or set the field's summarisation to <em>Don't summarize</em>, <em>Maximum</em> or <em>Average</em>.</p></details>
+
+<details><summary>No arrows appear</summary>
+<p>Arrows need both residual (or both target) fields, and by default they only show for the risk you
+point at or select. Check <strong>Movement and target → Movement arrows</strong>.</p></details>
+
+<details><summary>Labels inside the markers are cut short</summary>
+<p>Labels are fitted to the marker. Use short IDs in <strong>Risk</strong>, increase
+<strong>Markers → Marker size</strong>, or raise <strong>Label max characters</strong>.</p></details>
+
+<details><summary>Clicking a risk does not filter another table</summary>
+<p>Check the relationship between the tables in Model view. Filtering from a fact table to a
+dimension table needs the cross-filter direction set to <strong>Both</strong>.</p></details>
+
+<details><summary>Pro features are not active after purchasing</summary>
+<p>The visual detects the licence when the report is opened or refreshed. Microsoft notes it can take
+up to an hour for a new licence to be recognised: refresh the browser (F5) or close and reopen Power BI
+Desktop. A licence is required per user. If it persists, email us with your AppSource order
+reference.</p></details>
+</section>
+
+<section data-block>
+<h2>Limits and known behaviour</h2>
+<ul>
+  <li>Up to 1,000 risks and 5 tooltip measures.</li>
+  <li>Grid from 3 × 3 to 10 × 10.</li>
+  <li>When a cell holds more markers than fit at the minimum size, a <strong>+n</strong> badge counts the rest; the detail panel <span class="pro">Pro</span> lists them all.</li>
+  <li>Scores use levels (1 to grid size). Fractions and percentages are converted to levels first, so two risks at 0.41 and 0.59 on a 5 × 5 grid share a cell.</li>
+</ul>
+</section>
+
+<section data-block>
+<h2>Getting help</h2>
+<ul>
+  <li><a href="mailto:support@tcviz.com?subject=Risk%20Matrix%20Pro%20bug%20report">Report a bug or request a feature</a></li>
+  <li><a href="changelog.html">Changelog</a></li>
+  <li>Licensing questions: <a href="mailto:support@tcviz.com">support@tcviz.com</a></li>
+</ul>
+</section>
+
+<p id="noresults" data-hidden>No section matches your search.</p>
+
+<footer>
+  <span>© 2026 TCViz</span>
+  <a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a>
+  <a href="changelog.html">Changelog</a>
+</footer>
+
+</div>
+<script>
+// Buscador sin dependencias. Solo oculta bloques: sin JS la página se ve entera.
+(function () {
+  var input = document.getElementById("q");
+  var count = document.getElementById("qcount");
+  var none = document.getElementById("noresults");
+  var blocks = Array.prototype.slice.call(document.querySelectorAll("[data-block]"));
+  if (!input) { return; }
+  function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  var texts = blocks.map(function (b) { return norm(b.textContent); });
+  function apply() {
+    var terms = norm(input.value).split(/\s+/).filter(Boolean);
+    var shown = 0;
+    blocks.forEach(function (b, i) {
+      var hit = terms.every(function (t) { return texts[i].indexOf(t) !== -1; });
+      if (hit) { b.removeAttribute("data-hidden"); shown++; } else { b.setAttribute("data-hidden", ""); }
+      if (hit && terms.length) {
+        Array.prototype.forEach.call(b.querySelectorAll("details"), function (d) {
+          if (terms.every(function (t) { return norm(d.textContent).indexOf(t) !== -1; })) { d.open = true; }
+        });
+      }
+    });
+    if (terms.length) { none.toggleAttribute("data-hidden", shown > 0); } else { none.setAttribute("data-hidden", ""); }
+    count.textContent = terms.length ? shown + " of " + blocks.length + " sections" : "";
+  }
+  input.addEventListener("input", apply);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { input.value = ""; apply(); }
+  });
+})();
+</script>
+</body>
+</html>

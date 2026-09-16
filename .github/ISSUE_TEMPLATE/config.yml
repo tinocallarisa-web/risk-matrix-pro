@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation and troubleshooting
+    url: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
+    about: Field wells, format pane reference and answers to the most common questions — start here.
+  - name: Video walkthrough
+    url: https://youtu.be/0ps6t6t70JY
+    about: A five-minute tour of the visual, Free and Pro.
+  - name: Licensing, billing and refunds
+    url: mailto:support@tcviz.com
+    about: Pro licences are sold through Microsoft AppSource. Email us for anything the AppSource order page does not cover.
+  - name: Changelog
+    url: https://tinocallarisa-web.github.io/risk-matrix-pro/changelog.html
+    about: What changed in each release, including known limitations.

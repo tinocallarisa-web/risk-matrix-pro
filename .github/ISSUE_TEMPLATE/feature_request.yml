@@ -1,0 +1,58 @@
+name: Feature request
+description: Suggest a capability that would make the visual more useful
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describing the problem tends to produce a better outcome than describing a solution —
+        there may be an approach that fits the visual better than the one you have in mind.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: What are you attempting, and where does the visual get in the way?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like it to do?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does this touch?
+      options:
+        - Scoring, bands and appetite
+        - Movement, residual and target
+        - Formatting and appearance
+        - Interaction and filtering
+        - Field wells and data model
+        - Accessibility
+        - Performance
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: How are you handling this today, if at all?
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Which tier are you on?
+      options:
+        - Free
+        - Pro
+        - Evaluating
+    validations:
+      required: true

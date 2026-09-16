@@ -1,0 +1,20 @@
+{
+  "Role_Risk": "Riesgo",
+  "Role_Category": "Categoría",
+  "Role_Likelihood": "Probabilidad",
+  "Role_Impact": "Impacto",
+  "Role_ResidualLikelihood": "Probabilidad residual (Pro)",
+  "Role_ResidualImpact": "Impacto residual (Pro)",
+  "Role_Tooltips": "Información sobre herramientas",
+  "Obj_Grid": "Cuadrícula",
+  "Obj_Bands": "Bandas de puntuación",
+  "Obj_Appetite": "Apetito de riesgo (Pro)",
+  "Obj_Markers": "Marcadores",
+  "Obj_Movement": "Movimiento y objetivo (Pro)",
+  "Obj_Detail": "Panel de detalle de celda (Pro)",
+  "Obj_Axes": "Ejes",
+  "Obj_Legend": "Leyenda",
+  "Obj_CategoryColors": "Colores de categoría",
+  "Role_TargetLikelihood": "Probabilidad objetivo (Pro)",
+  "Role_TargetImpact": "Impacto objetivo (Pro)"
+}

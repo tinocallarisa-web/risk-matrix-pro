@@ -1,0 +1,20 @@
+# Build output
+dist/
+.tmp/
+node_modules/
+
+# Webpack bundle analyzer reports
+webpack.statistics*.html
+
+# pbiviz certificates
+*.pfx
+*.crt
+*.key
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Paquetes archivados de cada envio (recuperables desde el tag)
+_releases/

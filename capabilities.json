@@ -1,0 +1,695 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Risk",
+            "displayNameKey": "Role_Risk",
+            "name": "risk",
+            "kind": "Grouping",
+            "description": "One row per risk: its ID or name. Each risk becomes one marker."
+        },
+        {
+            "displayName": "Category",
+            "displayNameKey": "Role_Category",
+            "name": "category",
+            "kind": "Grouping",
+            "description": "Optional. Colours the markers and builds the legend (e.g. risk type, owner, status)."
+        },
+        {
+            "displayName": "Likelihood",
+            "displayNameKey": "Role_Likelihood",
+            "name": "likelihood",
+            "kind": "Measure",
+            "description": "Horizontal position. Either a level from 1 to the grid size, or a probability between 0 and 1."
+        },
+        {
+            "displayName": "Impact",
+            "displayNameKey": "Role_Impact",
+            "name": "impact",
+            "kind": "Measure",
+            "description": "Vertical position. Either a level from 1 to the grid size, or a value between 0 and 1."
+        },
+        {
+            "displayName": "Residual likelihood (Pro)",
+            "displayNameKey": "Role_ResidualLikelihood",
+            "name": "residualLikelihood",
+            "kind": "Measure",
+            "description": "Optional. Likelihood after mitigation. With residual impact, draws an arrow from the inherent to the residual position."
+        },
+        {
+            "displayName": "Residual impact (Pro)",
+            "displayNameKey": "Role_ResidualImpact",
+            "name": "residualImpact",
+            "kind": "Measure",
+            "description": "Optional. Impact after mitigation."
+        },
+        {
+            "displayName": "Target likelihood (Pro)",
+            "displayNameKey": "Role_TargetLikelihood",
+            "name": "targetLikelihood",
+            "kind": "Measure",
+            "description": "Optional. Likelihood you aim to reach once the planned actions are done."
+        },
+        {
+            "displayName": "Target impact (Pro)",
+            "displayNameKey": "Role_TargetImpact",
+            "name": "targetImpact",
+            "kind": "Measure",
+            "description": "Optional. Impact you aim to reach once the planned actions are done."
+        },
+        {
+            "displayName": "Tooltips",
+            "displayNameKey": "Role_Tooltips",
+            "name": "tooltips",
+            "kind": "Measure",
+            "description": "Optional. Extra measures shown in the tooltip, with their model format."
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "risk": {
+                        "max": 1
+                    },
+                    "category": {
+                        "max": 1
+                    },
+                    "likelihood": {
+                        "max": 1
+                    },
+                    "impact": {
+                        "max": 1
+                    },
+                    "residualLikelihood": {
+                        "max": 1
+                    },
+                    "residualImpact": {
+                        "max": 1
+                    },
+                    "tooltips": {
+                        "max": 5
+                    },
+                    "targetLikelihood": {
+                        "max": 1
+                    },
+                    "targetImpact": {
+                        "max": 1
+                    }
+                }
+            ],
+            "categorical": {
+                "categories": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "risk"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "category"
+                            }
+                        }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "top": {
+                            "count": 1000
+                        }
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "likelihood"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "impact"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "residualLikelihood"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "residualImpact"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "targetLikelihood"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "targetImpact"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "tooltips"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "objects": {
+        "grid": {
+            "displayName": "Grid",
+            "displayNameKey": "Obj_Grid",
+            "properties": {
+                "size": {
+                    "displayName": "Grid size",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "auto",
+                                "displayName": "Auto (from data)"
+                            },
+                            {
+                                "value": "3",
+                                "displayName": "3 x 3"
+                            },
+                            {
+                                "value": "4",
+                                "displayName": "4 x 4"
+                            },
+                            {
+                                "value": "5",
+                                "displayName": "5 x 5"
+                            },
+                            {
+                                "value": "6",
+                                "displayName": "6 x 6"
+                            },
+                            {
+                                "value": "7",
+                                "displayName": "7 x 7"
+                            },
+                            {
+                                "value": "8",
+                                "displayName": "8 x 8"
+                            },
+                            {
+                                "value": "9",
+                                "displayName": "9 x 9"
+                            },
+                            {
+                                "value": "10",
+                                "displayName": "10 x 10"
+                            }
+                        ]
+                    }
+                },
+                "inputScale": {
+                    "displayName": "Input values",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "auto",
+                                "displayName": "Auto (detect)"
+                            },
+                            {
+                                "value": "levels",
+                                "displayName": "Levels (1 to grid size)"
+                            },
+                            {
+                                "value": "fraction",
+                                "displayName": "Fraction (0 to 1)"
+                            },
+                            {
+                                "value": "percent",
+                                "displayName": "Percent (0 to 100)"
+                            }
+                        ]
+                    }
+                },
+                "cellGap": {
+                    "displayName": "Cell gap (px)",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "cellRadius": {
+                    "displayName": "Cell corner radius (px)",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "showScore": {
+                    "displayName": "Show cell score",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "showCount": {
+                    "displayName": "Show risk count",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "textColor": {
+                    "displayName": "Score and count color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "dataWarnings": {
+                    "displayName": "Data warnings",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "edit",
+                                "displayName": "While editing"
+                            },
+                            {
+                                "value": "always",
+                                "displayName": "Always"
+                            },
+                            {
+                                "value": "off",
+                                "displayName": "Off"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "bands": {
+            "displayName": "Score bands",
+            "displayNameKey": "Obj_Bands",
+            "properties": {
+                "lowColor": {
+                    "displayName": "Low",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "mediumColor": {
+                    "displayName": "Medium",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "highColor": {
+                    "displayName": "High",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "criticalColor": {
+                    "displayName": "Critical",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "customThresholds": {
+                    "displayName": "Custom thresholds (Pro)",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "mediumFrom": {
+                    "displayName": "Medium from score",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "highFrom": {
+                    "displayName": "High from score",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "criticalFrom": {
+                    "displayName": "Critical from score",
+                    "type": {
+                        "numeric": true
+                    }
+                }
+            }
+        },
+        "appetite": {
+            "displayName": "Risk appetite (Pro)",
+            "displayNameKey": "Obj_Appetite",
+            "properties": {
+                "show": {
+                    "displayName": "Show appetite line",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "score": {
+                    "displayName": "Appetite score",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "color": {
+                    "displayName": "Line color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "width": {
+                    "displayName": "Line width",
+                    "type": {
+                        "numeric": true
+                    }
+                }
+            }
+        },
+        "markers": {
+            "displayName": "Markers",
+            "displayNameKey": "Obj_Markers",
+            "properties": {
+                "size": {
+                    "displayName": "Marker size (px)",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "showLabels": {
+                    "displayName": "Show labels",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "labelMaxChars": {
+                    "displayName": "Label max characters",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "labelColor": {
+                    "displayName": "Label color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fill": {
+                    "displayName": "Marker color (fx: Pro)",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "shapeByCategory": {
+                    "displayName": "Shape by category (Pro)",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
+        "movement": {
+            "displayName": "Movement and target (Pro)",
+            "displayNameKey": "Obj_Movement",
+            "properties": {
+                "arrows": {
+                    "displayName": "Movement arrows",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "focus",
+                                "displayName": "Selected and hovered risks"
+                            },
+                            {
+                                "value": "all",
+                                "displayName": "All risks"
+                            },
+                            {
+                                "value": "off",
+                                "displayName": "Off"
+                            }
+                        ]
+                    }
+                },
+                "plotAt": {
+                    "displayName": "Place markers at",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "inherent",
+                                "displayName": "Inherent position"
+                            },
+                            {
+                                "value": "residual",
+                                "displayName": "Residual position"
+                            },
+                            {
+                                "value": "target",
+                                "displayName": "Target position"
+                            }
+                        ]
+                    }
+                },
+                "color": {
+                    "displayName": "Arrow color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "flagOffTarget": {
+                    "displayName": "Flag risks above target",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "offTargetColor": {
+                    "displayName": "Above-target ring color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "detail": {
+            "displayName": "Cell detail panel (Pro)",
+            "displayNameKey": "Obj_Detail",
+            "properties": {
+                "show": {
+                    "displayName": "Open panel on cell click",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "background": {
+                    "displayName": "Background",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "textColor": {
+                    "displayName": "Text color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fontSize": {
+                    "displayName": "Font size",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        },
+        "axes": {
+            "displayName": "Axes",
+            "displayNameKey": "Obj_Axes",
+            "properties": {
+                "xTitle": {
+                    "displayName": "Likelihood title",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "yTitle": {
+                    "displayName": "Impact title",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "xLabels": {
+                    "displayName": "Likelihood level labels (comma separated)",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "yLabels": {
+                    "displayName": "Impact level labels (comma separated)",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font",
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "fontSize": {
+                    "displayName": "Font size",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "color": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "legend": {
+            "displayName": "Legend",
+            "displayNameKey": "Obj_Legend",
+            "properties": {
+                "show": {
+                    "displayName": "Show legend",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "position": {
+                    "displayName": "Position",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "top",
+                                "displayName": "Top"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayName": "Bottom"
+                            }
+                        ]
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font",
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "fontSize": {
+                    "displayName": "Font size",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "color": {
+                    "displayName": "Text color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "categoryColors": {
+            "displayName": "Category colors",
+            "displayNameKey": "Obj_CategoryColors",
+            "properties": {
+                "fill": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "supportsHighlight": true,
+    "supportsSynchronizingFilterState": true,
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true,
+    "supportsKeyboardFocus": true,
+    "supportsMultiVisualSelection": true,
+    "tooltips": {
+        "supportedTypes": {
+            "default": true,
+            "canvas": true
+        },
+        "roles": [
+            "tooltips"
+        ],
+        "supportEnhancedTooltips": true
+    },
+    "privileges": []
+}

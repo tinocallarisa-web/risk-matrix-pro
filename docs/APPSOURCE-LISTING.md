@@ -107,7 +107,7 @@ First release.
 - Categories (max 2): **Comparison**, **Distribution**
 - Industries (max 2): **Financial services**, **Professional services**
 - Offer ID: `risk-matrix-pro` · Offer alias: Risk Matrix Pro
-- Search keywords: `risk matrix`, `risk heat map`, `risk assessment`, `residual risk`, `risk appetite`
+- Search keywords (max 3): `risk matrix`, `risk heat map`, `risk assessment`
 
 ## Plan
 

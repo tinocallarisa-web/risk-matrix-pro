@@ -113,6 +113,6 @@ First release.
 
 | Field | Value |
 |---|---|
-| Plan ID | `risk-matrix-pro-tcviz` — must match `PLAN_ID` in `src/visual.ts`; the code accepts the full Service ID |
+| Plan ID | `risk-matrix-pro-tcviz` — Service ID `tino_callarisa.risk-matrix-pro.risk-matrix-pro-tcviz` (verified 2026-09-16), matched by `PLAN_ID` in `src/visual.ts` |
 | Plan name | Risk Matrix Pro |
 | Plan description | Unlocks residual and target movement, above-target flag, custom thresholds, risk appetite line, fx marker colours, shapes by category and the cell detail panel. |

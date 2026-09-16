@@ -24,8 +24,8 @@ import { VisualFormattingSettingsModel } from "./settings";
 // ------------------------------------------------------------------------------------------
 
 /**
- * Plan ID de Partner Center. PENDIENTE de verificar contra el "Id. de servicio" real cuando se
- * cree la oferta: spIdentifier es el Service ID completo (editor.oferta.plan).
+ * Plan ID de Partner Center. Service ID verificado el 2026-09-16:
+ * tino_callarisa.risk-matrix-pro.risk-matrix-pro-tcviz (editor.oferta.plan).
  */
 const PLAN_ID = "risk-matrix-pro-tcviz";
 

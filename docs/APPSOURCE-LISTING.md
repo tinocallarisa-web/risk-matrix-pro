@@ -104,7 +104,9 @@ First release.
 
 ## Suggested categories and keywords
 
-- Categories: choose in Partner Center from the options it offers for Power BI visuals (not verified here)
+- Categories (max 2): **Comparison**, **Distribution**
+- Industries (max 2): **Financial services**, **Professional services**
+- Offer ID: `risk-matrix-pro` · Offer alias: Risk Matrix Pro
 - Search keywords: `risk matrix`, `risk heat map`, `risk assessment`, `residual risk`, `risk appetite`
 
 ## Plan

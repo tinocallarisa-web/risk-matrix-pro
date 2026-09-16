@@ -1,0 +1,42 @@
+Risk Matrix Pro 1.0.0.0 - GUID riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A
+New visual, first submission. Full notes: docs/CERTIFICATION-NOTES.md, branch
+"certification" of github.com/tinocallarisa-web/risk-matrix-pro (private: pbicvsupport
+and OSDC1033 invited). Sample data: docs/sample-risks.csv.
+
+WHAT IT DOES
+Likelihood x impact risk matrix, 3x3 to 10x10 (auto-sized), one marker per risk,
+cells coloured by score band.
+
+TEST - PRO (node build-test.js: isPro true, GUID _test)
+1. Risk=RiskID, Category, Likelihood, Impact: 5x5 matrix, legend, markers.
+2. Hover a marker: tooltip. Click: other visuals filter. Ctrl+click adds. Click a
+   cell or legend entry: selects its risks. Click empty space: clears.
+3. Add Residual and Target likelihood/impact. Hover a risk: path inherent ->
+   residual (solid) -> target (dashed). Red dashed ring = above target.
+4. Risk appetite on, Custom thresholds on, Cell detail panel on (click a cell),
+   Shape by category on, Marker color fx rule: all apply. No watermark.
+5. Tab into the matrix, arrows move, Enter selects, Esc clears, Shift+F10 menu.
+
+TEST - FREE (no plan)
+6. Same fields, edit mode: each Pro setting renders under a "Pro preview"
+   watermark; Power BI shows notifyFeatureBlocked, then notifyLicenseRequired.
+7. Reading view: free result (inherent positions, automatic bands), no watermark.
+8. Free features never carry a watermark.
+
+PRIVACY
+No network calls, telemetry or storage. privileges is []. Nothing persisted except
+standard format settings. SVG built with createElementNS; no innerHTML.
+
+LICENSING
+IVisualLicenseManager only, no own server. getAvailableServicePlans requested once,
+deferred after rendering events. Plan matched as full Service ID or Plan ID, Active or
+Warning. isLicenseUnsupportedEnv / isLicenseInfoAvailable honoured: no prompt there.
+No licensing UI of our own.
+
+FREE: full matrix, bands, legend, labels, tooltips, report tooltips, selection,
+highlight, bookmarks, keyboard, high contrast, data warnings. Same data limits as Pro.
+
+Rendering events on every path of update().
+
+Video https://youtu.be/0ps6t6t70JY
+Support/privacy/terms: tinocallarisa-web.github.io/risk-matrix-pro/

@@ -1,0 +1,44 @@
+RISK MATRIX PRO — TIPS & HINTS
+TCViz · Video walkthrough: https://youtu.be/0ps6t6t70JY
+
+GETTING STARTED
+1. Drop the visual on the canvas.
+2. Drag the risk ID into Risk. Short IDs (R01, R02…) read best inside the markers.
+3. Drag the likelihood into Likelihood and the impact into Impact.
+4. Optional: a Category (type, owner, status) colours the markers and builds the legend.
+5. Optional (Pro): Residual and Target likelihood and impact show where each risk is going.
+
+FIELD WELLS
+• Risk ............................... one marker per value
+• Category ........................... colours, legend, and shapes in Pro
+• Likelihood / Impact ................ position on the grid
+• Residual likelihood / impact (Pro) . position after controls — add both
+• Target likelihood / impact (Pro) ... position to reach — add both
+• Tooltips ........................... up to 5 extra measures
+
+TIPS
+• One row per risk. If Power BI shows "Sum of Likelihood", set the field to Don't summarize, Maximum or Average.
+• Leave Grid size on Auto. It matches the highest level in your data.
+• Name the levels: Axes → level labels, e.g. Rare, Unlikely, Possible, Likely, Almost certain.
+• Keep arrows on "Selected and hovered" — every path at once becomes unreadable.
+• Place markers at Residual to show today's exposure; hover a risk to see its path.
+• Use the red ring as the agenda: those risks are still above their target.
+• Custom thresholds (Pro) set where Medium, High and Critical start; the appetite score draws the line above which action is required.
+• Busy cell? "+n" counts the markers that do not fit. The cell detail panel (Pro) lists them all.
+• While editing, the yellow strip reports risks that could not be plotted or values outside the scale.
+• Cross-filtering a table needs the relationship direction set to Both in Model view.
+
+KEYBOARD
+Tab enters the matrix · arrows move between risks · Home / End · Page Up / Page Down · Enter selects · Ctrl + Enter adds · Escape clears · Shift + F10 opens the context menu.
+
+FREE VS PRO
+• Matrix, bands, legend, labels, tooltips, selection, keyboard, high contrast ..... Free and Pro
+• Residual and target movement, above-target flag ................................ Pro
+• Custom thresholds, risk appetite line ............................................ Pro
+• fx marker colours, shapes by category, cell detail panel ......................... Pro
+Without a licence, Pro settings show a "Pro preview" watermark while editing.
+
+LINKS
+Support: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
+Video: https://youtu.be/0ps6t6t70JY
+Email: support@tcviz.com

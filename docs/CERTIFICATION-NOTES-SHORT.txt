@@ -38,5 +38,5 @@ highlight, bookmarks, keyboard, high contrast, data warnings. Same data limits a
 
 Rendering events on every path of update().
 
-Video https://youtu.be/0ps6t6t70JY
+Video https://www.youtube.com/watch?v=0ps6t6t70JY
 Support/privacy/terms: tinocallarisa-web.github.io/risk-matrix-pro/

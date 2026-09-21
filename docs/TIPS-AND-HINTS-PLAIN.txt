@@ -1,5 +1,5 @@
 RISK MATRIX PRO — TIPS & HINTS
-TCViz · Video walkthrough: https://youtu.be/0ps6t6t70JY
+TCViz · Video walkthrough: https://www.youtube.com/watch?v=0ps6t6t70JY
 
 GETTING STARTED
 1. Drop the visual on the canvas.
@@ -40,5 +40,5 @@ Without a licence, Pro settings show a "Pro preview" watermark while editing.
 
 LINKS
 Support: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
-Video: https://youtu.be/0ps6t6t70JY
+Video: https://www.youtube.com/watch?v=0ps6t6t70JY
 Email: support@tcviz.com

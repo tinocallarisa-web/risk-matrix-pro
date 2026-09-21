@@ -1,6 +1,6 @@
 # Tips &amp; Hints — Risk Matrix Pro
 
-**TCViz** · Video walkthrough: https://youtu.be/0ps6t6t70JY
+**TCViz** · Video walkthrough: https://www.youtube.com/watch?v=0ps6t6t70JY
 
 > Content for the *Tips &amp; Hints* page of the sample `.pbix`.
 > Power BI text boxes do not render markdown tables — use `TIPS-AND-HINTS-PLAIN.txt` when pasting
@@ -66,5 +66,5 @@ Without a licence, Pro settings show a "Pro preview" watermark while editing.
 ## Links
 
 - Support: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
-- Video: https://youtu.be/0ps6t6t70JY
+- Video: https://www.youtube.com/watch?v=0ps6t6t70JY
 - Email: support@tcviz.com

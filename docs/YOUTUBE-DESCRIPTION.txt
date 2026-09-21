@@ -4,7 +4,7 @@
 
 Risk Matrix Pro for Power BI — likelihood x impact, residual risk and targets
 
-Video: https://youtu.be/0ps6t6t70JY
+Video: https://www.youtube.com/watch?v=0ps6t6t70JY
 
 
 ═══════════════════════════════════════════════════════════════
@@ -124,7 +124,7 @@ made it.
 
 Free tier is a complete matrix. Pro adds movement, targets, risk appetite and custom thresholds.
 
-https://youtu.be/0ps6t6t70JY
+https://www.youtube.com/watch?v=0ps6t6t70JY
 
 #PowerBI #RiskManagement #DataVisualization
 

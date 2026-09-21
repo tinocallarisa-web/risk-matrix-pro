@@ -29,7 +29,7 @@
 | Privacy policy | https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html |
 | Terms &amp; licence | https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html |
 | Changelog | https://tinocallarisa-web.github.io/risk-matrix-pro/changelog.html |
-| Demo video | https://youtu.be/0ps6t6t70JY |
+| Demo video | https://www.youtube.com/watch?v=0ps6t6t70JY |
 | Support email | support@tcviz.com |
 
 ## 3. What the visual does

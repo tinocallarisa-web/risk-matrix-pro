@@ -1,6 +1,6 @@
 # Risk Matrix Pro — Product Page Content
 
-**TCViz** · Video: https://youtu.be/0ps6t6t70JY
+**TCViz** · Video: https://www.youtube.com/watch?v=0ps6t6t70JY
 
 Draft for the four tabs of the product page on tcviz.com. The live page is built from
 `C:\tcviz\web\src\data.jsx` — edit that file (not `data.js`) and run `node scripts/build.js`.
@@ -91,7 +91,7 @@ management · Enterprise risk management
 Links: [Support](https://tinocallarisa-web.github.io/risk-matrix-pro/support.html) ·
 [Privacy](https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html) ·
 [Terms](https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html) ·
-[Video](https://youtu.be/0ps6t6t70JY)
+[Video](https://www.youtube.com/watch?v=0ps6t6t70JY)
 
 ---
 

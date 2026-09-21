@@ -100,7 +100,7 @@ First release.
 | Support / documentation | https://tinocallarisa-web.github.io/risk-matrix-pro/support.html |
 | Privacy policy | https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html |
 | Terms / licence | https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html |
-| Video | https://youtu.be/0ps6t6t70JY |
+| Video | https://www.youtube.com/watch?v=0ps6t6t70JY |
 
 ## Suggested categories and keywords
 

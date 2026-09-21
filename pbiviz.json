@@ -4,7 +4,7 @@
     "displayName": "Risk Matrix Pro",
     "guid": "riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A",
     "visualClassName": "Visual",
-    "version": "1.0.0.0",
+    "version": "1.0.1.0",
     "description": "Likelihood x impact risk matrix: one marker per risk on a configurable 3x3 to 7x7 grid coloured by score bands, with tooltips, cross-filtering, keyboard navigation and high contrast. Pro adds inherent-to-residual movement arrows, custom score thresholds, a risk appetite line, conditional marker colours, category shapes and a cell detail panel.",
     "supportUrl": "https://tinocallarisa-web.github.io/risk-matrix-pro/support.html",
     "privacyTermsLink": "https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html",
@@ -29,5 +29,5 @@
     "stringResources/en-US/resources.resjson",
     "stringResources/es-ES/resources.resjson"
   ],
-  "version": "1.0.0.0"
+  "version": "1.0.1.0"
 }

@@ -1,7 +1,12 @@
-Risk Matrix Pro 1.0.0.0 - GUID riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A
+Risk Matrix Pro 1.0.1.0 - GUID riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A
 New visual, first submission. Full notes: docs/CERTIFICATION-NOTES.md, branch
 "certification" of github.com/tinocallarisa-web/risk-matrix-pro (private: pbicvsupport
 and OSDC1033 invited). Sample data: docs/sample-risks.csv.
+
+RESUBMISSION after the 21/09 report. Video link now the canonical YouTube page URL
+(policy 100.3.3.3). Sample file gains the Hints and tips page. Also in 1.0.1.0: the 48
+format properties carry displayNameKey so the declared en-US/es-ES resources actually
+reach the format pane, and a new brand icon.
 
 WHAT IT DOES
 Likelihood x impact risk matrix, 3x3 to 10x10 (auto-sized), one marker per risk,

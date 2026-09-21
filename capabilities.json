@@ -166,6 +166,7 @@
             "properties": {
                 "size": {
                     "displayName": "Grid size",
+                    "displayNameKey": "Prop_GridSize",
                     "type": {
                         "enumeration": [
                             {
@@ -209,6 +210,7 @@
                 },
                 "inputScale": {
                     "displayName": "Input values",
+                    "displayNameKey": "Prop_GridInputScale",
                     "type": {
                         "enumeration": [
                             {
@@ -232,30 +234,35 @@
                 },
                 "cellGap": {
                     "displayName": "Cell gap (px)",
+                    "displayNameKey": "Prop_GridCellGap",
                     "type": {
                         "numeric": true
                     }
                 },
                 "cellRadius": {
                     "displayName": "Cell corner radius (px)",
+                    "displayNameKey": "Prop_GridCellRadius",
                     "type": {
                         "numeric": true
                     }
                 },
                 "showScore": {
                     "displayName": "Show cell score",
+                    "displayNameKey": "Prop_GridShowScore",
                     "type": {
                         "bool": true
                     }
                 },
                 "showCount": {
                     "displayName": "Show risk count",
+                    "displayNameKey": "Prop_GridShowCount",
                     "type": {
                         "bool": true
                     }
                 },
                 "textColor": {
                     "displayName": "Score and count color",
+                    "displayNameKey": "Prop_GridTextColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -266,6 +273,7 @@
                 },
                 "dataWarnings": {
                     "displayName": "Data warnings",
+                    "displayNameKey": "Prop_GridDataWarnings",
                     "type": {
                         "enumeration": [
                             {
@@ -291,6 +299,7 @@
             "properties": {
                 "lowColor": {
                     "displayName": "Low",
+                    "displayNameKey": "Prop_BandsLowColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -301,6 +310,7 @@
                 },
                 "mediumColor": {
                     "displayName": "Medium",
+                    "displayNameKey": "Prop_BandsMediumColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -311,6 +321,7 @@
                 },
                 "highColor": {
                     "displayName": "High",
+                    "displayNameKey": "Prop_BandsHighColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -321,6 +332,7 @@
                 },
                 "criticalColor": {
                     "displayName": "Critical",
+                    "displayNameKey": "Prop_BandsCriticalColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -331,24 +343,28 @@
                 },
                 "customThresholds": {
                     "displayName": "Custom thresholds (Pro)",
+                    "displayNameKey": "Prop_BandsCustomThresholds",
                     "type": {
                         "bool": true
                     }
                 },
                 "mediumFrom": {
                     "displayName": "Medium from score",
+                    "displayNameKey": "Prop_BandsMediumFrom",
                     "type": {
                         "numeric": true
                     }
                 },
                 "highFrom": {
                     "displayName": "High from score",
+                    "displayNameKey": "Prop_BandsHighFrom",
                     "type": {
                         "numeric": true
                     }
                 },
                 "criticalFrom": {
                     "displayName": "Critical from score",
+                    "displayNameKey": "Prop_BandsCriticalFrom",
                     "type": {
                         "numeric": true
                     }
@@ -361,18 +377,21 @@
             "properties": {
                 "show": {
                     "displayName": "Show appetite line",
+                    "displayNameKey": "Prop_AppetiteShow",
                     "type": {
                         "bool": true
                     }
                 },
                 "score": {
                     "displayName": "Appetite score",
+                    "displayNameKey": "Prop_AppetiteScore",
                     "type": {
                         "numeric": true
                     }
                 },
                 "color": {
                     "displayName": "Line color",
+                    "displayNameKey": "Prop_AppetiteColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -383,6 +402,7 @@
                 },
                 "width": {
                     "displayName": "Line width",
+                    "displayNameKey": "Prop_AppetiteWidth",
                     "type": {
                         "numeric": true
                     }
@@ -395,24 +415,28 @@
             "properties": {
                 "size": {
                     "displayName": "Marker size (px)",
+                    "displayNameKey": "Prop_MarkersSize",
                     "type": {
                         "numeric": true
                     }
                 },
                 "showLabels": {
                     "displayName": "Show labels",
+                    "displayNameKey": "Prop_MarkersShowLabels",
                     "type": {
                         "bool": true
                     }
                 },
                 "labelMaxChars": {
                     "displayName": "Label max characters",
+                    "displayNameKey": "Prop_MarkersLabelMaxChars",
                     "type": {
                         "numeric": true
                     }
                 },
                 "labelColor": {
                     "displayName": "Label color",
+                    "displayNameKey": "Prop_MarkersLabelColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -423,6 +447,7 @@
                 },
                 "fill": {
                     "displayName": "Marker color (fx: Pro)",
+                    "displayNameKey": "Prop_MarkersFill",
                     "type": {
                         "fill": {
                             "solid": {
@@ -433,6 +458,7 @@
                 },
                 "shapeByCategory": {
                     "displayName": "Shape by category (Pro)",
+                    "displayNameKey": "Prop_MarkersShapeByCategory",
                     "type": {
                         "bool": true
                     }
@@ -445,6 +471,7 @@
             "properties": {
                 "arrows": {
                     "displayName": "Movement arrows",
+                    "displayNameKey": "Prop_MovementArrows",
                     "type": {
                         "enumeration": [
                             {
@@ -464,6 +491,7 @@
                 },
                 "plotAt": {
                     "displayName": "Place markers at",
+                    "displayNameKey": "Prop_MovementPlotAt",
                     "type": {
                         "enumeration": [
                             {
@@ -483,6 +511,7 @@
                 },
                 "color": {
                     "displayName": "Arrow color",
+                    "displayNameKey": "Prop_MovementColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -493,12 +522,14 @@
                 },
                 "flagOffTarget": {
                     "displayName": "Flag risks above target",
+                    "displayNameKey": "Prop_MovementFlagOffTarget",
                     "type": {
                         "bool": true
                     }
                 },
                 "offTargetColor": {
                     "displayName": "Above-target ring color",
+                    "displayNameKey": "Prop_MovementOffTargetColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -515,12 +546,14 @@
             "properties": {
                 "show": {
                     "displayName": "Open panel on cell click",
+                    "displayNameKey": "Prop_DetailShow",
                     "type": {
                         "bool": true
                     }
                 },
                 "background": {
                     "displayName": "Background",
+                    "displayNameKey": "Prop_DetailBackground",
                     "type": {
                         "fill": {
                             "solid": {
@@ -531,6 +564,7 @@
                 },
                 "textColor": {
                     "displayName": "Text color",
+                    "displayNameKey": "Prop_DetailTextColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -541,6 +575,7 @@
                 },
                 "fontSize": {
                     "displayName": "Font size",
+                    "displayNameKey": "Prop_DetailFontSize",
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -555,30 +590,35 @@
             "properties": {
                 "xTitle": {
                     "displayName": "Likelihood title",
+                    "displayNameKey": "Prop_AxesXTitle",
                     "type": {
                         "text": true
                     }
                 },
                 "yTitle": {
                     "displayName": "Impact title",
+                    "displayNameKey": "Prop_AxesYTitle",
                     "type": {
                         "text": true
                     }
                 },
                 "xLabels": {
                     "displayName": "Likelihood level labels (comma separated)",
+                    "displayNameKey": "Prop_AxesXLabels",
                     "type": {
                         "text": true
                     }
                 },
                 "yLabels": {
                     "displayName": "Impact level labels (comma separated)",
+                    "displayNameKey": "Prop_AxesYLabels",
                     "type": {
                         "text": true
                     }
                 },
                 "fontFamily": {
                     "displayName": "Font",
+                    "displayNameKey": "Prop_AxesFontFamily",
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -587,6 +627,7 @@
                 },
                 "fontSize": {
                     "displayName": "Font size",
+                    "displayNameKey": "Prop_AxesFontSize",
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -595,6 +636,7 @@
                 },
                 "color": {
                     "displayName": "Color",
+                    "displayNameKey": "Prop_AxesColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -611,12 +653,14 @@
             "properties": {
                 "show": {
                     "displayName": "Show legend",
+                    "displayNameKey": "Prop_LegendShow",
                     "type": {
                         "bool": true
                     }
                 },
                 "position": {
                     "displayName": "Position",
+                    "displayNameKey": "Prop_LegendPosition",
                     "type": {
                         "enumeration": [
                             {
@@ -632,6 +676,7 @@
                 },
                 "fontFamily": {
                     "displayName": "Font",
+                    "displayNameKey": "Prop_LegendFontFamily",
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -640,6 +685,7 @@
                 },
                 "fontSize": {
                     "displayName": "Font size",
+                    "displayNameKey": "Prop_LegendFontSize",
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -648,6 +694,7 @@
                 },
                 "color": {
                     "displayName": "Text color",
+                    "displayNameKey": "Prop_LegendColor",
                     "type": {
                         "fill": {
                             "solid": {
@@ -664,6 +711,7 @@
             "properties": {
                 "fill": {
                     "displayName": "Color",
+                    "displayNameKey": "Prop_CategoryColorsFill",
                     "type": {
                         "fill": {
                             "solid": {

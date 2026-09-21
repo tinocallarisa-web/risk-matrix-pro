@@ -11,7 +11,6 @@ export default [
             ".vscode/**",
             ".tmp/**",
             "build-test.js",
-            "webpack.statistics*.html"
-        ],
+            "webpack.statistics*.html", "scripts/**"],
     },
 ];

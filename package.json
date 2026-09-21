@@ -1,7 +1,7 @@
 {
   "name": "risk-matrix-pro",
   "description": "Risk Matrix Pro - Power BI custom visual by TCViz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "default_template_value",
     "url": "default_template_value"

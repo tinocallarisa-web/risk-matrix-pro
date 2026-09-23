@@ -37,11 +37,9 @@ IVisualLicenseManager only, no own server. getAvailableServicePlans requested on
 deferred after rendering events. Plan matched as full Service ID or Plan ID, Active or
 Warning. isLicenseUnsupportedEnv / isLicenseInfoAvailable honoured: no prompt there.
 No licensing UI of our own.
-
-FREE: full matrix, bands, legend, labels, tooltips, report tooltips, selection,
-highlight, bookmarks, keyboard, high contrast, data warnings. Same data limits as Pro.
+FREE: full matrix, bands, legend, labels, tooltips, selection, highlight, bookmarks,
+keyboard, high contrast, data warnings. Same data limits as Pro.
 
 Rendering events on every path of update().
-
 Video https://www.youtube.com/watch?v=0ps6t6t70JY
-Support/privacy/terms: tinocallarisa-web.github.io/risk-matrix-pro/
+Support: tinocallarisa-web.github.io/risk-matrix-pro/

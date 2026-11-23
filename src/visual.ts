@@ -71,7 +71,7 @@ const STYLE_TOKENS: Record<string, StyleTokens> = {
                  bands: ["#B3C6A0", "#E6D48F", "#DDA472", "#C46A5C"], font: "Georgia, serif" },
     editorial: { bg: "#FFFFFF", text: "#111111", axis: "#5F5F5F", cellText: "#111111", marker: "#111111", label: "#FFFFFF", panel: "#F4F4F4",
                  series: ["#111111", "#D7263D", "#5F5F5F", "#8C1C2B", "#9E9E9E"],
-                 bands: ["#E4E4E4", "#C9C9C9", "#9C9C9C", "#D7263D"], font: "Georgia, serif" },
+                 bands: ["#C9DCC0", "#EDE0A6", "#E3B088", "#D7263D"], font: "Georgia, serif" },
     signal: { bg: "#FFFFFF", text: "#14202B", axis: "#566472", cellText: "#14202B", marker: "#14202B", label: "#FFFFFF", panel: "#F2F4F7",
               series: ["#1F4E80", "#1F7A4D", "#B7791F", "#C0392B", "#566472"],
                  bands: ["#7FC29B", "#F2D16B", "#F0995A", "#D9534F"] },
@@ -222,6 +222,8 @@ export class Visual implements IVisual {
     private estiloPedido: string | null = null;
     /** Report theme activo (plantilla por defecto): textos y ejes con la tinta del tema del informe. */
     private temaInforme = false;
+    /** Foco devuelto por programa tras un redibujado (no abre el tooltip). */
+    private reenfocando = false;
     /** Factor de tamaño del visual (0,6–1): el texto y los marcadores encogen con el visual. */
     private escala = 1;
     /** Tamaño mínimo de texto (tarjeta Accesibilidad). */
@@ -987,6 +989,8 @@ export class Visual implements IVisual {
             g.addEventListener("focus", () => {
                 this.focusedKey = r.key;
                 this.setActive(r.key);
+                // Al redibujar se devuelve el foco al marcador por programa: eso no debe abrir el tooltip (1.1).
+                if (this.reenfocando) { return; }
                 const b = g.getBoundingClientRect();
                 this.showTooltip(r, b.left + b.width / 2, b.top);
             });
@@ -1010,7 +1014,7 @@ export class Visual implements IVisual {
         const focusEl = this.markerEl(this.focusedKey);
         if (focusEl) {
             focusEl.setAttribute("tabindex", "0");
-            if (hadFocus) { focusEl.focus(); }
+            if (hadFocus) { this.reenfocando = true; focusEl.focus(); this.reenfocando = false; }
         }
 
         this.applySelectionStyles();

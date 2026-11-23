@@ -8,6 +8,15 @@
 
 ---
 
+## What's new in 1.1
+
+- **Risk list (Pro):** the risks ranked beside the matrix, with their path in the band colours.
+- **Six collection styles (Pro):** Boardroom, Ledger, Editorial, Signal, Aurora and Terrace.
+- **Report theme** (new default) and **Classic** (the 1.0 look) templates, free.
+- **Paths shown by default:** markers at the inherent position, every path drawn.
+- **Text that scales** with the visual, **Accessibility** card, **format on the canvas**,
+  **setup guide** and **12 languages**.
+
 ## Getting started
 
 1. Drop the visual on the canvas.
@@ -34,10 +43,9 @@
 - **Leave Grid size on Auto.** It matches the highest level in your data; fix it only if your scale
   goes higher than your data does.
 - **Name the levels.** Axes → level labels: `Rare, Unlikely, Possible, Likely, Almost certain`.
-- **Keep arrows on "Selected and hovered".** With more than a handful of risks, showing every path
-  at once becomes unreadable.
-- **Place markers at Residual** to show today's exposure, with the path back to the inherent position
-  on hover.
+- **Crowded matrix? Switch arrows to "Selected and hovered".** Every path is drawn by default; with
+  many risks, show a path only when you point at a risk, focus it or select it.
+- **Place markers at Residual** to show today's exposure instead of the starting point.
 - **Use the red ring as the agenda.** Risks above target are the ones a committee should discuss.
 - **Match your methodology.** Custom thresholds (Pro) set where Medium, High and Critical start; the
   appetite score draws the line above which action is required.
@@ -45,6 +53,17 @@
   them all.
 - **Watch the yellow strip while editing.** It reports risks that could not be plotted or values
   outside the scale.
+- **Take the risk list to the meeting (Pro).** Risk list → Show risk list, then Sort by *Gap to
+  target* to put the risks furthest from their target at the top. Point at a row to find its marker.
+- **Pick a style (Pro)** under Style template. Colours you set yourself stay; Classic brings back the
+  1.0 look.
+- **Small tile?** Text shrinks with the visual down to 60 % and never under 8 px. Raise
+  Accessibility → Minimum text size if your audience needs larger text.
+- **Format on the canvas.** In format mode, click a cell, a marker, an axis, the legend or the risk
+  list to format it in place.
+- **Setup guide.** While editing, the corner card ticks off the optional fields. Close it with ✕;
+  bring it back with Style template → Setup guide.
+- **Click again to clear.** A second click on the same marker or cell clears the selection.
 - **Cross-filtering a table** needs the relationship direction set to *Both* in Model view.
 
 ## Keyboard
@@ -59,7 +78,9 @@ Ctrl + Enter adds · Escape clears · Shift + F10 opens the context menu.
 | Matrix, bands, legend, labels, tooltips, selection, keyboard, high contrast | ✓ | ✓ |
 | Residual and target movement, above-target flag | — | ✓ |
 | Custom thresholds, risk appetite line | — | ✓ |
+| Report theme and Classic, scaling text, Accessibility card, 12 languages | ✓ | ✓ |
 | fx marker colours, shapes by category, cell detail panel | — | ✓ |
+| Risk list, six collection styles (new in 1.1) | — | ✓ |
 
 Without a licence, Pro settings show a "Pro preview" watermark while editing.
 

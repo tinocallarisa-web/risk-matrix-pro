@@ -1,12 +1,20 @@
 RISK MATRIX PRO — TIPS & HINTS
 TCViz · Video walkthrough: https://www.youtube.com/watch?v=0ps6t6t70JY
 
+WHAT'S NEW IN 1.1
+• Risk list (Pro): the risks ranked beside the matrix, with their path in band colours.
+• Six collection styles (Pro): Boardroom, Ledger, Editorial, Signal, Aurora, Terrace.
+• Report theme (new default) and Classic (the 1.0 look) templates, free.
+• Paths shown by default: markers at the inherent position, every path drawn.
+• Text that scales with the visual, Accessibility card, format on the canvas,
+  setup guide and 12 languages.
+
 GETTING STARTED
 1. Drop the visual on the canvas.
 2. Drag the risk ID into Risk. Short IDs (R01, R02…) read best inside the markers.
 3. Drag the likelihood into Likelihood and the impact into Impact.
 4. Optional: a Category (type, owner, status) colours the markers and builds the legend.
-5. Optional (Pro): Residual and Target likelihood and impact show where each risk is going.
+5. Optional (Pro): Residual and Target likelihood and impact show where each risk goes.
 
 FIELD WELLS
 • Risk ............................... one marker per value
@@ -17,25 +25,45 @@ FIELD WELLS
 • Tooltips ........................... up to 5 extra measures
 
 TIPS
-• One row per risk. If Power BI shows "Sum of Likelihood", set the field to Don't summarize, Maximum or Average.
+• One row per risk. If Power BI shows "Sum of Likelihood", set the field to
+  Don't summarize, Maximum or Average.
 • Leave Grid size on Auto. It matches the highest level in your data.
-• Name the levels: Axes → level labels, e.g. Rare, Unlikely, Possible, Likely, Almost certain.
-• Keep arrows on "Selected and hovered" — every path at once becomes unreadable.
-• Place markers at Residual to show today's exposure; hover a risk to see its path.
+• Name the levels: Axes → level labels, e.g. Rare, Unlikely, Possible, Likely,
+  Almost certain.
+• Crowded matrix? Switch Movement arrows to "Selected and hovered": a path then
+  appears only when you point at a risk, focus it or select it.
+• Place markers at Residual to show today's exposure instead of the starting point.
 • Use the red ring as the agenda: those risks are still above their target.
-• Custom thresholds (Pro) set where Medium, High and Critical start; the appetite score draws the line above which action is required.
-• Busy cell? "+n" counts the markers that do not fit. The cell detail panel (Pro) lists them all.
-• While editing, the yellow strip reports risks that could not be plotted or values outside the scale.
+• Custom thresholds (Pro) set where Medium, High and Critical start; the appetite
+  score draws the line above which action is required.
+• Busy cell? "+n" counts the markers that do not fit. The cell detail panel (Pro)
+  lists them all.
+• Take the risk list to the meeting (Pro): Risk list → Show risk list, then Sort by
+  Gap to target. Point at a row to find its marker.
+• Pick a style (Pro) under Style template. Colours you set yourself stay; Classic
+  brings back the 1.0 look.
+• Small tile? Text shrinks down to 60 % and never under 8 px. Raise
+  Accessibility → Minimum text size if your audience needs larger text.
+• Format on the canvas: in format mode, click a cell, a marker, an axis, the legend
+  or the risk list to format it in place.
+• Setup guide: while editing, the corner card ticks off the optional fields.
+  Close it with ✕; bring it back with Style template → Setup guide.
+• A second click on the same marker or cell clears the selection.
+• While editing, the yellow strip reports risks that could not be plotted or
+  values outside the scale.
 • Cross-filtering a table needs the relationship direction set to Both in Model view.
 
 KEYBOARD
-Tab enters the matrix · arrows move between risks · Home / End · Page Up / Page Down · Enter selects · Ctrl + Enter adds · Escape clears · Shift + F10 opens the context menu.
+Tab enters the matrix · arrows move between risks · Home / End · Page Up / Page Down
+Enter selects · Ctrl + Enter adds · Escape clears · Shift + F10 opens the context menu
 
 FREE VS PRO
-• Matrix, bands, legend, labels, tooltips, selection, keyboard, high contrast ..... Free and Pro
-• Residual and target movement, above-target flag ................................ Pro
-• Custom thresholds, risk appetite line ............................................ Pro
-• fx marker colours, shapes by category, cell detail panel ......................... Pro
+• Matrix, bands, legend, labels, tooltips, selection, keyboard ...... Free and Pro
+• Report theme and Classic, scaling text, Accessibility, 12 languages  Free and Pro
+• Residual and target movement, above-target flag ................... Pro
+• Custom thresholds, risk appetite line ............................. Pro
+• fx marker colours, shapes by category, cell detail panel .......... Pro
+• Risk list, six collection styles (new in 1.1) ..................... Pro
 Without a licence, Pro settings show a "Pro preview" watermark while editing.
 
 LINKS

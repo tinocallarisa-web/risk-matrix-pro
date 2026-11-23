@@ -20,3 +20,4 @@ Thumbs.db
 _releases/
 
 tools/simulador/capturas/
+tools/simulador/__pycache__/

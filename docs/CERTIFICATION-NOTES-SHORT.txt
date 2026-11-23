@@ -1,45 +1,46 @@
-Risk Matrix Pro 1.0.1.0 - GUID riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A
-New visual, first submission. Full notes: docs/CERTIFICATION-NOTES.md, branch
+Risk Matrix Pro 1.1.0.0 - GUID riskMatrixProEA50FD0540E0418BA9354F645C4AAA7A
+Update. Full notes: docs/CERTIFICATION-NOTES.md, branch
 "certification" of github.com/tinocallarisa-web/risk-matrix-pro (private: pbicvsupport
-and OSDC1033 invited). Sample data: docs/sample-risks.csv.
+and OSDC1033 invited). Sample data: docs/sample-risks.csv. Changes: CHANGELOG.md.
 
-RESUBMISSION after the 21/09 report. Video link now the canonical YouTube page URL
-(policy 100.3.3.3). Sample file gains the Hints and tips page. Also in 1.0.1.0: the 48
-format properties carry displayNameKey so the declared en-US/es-ES resources actually
-reach the format pane, and a new brand icon.
+WHAT CHANGED IN 1.1.0.0
+New Pro: risk list beside the matrix; six collection styles (Style template).
+New free: Report theme (default) and Classic templates; text that scales with the
+visual (60-100 %, never under 8 px); Accessibility card; on-object formatting; setup
+guide; 12 languages; dynamic format strings. Defaults: markers at inherent, all
+paths drawn. Second click on a cell or marker clears the selection.
 
-WHAT IT DOES
-Likelihood x impact risk matrix, 3x3 to 10x10 (auto-sized), one marker per risk,
-cells coloured by score band.
+FREE vs PRO
+Free: matrix, bands, markers, legend, tooltips, selection, keyboard, all new free
+items. Pro: residual/target paths, above-target flag, custom thresholds, appetite
+line, fx colours, category shapes, detail panel, risk list, six styles. Same limits.
 
 TEST - PRO (node build-test.js: isPro true, GUID _test)
-1. Risk=RiskID, Category, Likelihood, Impact: 5x5 matrix, legend, markers.
-2. Hover a marker: tooltip. Click: other visuals filter. Ctrl+click adds. Click a
-   cell or legend entry: selects its risks. Click empty space: clears.
-3. Add Residual and Target likelihood/impact. Hover a risk: path inherent ->
-   residual (solid) -> target (dashed). Red dashed ring = above target.
-4. Risk appetite on, Custom thresholds on, Cell detail panel on (click a cell),
-   Shape by category on, Marker color fx rule: all apply. No watermark.
-5. Tab into the matrix, arrows move, Enter selects, Esc clears, Shift+F10 menu.
+1. Risk=RiskID, Category, Likelihood, Impact, Residual, Target: 5x5, every path
+   drawn. Click a marker: others filter; click again: clears.
+2. Risk list on: ranked rows; Sort by Gap to target; hover a row lights its marker,
+   click selects. Style template = Aurora: style applied. No watermark.
+3. Keyboard: Tab, arrows, Enter, Esc, Shift+F10.
 
-TEST - FREE (no plan)
-6. Same fields, edit mode: each Pro setting renders under a "Pro preview"
+TEST - FREE (node build-test.js --free, no plan)
+4. Edit mode: risk list or a style (e.g. Boardroom) renders under the "Pro preview"
    watermark; Power BI shows notifyFeatureBlocked, then notifyLicenseRequired.
-7. Reading view: free result (inherent positions, automatic bands), no watermark.
-8. Free features never carry a watermark.
+5. Reading view: no risk list, Report theme instead of the style, no watermark.
+
+CHECKS FOR BOTH
+6. Accessibility > High contrast = On: system colours, bands as border thickness.
+7. Shrink below 760x480: text and markers shrink together, none removed.
+8. Report language Spanish or German: format pane and drawn texts translated.
 
 PRIVACY
-No network calls, telemetry or storage. privileges is []. Nothing persisted except
-standard format settings. SVG built with createElementNS; no innerHTML.
+No network, telemetry or storage; privileges []. Only persistProperties: closing
+the setup guide sets style.guide=false. No innerHTML.
 
 LICENSING
 IVisualLicenseManager only, no own server. getAvailableServicePlans requested once,
-deferred after rendering events. Plan matched as full Service ID or Plan ID, Active or
-Warning. isLicenseUnsupportedEnv / isLicenseInfoAvailable honoured: no prompt there.
-No licensing UI of our own.
-FREE: full matrix, bands, legend, labels, tooltips, selection, highlight, bookmarks,
-keyboard, high contrast, data warnings. Same data limits as Pro.
+deferred after rendering events. isLicenseUnsupportedEnv / isLicenseInfoAvailable
+honoured. No licensing UI of our own.
 
 Rendering events on every path of update().
 Video https://www.youtube.com/watch?v=0ps6t6t70JY
-Support: tinocallarisa-web.github.io/risk-matrix-pro/
+Support: https://tinocallarisa-web.github.io/risk-matrix-pro/

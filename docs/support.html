@@ -54,19 +54,42 @@
 
 <header>
   <h1>Support &amp; Documentation</h1>
-  <p class="sub">Risk Matrix Pro — a Power BI custom visual by TCViz · Version 1.0.0.0 · Last updated: 16 September 2026</p>
+  <p class="sub">Risk Matrix Pro — a Power BI custom visual by TCViz · Version 1.1.0.0 · Last updated: 23 November 2026</p>
 </header>
 
 <div class="search" role="search">
   <label for="q" class="search-count" style="flex-basis:100%">Search this page</label>
-  <input id="q" type="search" placeholder="e.g. residual, appetite, grid size, keyboard…" aria-describedby="qcount">
+  <input id="q" type="search" placeholder="e.g. residual, risk list, style, keyboard…" aria-describedby="qcount">
   <span id="qcount" class="search-count" aria-live="polite"></span>
 </div>
 
 <section data-block>
 <p>Risk Matrix Pro places every risk of a register on a likelihood × impact grid, coloured by score
 band. Pro adds where each risk is going: its residual position after controls, its target, how far
-it still is from that target, and your risk appetite drawn across the matrix.</p>
+it still is from that target, a ranked risk list beside the matrix, your risk appetite drawn across
+the matrix and the six collection styles.</p>
+</section>
+
+<section data-block>
+<h2>What's new in 1.1</h2>
+<ul>
+  <li><strong>Risk list</strong> <span class="pro">Pro</span> — the risks ranked beside the matrix by
+      inherent score, residual score or gap to target, each with its path in the band colours. See
+      <em>Risk list</em> below.</li>
+  <li><strong>Six collection styles</strong> <span class="pro">Pro</span> — Boardroom, Ledger,
+      Editorial, Signal, Aurora and Terrace, each with its own version of the four band colours.</li>
+  <li><strong>Report theme and Classic templates</strong> (free) — Report theme, the new default, takes
+      text and axis colours from the report theme; Classic is the look of 1.0.</li>
+  <li><strong>Movement shown by default</strong> — with residual or target fields, markers now sit at
+      the inherent position and every risk's path is drawn. Reports that never changed these settings
+      will show the paths.</li>
+  <li><strong>Text that scales with the visual</strong>, an <strong>Accessibility</strong> card,
+      <strong>format on the canvas</strong>, a <strong>setup guide</strong> and <strong>12
+      languages</strong>.</li>
+  <li><strong>One marker size</strong> for every cell, marker labels that switch between black and
+      white, and a second click on the same cell or marker clears the selection.</li>
+</ul>
+<p>Full list in the <a href="changelog.html">changelog</a>.</p>
 </section>
 
 <section data-block>
@@ -142,19 +165,55 @@ High and Critical start, to match your own methodology.</p>
   <li><strong>Residual</strong> — the risk with today's controls.</li>
   <li><strong>Target</strong> — where you aim to be once planned actions are done.</li>
 </ul>
-<p>By default the matrix stays clean: point at a risk, focus it with the keyboard or select it, and
-its path appears — a solid arrow for what has been achieved, a dashed arrow for what remains, a small
-circle for the other positions and a diamond for the target. Set <strong>Movement arrows → All
-risks</strong> to show every path at once.</p>
+<p>By default (since 1.1) markers sit at the <strong>inherent position</strong> and every risk's path
+is drawn (<strong>Movement arrows → All risks</strong>): a solid arrow for what has been achieved, a
+dashed arrow for what remains, a small circle for the other positions and a diamond for the target.
+On a crowded matrix, set <strong>Movement arrows → Selected and hovered risks</strong>: a path then
+appears only when you point at a risk, focus it with the keyboard or select it. <strong>Place markers
+at</strong> moves the markers to the residual or target position.</p>
 <p>A risk whose current score (residual, or inherent if there is none) is still above its target
 score carries a <strong>dashed red ring</strong>. The tooltip and the cell detail panel say whether
 the target is reached.</p>
 </section>
 
 <section data-block>
+<h2>Risk list <span class="pro">Pro</span></h2>
+<p>Turn on <strong>Risk list → Show risk list</strong> to rank the risks in a column beside the
+matrix — the list a committee takes to the meeting.</p>
+<ul>
+  <li>Each row shows the risk name and its path as score chips coloured by band: inherent →
+      residual → target. A <strong>red dot</strong> marks a risk still above its target (when
+      <strong>Flag risks above target</strong> is on).</li>
+  <li><strong>Sort by</strong>: <em>Inherent score</em> (default), <em>Residual score</em> (the current
+      score: residual, or inherent if there is none) or <em>Gap to target</em> (how far the current
+      score is above the target; risks without a target go last).</li>
+  <li><strong>Width (%)</strong>: 20 to 50 % of the visual (34 % by default).</li>
+  <li>Point at a row, or focus it with Tab, to light up its marker; click a row to select the risk
+      (Ctrl + click adds).</li>
+</ul>
+</section>
+
+<section data-block>
+<h2>Style templates</h2>
+<p><strong>Style template → Template</strong> sets the overall look:</p>
+<div class="tablewrap"><table>
+  <tr><th>Template</th><th>Tier</th><th>What it does</th></tr>
+  <tr><td>Report theme</td><td>Free (default)</td><td>Text and axis colours from the report theme.</td></tr>
+  <tr><td>Classic</td><td>Free</td><td>The look of version 1.0.</td></tr>
+  <tr><td>Boardroom, Ledger, Editorial, Signal, Aurora, Terrace</td><td><span class="pro">Pro</span></td><td>The same styles as the rest of the TCViz visuals: background, fonts, text colours, category colours and the style's own version of the four band colours (Low, Medium, High, Critical).</td></tr>
+</table></div>
+<p>Colours you set yourself in the format pane (band, axis, legend, label colours…) always win over the
+style. Without a licence, a collection style is drawn while you edit, under the <strong>Pro
+preview</strong> watermark; reading view shows Report theme. High contrast always takes precedence
+over the style.</p>
+</section>
+
+<section data-block>
 <h2>Format pane</h2>
 <div class="tablewrap"><table>
   <tr><th>Card</th><th>Setting</th><th>What it does</th></tr>
+  <tr><td rowspan="2">Style template</td><td>Template</td><td>Report theme (default), Classic, or one of the six collection styles <span class="pro">Pro</span>.</td></tr>
+  <tr><td>Setup guide</td><td>Shows the setup guide while you edit. See <em>Setup guide</em> below.</td></tr>
   <tr><td rowspan="5">Grid</td><td>Grid size</td><td>Auto (from data), or 3 × 3 to 10 × 10.</td></tr>
   <tr><td>Input values</td><td>Auto, levels, fraction or percent.</td></tr>
   <tr><td>Cell gap / corner radius</td><td>Spacing and rounding of the cells.</td></tr>
@@ -163,29 +222,67 @@ the target is reached.</p>
   <tr><td rowspan="2">Score bands</td><td>Low / Medium / High / Critical</td><td>Colour of each band.</td></tr>
   <tr><td>Custom thresholds <span class="pro">Pro</span></td><td>Score where each band starts.</td></tr>
   <tr><td>Risk appetite <span class="pro">Pro</span></td><td>Appetite score, line colour and width</td><td>A stepped line separating cells with a score up to the appetite from the rest.</td></tr>
-  <tr><td rowspan="4">Markers</td><td>Marker size</td><td>Markers shrink to fit a busy cell; beyond that a <strong>+n</strong> badge shows the rest.</td></tr>
-  <tr><td>Show labels / max characters / label color</td><td>Text inside the marker, fitted to its size.</td></tr>
+  <tr><td rowspan="4">Markers</td><td>Marker size</td><td>8 to 60 px. All markers share one size — the one that fits the busiest cell — and shrink with the visual; beyond the minimum a <strong>+n</strong> badge shows the rest.</td></tr>
+  <tr><td>Show labels / max characters / label color</td><td>Text inside the marker, fitted to its size. Labels switch between black and white to contrast with the marker unless you set a label colour.</td></tr>
   <tr><td>Marker color (fx: Pro)</td><td>Colour without a Category. With <strong>fx</strong> <span class="pro">Pro</span>, a rule or field value per risk.</td></tr>
   <tr><td>Shape by category <span class="pro">Pro</span></td><td>Circle, square, diamond and triangle per category.</td></tr>
   <tr><td>Category colors</td><td>One colour per category</td><td>Shown when a Category field is present.</td></tr>
-  <tr><td rowspan="4">Movement and target <span class="pro">Pro</span></td><td>Movement arrows</td><td>Selected and hovered risks (default), all risks, or off.</td></tr>
-  <tr><td>Place markers at</td><td>Inherent, residual or target position.</td></tr>
+  <tr><td rowspan="4">Movement and target <span class="pro">Pro</span></td><td>Movement arrows</td><td>All risks (default), selected and hovered risks, or off.</td></tr>
+  <tr><td>Place markers at</td><td>Inherent (default), residual or target position.</td></tr>
   <tr><td>Arrow color</td><td>Colour of arrows and position symbols.</td></tr>
   <tr><td>Flag risks above target / ring color</td><td>Dashed ring on risks that have not reached their target.</td></tr>
+  <tr><td rowspan="3">Risk list <span class="pro">Pro</span></td><td>Show risk list</td><td>Ranked list of risks beside the matrix.</td></tr>
+  <tr><td>Sort by</td><td>Inherent score (default), residual score or gap to target.</td></tr>
+  <tr><td>Width (%)</td><td>20 to 50 % of the visual.</td></tr>
   <tr><td>Cell detail panel <span class="pro">Pro</span></td><td>Open on cell click, background, text color, font size</td><td>Side panel listing every risk in the clicked cell.</td></tr>
   <tr><td>Axes</td><td>Titles, level labels, font, size, color</td><td>Level labels are comma separated: <code>Rare, Unlikely, Possible, Likely, Almost certain</code>.</td></tr>
   <tr><td>Legend</td><td>Show, position, font, size, text color</td><td>Click a legend entry to select all its risks.</td></tr>
+  <tr><td rowspan="4">Accessibility</td><td>High contrast</td><td>Automatic (Windows setting), the default, or On to force high contrast in any report.</td></tr>
+  <tr><td>Focus color</td><td>Colour of the keyboard focus ring.</td></tr>
+  <tr><td>Focus width</td><td>Thickness of the focus ring, 1 to 6 px.</td></tr>
+  <tr><td>Minimum text size</td><td>No text is drawn smaller than this (6 to 24 px, 8 by default).</td></tr>
 </table></div>
 </section>
 
 <section data-block>
 <h2>Free, Pro and the Pro preview</h2>
+<div class="tablewrap"><table>
+  <tr><th>Free</th><th>Pro adds</th></tr>
+  <tr><td>
+    <ul>
+      <li>Matrix from 3 × 3 to 10 × 10, auto-sized from the data</li>
+      <li>Automatic score bands with your own colours</li>
+      <li>One marker per risk, category colours, legend, axes and level labels</li>
+      <li>Tooltips and report page tooltips</li>
+      <li>Selection, cross-filtering, highlighting and bookmarks</li>
+      <li>Keyboard navigation, screen reader labels, Accessibility card</li>
+      <li>Report theme and Classic templates</li>
+      <li>Text that scales with the visual</li>
+      <li>Format on the canvas and setup guide</li>
+      <li>12 languages and dynamic format strings</li>
+      <li>Up to 1,000 risks and 5 tooltip measures</li>
+    </ul>
+  </td><td>
+    <ul>
+      <li>Residual and target positions with movement arrows</li>
+      <li>Flag for risks above their target</li>
+      <li>Custom score thresholds</li>
+      <li>Risk appetite line</li>
+      <li>Conditional marker colours (fx)</li>
+      <li>Marker shapes by category</li>
+      <li>Cell detail panel</li>
+      <li><strong>Risk list</strong> (new in 1.1)</li>
+      <li><strong>The six collection styles</strong> (new in 1.1)</li>
+    </ul>
+  </td></tr>
+</table></div>
 <p>Paid settings and field wells are marked <strong>(Pro)</strong> in Power BI. Without a licence:</p>
 <ul>
   <li><strong>While you edit a report</strong>, Pro capabilities you use are shown working under a
       <strong>Pro preview</strong> watermark, and Power BI shows how to get a licence.</li>
   <li><strong>In reading view and published reports</strong>, the free result is shown: inherent
-      positions, automatic bands, no appetite line, no movement, no detail panel. No watermark.</li>
+      positions, automatic bands, Report theme instead of a collection style, no appetite line, no movement,
+      no risk list, no detail panel. No watermark.</li>
   <li>Where Power BI cannot check licences (Publish to Web, embedding, PDF/PowerPoint export) the free
       result is shown, even for Pro customers.</li>
 </ul>
@@ -194,13 +291,17 @@ the target is reached.</p>
 <section data-block>
 <h2>Interaction</h2>
 <ul>
-  <li><strong>Click a marker</strong> — selects the risk and filters the rest of the page.</li>
+  <li><strong>Click a marker</strong> — selects the risk and filters the rest of the page. Click it
+      again to clear the selection.</li>
   <li><strong>Ctrl / Cmd + click</strong> — adds risks to the selection.</li>
-  <li><strong>Click a cell</strong> — selects every risk in it (and opens the detail panel in Pro).</li>
+  <li><strong>Click a cell</strong> — selects every risk in it (and opens the detail panel in Pro).
+      The selected cell gets a border and the other cells dim; click the same cell again to clear.</li>
+  <li><strong>Click a row of the risk list</strong> <span class="pro">Pro</span> — selects that risk.</li>
   <li><strong>Click a legend entry</strong> — selects every risk in that category.</li>
   <li><strong>Click empty space</strong> — clears the selection.</li>
   <li><strong>Right click</strong> — the standard Power BI menu (Include, Exclude, Drill through).</li>
   <li>Filters from other visuals dim the risks that do not match instead of hiding them.</li>
+  <li>Interactions follow the report setting; in format mode a click never filters the page.</li>
 </ul>
 </section>
 
@@ -214,8 +315,43 @@ the target is reached.</p>
   <li><strong>Screen readers</strong> — each risk announces its name, category, likelihood, impact,
       score, band and, in Pro, residual score and whether the target is reached.</li>
   <li><strong>High contrast</strong> — system colours only; the band is encoded as border thickness
-      instead of fill, and the appetite line becomes dashed.</li>
+      instead of fill, and the appetite line becomes dashed. <strong>Accessibility → High
+      contrast</strong> follows Windows (Automatic) or can be forced <strong>On</strong>.</li>
+  <li><strong>Focus ring</strong> — colour and width under <strong>Accessibility → Focus color /
+      Focus width</strong>.</li>
+  <li><strong>Minimum text size</strong> — no text is drawn smaller than this, even when the visual
+      shrinks.</li>
 </ul>
+</section>
+
+<section data-block>
+<h2>Text that scales with the visual</h2>
+<p>At report size (760 × 480 px or larger) text and markers use the sizes you set. Below that, axes,
+cell scores, legend, labels, the detail panel, the risk list and the markers shrink together, down to
+60 % and never under 8 px (or the <strong>Minimum text size</strong>, if higher). No label is removed
+to make room.</p>
+</section>
+
+<section data-block>
+<h2>Format on the canvas</h2>
+<p>In format mode, click the cells, the markers, an axis, the legend or the risk list to format them
+where they are (on-object formatting). A click in format mode never filters the page.</p>
+</section>
+
+<section data-block>
+<h2>Setup guide</h2>
+<p>While you edit, a card in the corner lists the optional fields — Category, Residual likelihood +
+impact, Target likelihood + impact, Tooltips — with a tick when each is in place, and the style
+templates. Close it with ✕; turn it back on with <strong>Style template → Setup guide</strong>. It
+never shows in reading view or format mode, and it is hidden on tiles smaller than 420 × 280 px.</p>
+</section>
+
+<section data-block>
+<h2>Languages</h2>
+<p>The format pane, the field wells and every text drawn by the visual follow the report language:
+English, Spanish, Portuguese (Brazil and Portugal), French, German, Italian, Dutch, Polish, Japanese,
+Chinese (Simplified) and Korean. Tooltips and the detail panel use the format string of each row
+(dynamic format strings), in the report language.</p>
 </section>
 
 <section data-block>
@@ -245,8 +381,31 @@ whole percentages. Set <strong>Grid → Input values</strong> explicitly.</p></d
 or set the field's summarisation to <em>Don't summarize</em>, <em>Maximum</em> or <em>Average</em>.</p></details>
 
 <details><summary>No arrows appear</summary>
-<p>Arrows need both residual (or both target) fields, and by default they only show for the risk you
-point at or select. Check <strong>Movement and target → Movement arrows</strong>.</p></details>
+<p>Arrows need both residual (or both target) fields and a Pro licence (or the Pro preview while
+editing). Check that <strong>Movement and target → Movement arrows</strong> is not set to Off.</p></details>
+
+<details><summary>Why do all paths show now?</summary>
+<p>Since 1.1 the default is <strong>Movement arrows → All risks</strong> with markers at the
+<strong>inherent position</strong>, so every risk's journey is visible without pointing at it. Reports
+that never changed these settings show the paths after the update. To get the 1.0 behaviour back, set
+<strong>Movement arrows → Selected and hovered risks</strong> and <strong>Place markers at → Residual
+position</strong>.</p></details>
+
+<details><summary>Can I keep the classic colours?</summary>
+<p>Yes. Set <strong>Style template → Template → Classic</strong> for the look of 1.0. Band colours you
+already picked under <strong>Score bands</strong> are kept with any template.</p></details>
+
+<details><summary>Where is the risk list?</summary>
+<p>Under <strong>Risk list → Show risk list</strong> (Pro). It is off by default. Without a licence it
+is shown only while you edit, under the Pro preview watermark.</p></details>
+
+<details><summary>The text looks smaller than I set it</summary>
+<p>Below report size (760 × 480 px) text shrinks with the visual, down to 60 % and never under 8 px.
+Make the visual larger, or raise <strong>Accessibility → Minimum text size</strong>.</p></details>
+
+<details><summary>I chose a style but reading view shows something else</summary>
+<p>The six collection styles are Pro. Without a licence they are previewed while you edit and reading
+view shows Report theme. High contrast also replaces the style.</p></details>
 
 <details><summary>Labels inside the markers are cut short</summary>
 <p>Labels are fitted to the marker. Use short IDs in <strong>Risk</strong>, increase
@@ -268,6 +427,8 @@ reference.</p></details>
 <ul>
   <li>Up to 1,000 risks and 5 tooltip measures.</li>
   <li>Grid from 3 × 3 to 10 × 10.</li>
+  <li>The risk list takes 20 to 50 % of the width and lists every loaded risk.</li>
+  <li>The setup guide is hidden on tiles smaller than 420 × 280 px.</li>
   <li>When a cell holds more markers than fit at the minimum size, a <strong>+n</strong> badge counts the rest; the detail panel <span class="pro">Pro</span> lists them all.</li>
   <li>Scores use levels (1 to grid size). Fractions and percentages are converted to levels first, so two risks at 0.41 and 0.59 on a 5 × 5 grid share a cell.</li>
 </ul>

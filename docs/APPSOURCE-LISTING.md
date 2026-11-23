@@ -1,4 +1,4 @@
-# AppSource Listing — Risk Matrix Pro
+# AppSource Listing — Risk Matrix Pro v1.1.0.0
 
 Copy ready to paste into Partner Center, English only. **The marketplace description is the
 documentation most people read** — update it on every release.
@@ -20,7 +20,7 @@ Risk Matrix Pro
 ## Search results summary
 
 ```
-Risk matrix for Power BI: likelihood x impact, residual and target risk, appetite line.
+Risk matrix for Power BI: likelihood x impact, residual and target risk, ranked risk list.
 ```
 
 ---
@@ -28,54 +28,53 @@ Risk matrix for Power BI: likelihood x impact, residual and target risk, appetit
 ## Description
 
 ```
-A risk register in a table tells you what the risks are. A risk matrix tells you where they are — and Risk Matrix Pro also shows where they are going.
+A risk register in a table tells you what the risks are. It does not tell the committee where they are, where they are going or which ones to discuss first. Risk Matrix Pro does.
 
-Every risk becomes a marker on a likelihood × impact grid, coloured by score band. Point at a risk and its whole path appears: the inherent position, the residual position after controls, and the target still to reach. Risks that have not reached their target carry a red ring, so the ones that need attention stand out before anyone reads a number.
+Every risk becomes a marker on a likelihood × impact grid, coloured by score band. Add residual and target positions and each risk shows its whole path: inherent, residual after controls, and the target still to reach. Risks above their target carry a red ring, and the risk list beside the matrix ranks them for the meeting.
 
 Built for risk registers in internal audit, compliance, cybersecurity, health and safety, projects and enterprise risk management.
 
 A MATRIX THAT FITS YOUR DATA
 
-• Grid from 3 × 3 to 10 × 10, sized automatically from the highest level in your data
+• Grid from 3 × 3 to 10 × 10, sized from the highest level in your data
 • Likelihood and impact as levels (1–5), probabilities (0–1) or percentages (0–100)
 • Automatic Low / Medium / High / Critical bands with your own colours
-• One marker per risk, shrinking to fit busy cells, with a +n badge when a cell is full
+• One marker per risk, one size for all, with a +n badge when a cell is full
 • Category colours and a clickable legend
 • Axis titles and level labels: Rare, Unlikely, Possible, Likely, Almost certain
+• Report theme or Classic look; text that shrinks with the visual, never under 8 px
 
-INTEGRATED WITH POWER BI
+NATIVE INTEGRATION
 
 • Tooltips with likelihood, impact, score and band, plus up to five extra measures in their model format
-• Report page tooltips
-• Click a risk, a whole cell or a legend entry to cross-filter the report; Ctrl + click to add
+• Click a risk, a cell or a legend entry to cross-filter; click again to clear
 • Filters from other visuals dim the risks that do not match
-• Bookmarks restore the selection
-• Data warnings while editing: risks with no likelihood or impact, values outside the scale, residual or target fields missing their pair
+• Bookmarks restore the selection; report page tooltips
+• Data warnings while editing: risks with no likelihood or impact, values outside the scale
+• Format on the canvas, a setup guide while you edit, and 12 languages
 
 ACCESSIBLE
 
-• Keyboard navigation: arrow keys move to the nearest risk, Enter selects, Escape clears, Shift + F10 opens the context menu
-• Screen reader labels for every risk
-• High contrast mode: system colours, bands encoded as border thickness
+• Keyboard navigation and screen reader labels for every risk
+• High contrast, automatic or forced on; focus colour and width; minimum text size
 
 PRO
 
-• Residual and target positions: inherent → residual → target, shown for the risk you point at, focus or select — or for all risks at once
+• Risk list (new): risks ranked by inherent score, residual score or gap to target, each with its path in band colours
+• Six collection styles (new): Boardroom, Ledger, Editorial, Signal, Aurora and Terrace, each with its own band colours
+• Residual and target positions with movement arrows, for every risk or only the one you point at
 • A red ring on every risk still above its target score
-• Place markers at the inherent, residual or target position
-• Custom score thresholds, to match your own methodology
-• Risk appetite line across the matrix
-• Conditional marker colours with fx rules
-• Marker shapes by category — readable in black and white
+• Custom score thresholds and a risk appetite line
+• Conditional marker colours with fx rules and marker shapes by category
 • Cell detail panel: click a cell to list every risk inside it
 
 FREE AND PRO
 
-The Free tier is a complete, usable risk matrix with the same data limits as Pro: up to 1,000 risks. While you edit a report without a licence, Pro features can be previewed under a "Pro preview" watermark, so you can see exactly what you would get. Reading view shows the free result.
+The Free tier is a complete risk matrix with the same data limits as Pro: up to 1,000 risks. While you edit without a licence, Pro features are previewed under a "Pro preview" watermark. Reading view shows the free result.
 
 PRIVACY
 
-The visual makes no network requests of any kind: no analytics, no telemetry, no external scripts. Your data never leaves the report. Licences are checked through Microsoft's own licensing API.
+No network requests: no analytics, no telemetry, no external scripts. Licences are checked through Microsoft's licensing API.
 
 GETTING STARTED
 
@@ -86,9 +85,9 @@ GETTING STARTED
 Documentation, video and sample data: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
 Support: support@tcviz.com
 
-WHAT'S NEW IN 1.0.0.0
+WHAT'S NEW IN 1.1.0.0
 
-First release.
+Risk list and the six collection styles (Pro). Paths shown by default, Report theme and Classic templates, scaling text, Accessibility card, format on the canvas, setup guide and 12 languages.
 ```
 
 ---
@@ -115,4 +114,4 @@ First release.
 |---|---|
 | Plan ID | `risk-matrix-pro-tcviz` — Service ID `tino_callarisa.risk-matrix-pro.risk-matrix-pro-tcviz` (verified 2026-09-16), matched by `PLAN_ID` in `src/visual.ts` |
 | Plan name | Risk Matrix Pro |
-| Plan description | Unlocks residual and target movement, above-target flag, custom thresholds, risk appetite line, fx marker colours, shapes by category and the cell detail panel. |
+| Plan description | Unlocks residual and target movement, above-target flag, custom thresholds, risk appetite line, fx marker colours, shapes by category, the cell detail panel, the risk list and the six collection styles. |

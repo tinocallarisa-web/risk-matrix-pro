@@ -2,9 +2,10 @@
 
 A Power BI custom visual that places every risk of a register on a likelihood × impact grid — and,
 in Pro, shows where each risk is going: residual position after controls, target, and how far it
-still is from that target.
+still is from that target, with a ranked risk list beside the matrix and the six TCViz collection
+styles.
 
-![Version](https://img.shields.io/badge/version-1.0.0.0-C96442)
+![Version](https://img.shields.io/badge/version-1.1.0.0-C96442)
 ![API](https://img.shields.io/badge/Power%20BI%20API-5.11.1-B05730)
 
 ▶ [Video walkthrough](https://www.youtube.com/watch?v=0ps6t6t70JY)
@@ -30,11 +31,16 @@ itself from the data (3 × 3 to 10 × 10) unless you choose a size.
 
 **Free** renders a complete matrix: automatic score bands, category colours and legend, axis and level
 labels, tooltips and report tooltips, selection and cross-filtering, bookmarks, keyboard navigation,
-screen reader labels, high contrast and data warnings.
+screen reader labels, high contrast and data warnings. Since 1.1 also: Report theme and Classic
+templates, text that scales with the visual, an Accessibility card (high contrast Automatic/On, focus
+colour and width, minimum text size), format on the canvas, a setup guide, 12 languages and dynamic
+format strings.
 
 **Pro** adds residual and target positions with movement arrows, a flag for risks above target,
-custom score thresholds, the risk appetite line, conditional marker colours, shapes by category and
-the cell detail panel.
+custom score thresholds, the risk appetite line, conditional marker colours, shapes by category,
+the cell detail panel and, new in 1.1, the **risk list** (sorted by inherent score, residual score or
+gap to target) and the **six collection styles** (Boardroom, Ledger, Editorial, Signal, Aurora,
+Terrace).
 
 The data limits are the same in both tiers. See the [terms](https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html)
 for the full breakdown.

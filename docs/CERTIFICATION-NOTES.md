@@ -55,7 +55,7 @@ deferred after rendering events. isLicenseUnsupportedEnv / isLicenseInfoAvailabl
 honoured. No licensing UI of our own.
 
 Rendering events on every path of update().
-Video https://www.youtube.com/watch?v=0ps6t6t70JY
+Video https://www.youtube.com/watch?v=sDFYPunjZ-M
 Support: https://tinocallarisa-web.github.io/risk-matrix-pro/
 ```
 
@@ -82,7 +82,7 @@ Support: https://tinocallarisa-web.github.io/risk-matrix-pro/
 | Privacy policy | https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html |
 | Terms &amp; licence | https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html |
 | Changelog | https://tinocallarisa-web.github.io/risk-matrix-pro/changelog.html |
-| Demo video | https://www.youtube.com/watch?v=0ps6t6t70JY |
+| Demo video | https://www.youtube.com/watch?v=sDFYPunjZ-M |
 | Support email | support@tcviz.com |
 
 ## 3. What the visual does

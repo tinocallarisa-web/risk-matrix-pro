@@ -111,4 +111,4 @@ Paste the canonical URL (https://www.youtube.com/watch?v=…) — never a short 
 100.3.3.3) — in Partner Center (Offer listing → Videos). In the repo it goes in docs/APPSOURCE-LISTING.md,
 docs/CERTIFICATION-NOTES-SHORT.txt, support.html and the web (tcviz-web src/data.jsx).
 1.0 video: https://www.youtube.com/watch?v=0ps6t6t70JY
-1.1 video: pending upload (23-11-2026).
+1.1 video: https://www.youtube.com/watch?v=sDFYPunjZ-M (uploaded 23-11-2026).

@@ -99,7 +99,7 @@ Risk list and the six collection styles (Pro). Paths shown by default, Report th
 | Support / documentation | https://tinocallarisa-web.github.io/risk-matrix-pro/support.html |
 | Privacy policy | https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html |
 | Terms / licence | https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html |
-| Video | https://www.youtube.com/watch?v=0ps6t6t70JY |
+| Video | https://www.youtube.com/watch?v=sDFYPunjZ-M |
 
 ## Suggested categories and keywords
 

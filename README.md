@@ -8,7 +8,7 @@ styles.
 ![Version](https://img.shields.io/badge/version-1.1.0.0-C96442)
 ![API](https://img.shields.io/badge/Power%20BI%20API-5.11.1-B05730)
 
-▶ [Video walkthrough](https://www.youtube.com/watch?v=0ps6t6t70JY)
+▶ [Video walkthrough](https://www.youtube.com/watch?v=sDFYPunjZ-M)
 
 ---
 

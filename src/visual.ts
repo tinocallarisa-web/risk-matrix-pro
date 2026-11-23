@@ -195,6 +195,7 @@ function safeFont(f: unknown): string {
 
 export class Visual implements IVisual {
     private host: IVisualHost;
+    private loc: powerbi.extensibility.ILocalizationManager | undefined;
     private events: IVisualEventService;
     private selectionManager: ISelectionManager;
     private formattingSettingsService: FormattingSettingsService;
@@ -264,6 +265,7 @@ export class Visual implements IVisual {
 
     constructor(options: VisualConstructorOptions) {
         this.host = options.host;
+        this.loc = options.host.createLocalizationManager();
         this.events = options.host.eventService;
         this.selectionManager = options.host.createSelectionManager();
         this.formattingSettingsService = new FormattingSettingsService();
@@ -1761,7 +1763,10 @@ export class Visual implements IVisual {
         const loc = (this.host?.locale || "en").toLowerCase();
         const lang = loc.startsWith("zh") ? "zh" : loc.slice(0, 2);
         const tabla = STRINGS[lang];
-        let out = (tabla && tabla[en]) || en;
+        let out = tabla && tabla[en];
+        if (!out) {
+            try { const s = this.loc?.getDisplayName(en); out = s && s !== en ? s : en; } catch { out = en; }
+        }
         a.forEach((v, i) => { out = out.split("{" + i + "}").join(String(v)); });
         return out;
     }

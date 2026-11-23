@@ -1,140 +1,114 @@
-═══════════════════════════════════════════════════════════════
- TITLE
-═══════════════════════════════════════════════════════════════
+==========================================
+TITLE (pick one)
+==========================================
 
-Risk Matrix Pro for Power BI — likelihood x impact, residual risk and targets
-
-Video: https://www.youtube.com/watch?v=0ps6t6t70JY
-
-
-═══════════════════════════════════════════════════════════════
- LONG DESCRIPTION — paste into the YouTube description field
- CHAPTERS: the times follow the script. Check them against the real cut
- before publishing (YouTube needs 0:00 first and ascending times).
-═══════════════════════════════════════════════════════════════
-
-A risk register in a table tells you what the risks are. A risk matrix tells you where they are — and
-Risk Matrix Pro also tells you where they are going.
-
-Every risk becomes a marker on a likelihood x impact grid, coloured by score band. Point at a risk and
-its whole path appears: inherent position, residual position after controls, and the target you still
-have to reach. Risks that have not reached their target carry a red ring, so the ones that need
-attention stand out before anyone reads a number.
-
-Built for risk registers in audit, compliance, cybersecurity, safety, project and enterprise risk
-management.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-CHAPTERS
-
-0:00  What Risk Matrix Pro does
-0:20  Setting up the fields — Risk, Category, Likelihood, Impact
-1:00  Tooltips, selection and cross-filtering
-1:40  Grid, level labels and score bands
-2:10  Pro: inherent → residual → target movement
-2:40  Pro: risks above target, risk appetite and custom thresholds
-3:10  Pro: cell detail panel and category shapes
-3:30  Free vs Pro preview
-3:55  Keyboard navigation and high contrast
-4:20  Data warnings
-4:40  Where to get it
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-WHAT YOU CAN DO WITH IT
-
-• Place every risk on a 3x3 to 10x10 grid — or let the grid size itself from your data
-• Use levels (1–5), probabilities (0–1) or percentages (0–100) as input
-• See which risks have not reached their target at a glance
-• Show the effect of controls: inherent → residual → target, one risk at a time
-• Draw your risk appetite as a line across the matrix
-• Click a cell to list every risk inside it
-• Cross-filter the rest of the report by risk, cell or category
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-FREE
-
-• Likelihood x impact matrix, 3x3 to 10x10, auto-sized from your data
-• Automatic score bands with your own colours
-• One marker per risk, category colours and legend
-• Axis titles and level labels (Rare, Unlikely, Possible…)
-• Tooltips and report page tooltips
-• Selection, multi-selection, cross-filtering, bookmarks
-• Keyboard navigation and high contrast support
-• Data warnings for risks that cannot be plotted
-
-PRO
-
-• Residual and target positions with movement arrows
-• Flag for risks still above their target score
-• Custom score thresholds for each band
-• Risk appetite line
-• Conditional marker colours (fx rules)
-• Marker shapes by category
-• Cell detail panel
-
-The Free tier is a complete, usable risk matrix. Pro features can be previewed with a watermark while
-you edit a report, so you can see exactly what you would get.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-TYPICAL USES
-
-Internal audit — risk universe by likelihood and impact, before and after controls
-Compliance — regulatory risks against the board's risk appetite
-Cybersecurity — threat exposure and remediation targets
-Health & safety — hazards and the effect of mitigation
-Projects — delivery risks tracked sprint by sprint
-Enterprise risk management — the corporate risk register on one page
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-LINKS
-
-Documentation ..... https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
-Privacy policy .... https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html
-Terms & licence ... https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html
-Support ........... support@tcviz.com
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-PRIVACY
-
-The visual makes no network requests of any kind. No analytics, no telemetry, no external scripts.
-Its privileges array is empty, so Power BI blocks outbound connections at the platform level. Your
-data never leaves the report.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-#PowerBI #RiskManagement #RiskMatrix #PowerBIVisuals #DataVisualization #InternalAudit
-#GRC #BusinessIntelligence #PowerBICustomVisual #TCViz
-
-
-═══════════════════════════════════════════════════════════════
- SHORT VERSION — Shorts, LinkedIn, X
-═══════════════════════════════════════════════════════════════
-
-Your risk register shows what the risks are. A risk matrix shows where they are.
-
-Risk Matrix Pro for Power BI places every risk by likelihood and impact, and shows how far each one
-still is from its target: inherent → residual → target, with a red ring on the ones that haven't
-made it.
-
-Free tier is a complete matrix. Pro adds movement, targets, risk appetite and custom thresholds.
-
-https://www.youtube.com/watch?v=0ps6t6t70JY
-
-#PowerBI #RiskManagement #DataVisualization
-
-
-═══════════════════════════════════════════════════════════════
- ALTERNATIVE TITLES
-═══════════════════════════════════════════════════════════════
-
-1. Risk Matrix Pro for Power BI — likelihood x impact, residual risk and targets
-2. How to build a risk matrix (heat map) in Power BI
-3. Power BI risk heat map: inherent, residual and target risk on one page
+1. Risk matrix in Power BI: inherent, residual and target risk on one page
+2. Which risks haven't reached their target? A Power BI risk matrix
+3. Power BI risk heat map with a ranked risk list — Risk Matrix Pro
 4. Show your risk appetite in Power BI — Risk Matrix Pro
-5. Which risks haven't reached their target? A Power BI risk matrix
+
+(Recommended: 1 for the product video, 2 for a short. Do not put "1.1" in the title: it ages with every
+version.)
+
+
+==========================================
+YOUTUBE DESCRIPTION — PRODUCT VIDEO
+==========================================
+
+A risk register in a table does not tell you where to look. A risk matrix does: likelihood by impact, in score bands, every risk in its cell. Risk Matrix Pro also shows where each risk is going — inherent, residual after controls, and the target you still have to reach — and ranks them in a list beside the matrix, so the ones that still need work come first.
+
+Get it on Microsoft AppSource: https://marketplace.microsoft.com/en-us/product/power-bi-visuals/tino_callarisa.risk-matrix-pro?tab=Overview
+Documentation and FAQ: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
+
+──────────────────────────────────────────
+CHAPTERS
+──────────────────────────────────────────
+0:00 Risk Matrix Pro
+0:04 Likelihood by impact, every risk in its cell
+0:15 Inherent → residual → target: each risk's path
+0:24 New in 1.1: the risk list, sorted by gap to target
+0:37 Risks still above their target
+0:44 Your risk appetite as a line
+0:50 Styles from the TCViz collection
+1:01 Try Pro before you buy: the Pro preview
+1:11 Click a cell to filter the report
+1:18 Sized for a real report page
+1:28 Free and Pro
+1:42 Get it on Microsoft AppSource
+
+──────────────────────────────────────────
+WHAT IT DOES
+──────────────────────────────────────────
+✅ Every risk on a 3x3 to 10x10 grid, or sized automatically from your data
+✅ Levels (1–5), probabilities (0–1) or percentages (0–100) as input
+✅ Inherent → residual → target, with movement arrows
+✅ A ranked risk list beside the matrix: point at a row and its marker lights up
+✅ A dashed red ring on every risk still above its target
+✅ Your risk appetite drawn as a line across the matrix
+✅ Report theme, Classic and the six TCViz collection styles, always reading green → red
+✅ Click a cell or a risk to filter the report; click again to clear
+✅ Text and markers that scale with the visual; keyboard, high contrast and a minimum text size
+✅ The measure's number format, dynamic format strings included; twelve languages
+✅ No network requests: everything is computed inside your report
+
+──────────────────────────────────────────
+FREE AND PRO
+──────────────────────────────────────────
+FREE — a complete risk matrix:
+• 3x3 to 10x10 matrix with score bands
+• Categories, legend, tooltips and report page tooltips
+• Report theme and Classic styles
+• Selection, cross-filtering and bookmarks
+• Accessibility card, twelve languages, format on the canvas
+
+PRO — tracking and the board view:
+• Residual and target positions, with paths
+• The risk list
+• Risk appetite line and custom score thresholds
+• The six collection styles: Boardroom, Ledger, Editorial, Signal, Aurora, Terrace
+• Cell detail panel, marker shapes by category, conditional colours (fx)
+
+Turn on a Pro feature while editing without a licence and it is drawn working on your own data, under a "Pro preview" watermark.
+
+──────────────────────────────────────────
+TYPICAL USES
+──────────────────────────────────────────
+Internal audit · Compliance · Cybersecurity · Health & safety · Projects · Enterprise risk management
+
+──────────────────────────────────────────
+LINKS
+──────────────────────────────────────────
+Documentation: https://tinocallarisa-web.github.io/risk-matrix-pro/support.html
+Privacy policy: https://tinocallarisa-web.github.io/risk-matrix-pro/privacy.html
+Terms and licence: https://tinocallarisa-web.github.io/risk-matrix-pro/terms.html
+All TCViz visuals: https://tcviz.com
+Support: support@tcviz.com
+
+#PowerBI #RiskManagement #RiskMatrix
+
+
+==========================================
+SHORT (under 60 s) — DESCRIPTION
+==========================================
+
+Your risk register shows what the risks are. A risk matrix shows where they are — and which ones haven't reached their target yet.
+Risk Matrix Pro for Power BI: https://marketplace.microsoft.com/en-us/product/power-bi-visuals/tino_callarisa.risk-matrix-pro?tab=Overview
+
+#PowerBI #RiskManagement #Shorts
+
+
+==========================================
+THUMBNAIL
+==========================================
+The matrix green → red with three dashed arrows (inherent → residual → target) and one red ring. Words, if any:
+"WHERE IS YOUR RISK GOING?"
+
+
+==========================================
+NOTE — after uploading
+==========================================
+Paste the canonical URL (https://www.youtube.com/watch?v=…) — never a short link, Shorts or embed URL (policy
+100.3.3.3) — in Partner Center (Offer listing → Videos). In the repo it goes in docs/APPSOURCE-LISTING.md,
+docs/CERTIFICATION-NOTES-SHORT.txt, support.html and the web (tcviz-web src/data.jsx).
+1.0 video: https://www.youtube.com/watch?v=0ps6t6t70JY
+1.1 video: pending upload (23-11-2026).

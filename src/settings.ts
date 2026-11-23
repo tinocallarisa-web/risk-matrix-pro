@@ -145,13 +145,15 @@ class MovementCard extends FormattingSettingsCard {
     arrows = new formattingSettings.ItemDropdown({
         name: "arrows",
         displayName: "Movement arrows",
-        description: "Selected and hovered keeps the matrix readable: a risk's path appears when you point at it, focus it or select it.",
+        description: "All risks shows every path; Selected and hovered keeps a crowded matrix readable: a risk's path appears when you point at it, focus it or select it.",
         items: [
             { value: "focus", displayName: "Selected and hovered risks" },
             { value: "all", displayName: "All risks" },
             { value: "off", displayName: "Off" }
         ],
-        value: { value: "focus", displayName: "Selected and hovered risks" }
+        // 1.1: por defecto se ven todas las flechas (decisión de Tino, 28-10-2026): quien rellena residual u objetivo
+        // espera ver el recorrido de cada riesgo sin pasar el ratón.
+        value: { value: "all", displayName: "All risks" }
     });
     plotAt = new formattingSettings.ItemDropdown({
         name: "plotAt",
@@ -161,7 +163,8 @@ class MovementCard extends FormattingSettingsCard {
             { value: "residual", displayName: "Residual position" },
             { value: "target", displayName: "Target position" }
         ],
-        value: { value: "residual", displayName: "Residual position" }
+        // 1.1: por defecto en la posición inherente, el punto de partida del recorrido (antes, residual).
+        value: { value: "inherent", displayName: "Inherent position" }
     });
     color = new formattingSettings.ColorPicker({ name: "color", displayName: "Arrow color", value: { value: "#535146" } });
 

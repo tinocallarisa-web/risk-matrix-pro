@@ -256,6 +256,29 @@ class LegendCard extends FormattingSettingsCard {
     slices: FormattingSettingsSlice[] = [this.position, this.fontFamily, this.fontSize, this.color];
 }
 
+/** Lista de riesgos junto a la matriz (Pro, 1.1): lo que el comité lleva a la reunión. */
+class RiskListCard extends FormattingSettingsCard {
+    show = new formattingSettings.ToggleSwitch({ name: "show", displayName: "Show risk list", value: false });
+    sortBy = new formattingSettings.ItemDropdown({
+        name: "sortBy", displayName: "Sort by",
+        items: [
+            { value: "inherent", displayName: "Inherent score" },
+            { value: "residual", displayName: "Residual score" },
+            { value: "gap", displayName: "Gap to target" }
+        ],
+        value: { value: "inherent", displayName: "Inherent score" }
+    });
+    width = new formattingSettings.NumUpDown({
+        name: "width", displayName: "Width (%)", value: 34,
+        options: { minValue: { type: powerbi.visuals.ValidatorType.Min, value: 20 }, maxValue: { type: powerbi.visuals.ValidatorType.Max, value: 50 } }
+    });
+    topLevelSlice = this.show;
+    name = "riskList";
+    displayName = "Risk list" + PRO;
+    description = "Risks ranked by score beside the matrix, with their band and path. Point at a row to light up its marker.";
+    slices: FormattingSettingsSlice[] = [this.sortBy, this.width];
+}
+
 class AccessibilityCard extends FormattingSettingsCard {
     highContrast = new formattingSettings.ItemDropdown({
         name: "highContrast", displayName: "High contrast",
@@ -286,6 +309,7 @@ class CategoryColorsCard extends FormattingSettingsCard {
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     style = new StyleCard();
     accessibility = new AccessibilityCard();
+    riskList = new RiskListCard();
     grid = new GridCard();
     bands = new BandsCard();
     appetite = new AppetiteCard();
@@ -296,5 +320,5 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     axes = new AxesCard();
     legend = new LegendCard();
 
-    cards = [this.style, this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.detail, this.axes, this.legend, this.accessibility];
+    cards = [this.style, this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.riskList, this.detail, this.axes, this.legend, this.accessibility];
 }

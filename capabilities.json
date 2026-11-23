@@ -842,6 +842,49 @@
           }
         }
       }
+    },
+    "riskList": {
+      "displayName": "Risk list (Pro)",
+      "displayNameKey": "Obj_riskList",
+      "properties": {
+        "show": {
+          "displayName": "Show risk list",
+          "displayNameKey": "Prop_list_show",
+          "type": {
+            "bool": true
+          }
+        },
+        "sortBy": {
+          "displayName": "Sort by",
+          "displayNameKey": "Prop_list_sortBy",
+          "type": {
+            "enumeration": [
+              {
+                "value": "inherent",
+                "displayName": "Inherent score",
+                "displayNameKey": "Enum_sort_inherent"
+              },
+              {
+                "value": "residual",
+                "displayName": "Residual score",
+                "displayNameKey": "Enum_sort_residual"
+              },
+              {
+                "value": "gap",
+                "displayName": "Gap to target",
+                "displayNameKey": "Enum_sort_gap"
+              }
+            ]
+          }
+        },
+        "width": {
+          "displayName": "Width (%)",
+          "displayNameKey": "Prop_list_width",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
     }
   },
   "supportsHighlight": true,

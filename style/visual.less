@@ -133,3 +133,19 @@
 
 // Marca de agua común encima de la matriz y la leyenda (1.1).
 .rmp-root .tcviz-wm { z-index: 5; }
+
+// Lista de riesgos (Pro, 1.1)
+.rmp-list { position: absolute; top: 0; right: 0; bottom: 0; flex-direction: column; overflow-y: auto; padding: 0 0 0 8px; box-sizing: border-box; }
+.rmp-list-head { font-weight: 600; padding: 2px 4px 6px; opacity: .8; }
+.rmp-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; border: 0; background: transparent;
+           color: inherit; font: inherit; text-align: left; padding: 3px 4px; border-radius: 4px; cursor: pointer; }
+.rmp-row:hover, .rmp-row.rmp-hot { background: rgba(128, 128, 128, .16); }
+.rmp-row:focus-visible { outline: var(--rmp-focus-w, 3px) solid var(--rmp-focus, #005A9E); outline-offset: -2px; }
+.rmp-row.rmp-selected { font-weight: 600; }
+.rmp-row.rmp-dim { opacity: .45; }
+.rmp-row-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rmp-row-path { display: flex; align-items: center; gap: 3px; flex: none; }
+.rmp-chip { display: inline-block; min-width: 1.7em; text-align: center; border-radius: 3px; padding: 0 3px; font-weight: 600; font-size: .92em; }
+.rmp-arrow { opacity: .6; }
+.rmp-off { font-size: .8em; margin-left: 2px; }
+.rmp-marker.rmp-hot .rmp-shape { stroke: var(--rmp-focus, #252423); stroke-width: 3px; }

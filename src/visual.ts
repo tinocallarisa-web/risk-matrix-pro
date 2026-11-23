@@ -50,6 +50,7 @@ const ES_LABELS: Record<string, string> = {
     "category shapes": "las formas por categoría",
     "the cell detail panel": "el panel de detalle de celda",
     "target tracking": "el seguimiento del objetivo",
+    "the risk list": "la lista de riesgos",
     "the Boardroom style": "el estilo Boardroom", "the Ledger style": "el estilo Ledger", "the Editorial style": "el estilo Editorial",
     "the Signal style": "el estilo Signal", "the Aurora style": "el estilo Aurora", "the Terrace style": "el estilo Terrace"
 };
@@ -181,6 +182,16 @@ function safeColor(c: unknown, fallback: string): string {
     return /^#[0-9a-f]{3,8}$/i.test(s) || /^rgba?\([\d\s.,%]+\)$/i.test(s) ? s : fallback;
 }
 
+/** Negro o blanco, el que más contraste dé sobre un fondo #RRGGBB (luminancia relativa WCAG). */
+function textoSobre(fondo: string): string {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(fondo).trim());
+    if (!m) { return "#1F1F1F"; }
+    const n = parseInt(m[1], 16);
+    const l = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); });
+    const lum = 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
+    return (lum + 0.05) / 0.05 >= 1.05 / (lum + 0.05) ? "#1F1F1F" : "#FFFFFF";
+}
+
 function safeFont(f: unknown): string {
     const s = typeof f === "string" ? f.replace(/[^\w\s,'"-]/g, "") : "";
     return s || "Segoe UI";
@@ -204,6 +215,7 @@ export class Visual implements IVisual {
     private messageEl: HTMLElement;
     private warningEl: HTMLElement;
     private panelEl: HTMLElement;
+    private listEl: HTMLElement;
     /** Marca de agua "Pro preview" común de la cartera (utillaje/comun/watermark.ts). */
     private wm: HTMLDivElement;
     /** Estilo de la colección que se pinta (null = Report theme, Classic o sin licencia). */
@@ -283,6 +295,13 @@ export class Visual implements IVisual {
         this.messageEl = document.createElement("div");
         this.messageEl.className = "rmp-message";
         this.bodyEl.appendChild(this.messageEl);
+
+        // Lista de riesgos (Pro, 1.1), a la derecha de la matriz
+        this.listEl = document.createElement("div");
+        this.listEl.className = "rmp-list";
+        this.listEl.setAttribute("role", "list");
+        this.listEl.style.display = "none";
+        this.bodyEl.appendChild(this.listEl);
 
         this.panelEl = document.createElement("aside");
         this.panelEl.className = "rmp-panel";
@@ -571,6 +590,7 @@ export class Visual implements IVisual {
         if (d.risks.some(r => r.ruleColor && r.ruleColor.toLowerCase() !== constant)) { out.push("conditional marker colors"); }
         if (s.markers.shapeByCategory.value && d.categories.length > 0) { out.push("category shapes"); }
         if (s.detail.show.value) { out.push("the cell detail panel"); }
+        if (s.riskList.show.value && d.risks.length > 0) { out.push("the risk list"); }
         if (this.estiloPedido) { out.push("the " + STYLE_NAMES[this.estiloPedido] + " style"); }
         void dataView;
         return out;
@@ -649,8 +669,13 @@ export class Visual implements IVisual {
         this.renderLegend(d);
         this.renderWarning(d);
 
-        const width = Math.max(0, this.bodyEl.clientWidth || this.lastOptions?.viewport.width || 0);
+        const fullWidth = Math.max(0, this.bodyEl.clientWidth || this.lastOptions?.viewport.width || 0);
         const height = Math.max(0, this.bodyEl.clientHeight || this.lastOptions?.viewport.height || 0);
+        // Lista de riesgos (Pro): ocupa su ancho a la derecha y la matriz se queda con el resto.
+        const listOn = pro && s.riskList.show.value && d.risks.length > 0;
+        const listW = listOn ? Math.round(Math.min(fullWidth * 0.5, Math.max(150, fullWidth * Math.min(50, Math.max(20, s.riskList.width.value || 34)) / 100))) : 0;
+        const width = Math.max(0, fullWidth - listW);
+        this.renderList(d, listOn, listW);
         this.svgEl.setAttribute("width", String(width));
         this.svgEl.setAttribute("height", String(height));
 
@@ -1185,6 +1210,12 @@ export class Visual implements IVisual {
             el.setAttribute("opacity", dim ? "0.2" : "0.85");
         });
         this.updateMovementVisibility();
+        this.listEl.querySelectorAll<HTMLElement>(".rmp-row").forEach(b => {
+            const sel = this.selectedKeys.has(b.getAttribute("data-key"));
+            b.classList.toggle("rmp-selected", sel);
+            b.classList.toggle("rmp-dim", anySelected && !sel);
+            b.setAttribute("aria-pressed", String(sel));
+        });
         this.panelEl.querySelectorAll<HTMLElement>(".rmp-panel-item").forEach(b => {
             const sel = this.selectedKeys.has(b.getAttribute("data-key"));
             b.classList.toggle("rmp-selected", sel);
@@ -1195,6 +1226,93 @@ export class Visual implements IVisual {
     private setActive(key: string | null): void {
         this.activeKey = key;
         this.updateMovementVisibility();
+        // El riesgo activo se ilumina en la matriz y en la lista.
+        this.svgEl.querySelectorAll<SVGGElement>(".rmp-marker").forEach(g => g.classList.toggle("rmp-hot", !!key && g.getAttribute("data-key") === key));
+        this.listEl.querySelectorAll<HTMLElement>(".rmp-row").forEach(e => e.classList.toggle("rmp-hot", !!key && e.getAttribute("data-key") === key));
+    }
+
+    /**
+     * Lista de riesgos (Pro, 1.1): ordenada por la puntuación elegida, con la banda (color y nombre) y el recorrido
+     * inherente → residual → objetivo. Pasar el ratón o el foco ilumina el marcador; un clic selecciona como en la matriz.
+     * Solo textContent, sin innerHTML.
+     */
+    private renderList(d: ParsedData, on: boolean, width: number): void {
+        const el = this.listEl;
+        clearElement(el);
+        if (!on) { el.style.display = "none"; return; }
+        const s = this.settings;
+        el.style.display = "flex";
+        el.style.width = width + "px";
+        const lfs = this.fz(11);
+        el.style.fontSize = lfs + "px";
+        const look = this.isHighContrast ? null : this.look;
+        const fg = this.isHighContrast ? this.hcForeground : (look ? look.text : this.tintaTema() || "#3D3929");
+        el.style.color = fg;
+        el.style.fontFamily = look?.font || "'Segoe UI', sans-serif";
+        el.style.borderLeft = "1px solid " + (this.isHighContrast ? this.hcForeground : (look ? look.axis : "#E1DFDD"));
+        const score = (p: { x: number; y: number } | null) => p ? p.x * p.y : null;
+        const actual = (r: RiskPoint) => score(r.residual) ?? score(r.level);
+        const orden = String(s.riskList.sortBy.value?.value || "inherent");
+        const lista = d.risks.slice().sort((a, b) => {
+            if (orden === "residual") { return (actual(b) - actual(a)) || (score(b.level) - score(a.level)); }
+            if (orden === "gap") {
+                const ga = r => r.target ? actual(r) - score(r.target) : -Infinity;
+                return (ga(b) - ga(a)) || (actual(b) - actual(a));
+            }
+            return (score(b.level) - score(a.level)) || ((actual(b) ?? 0) - (actual(a) ?? 0));
+        });
+        const cab = document.createElement("div");
+        cab.className = "rmp-list-head";
+        cab.textContent = `Risks (${lista.length})`;
+        el.appendChild(cab);
+        const chip = (p: { x: number; y: number }) => {
+            const b = this.bandOf(p.x, p.y);
+            const c = document.createElement("span");
+            c.className = "rmp-chip";
+            c.textContent = String(p.x * p.y);
+            c.style.background = this.isHighContrast ? this.hcBackground : this.bandColor(b);
+            c.style.color = this.isHighContrast ? this.hcForeground : textoSobre(this.bandColor(b));
+            if (this.isHighContrast) { c.style.border = "1px solid " + this.hcForeground; }
+            c.title = BAND_NAMES[b];
+            return c;
+        };
+        for (const r of lista) {
+            const row = document.createElement("button");
+            row.type = "button";
+            row.className = "rmp-row";
+            row.setAttribute("role", "listitem");
+            row.setAttribute("data-key", r.key);
+            row.setAttribute("aria-label", this.describe(r));
+            const nombre = document.createElement("span");
+            nombre.className = "rmp-row-name";
+            nombre.textContent = r.name;
+            const ruta = document.createElement("span");
+            ruta.className = "rmp-row-path";
+            ruta.appendChild(chip(r.level));
+            for (const p of [r.residual, r.target]) {
+                if (!p) { continue; }
+                const flecha = document.createElement("span");
+                flecha.className = "rmp-arrow";
+                flecha.textContent = "→";
+                ruta.appendChild(flecha);
+                ruta.appendChild(chip(p));
+            }
+            if (r.offTarget && s.movement.flagOffTarget.value) {
+                const aviso = document.createElement("span");
+                aviso.className = "rmp-off";
+                aviso.textContent = "●";
+                aviso.title = "Above target";
+                aviso.style.color = this.isHighContrast ? this.hcForeground : safeColor(s.movement.offTargetColor.value?.value, "#C00000");
+                ruta.appendChild(aviso);
+            }
+            row.append(nombre, ruta);
+            row.addEventListener("mouseenter", () => this.setActive(r.key));
+            row.addEventListener("mouseleave", () => this.setActive(null));
+            row.addEventListener("focus", () => this.setActive(r.key));
+            row.addEventListener("blur", () => this.setActive(null));
+            row.addEventListener("click", (ev: MouseEvent) => { ev.stopPropagation(); this.selectRisk(r, ev.ctrlKey || ev.metaKey); });
+            el.appendChild(row);
+        }
     }
 
     /** Modo "focus": solo el recorrido de los riesgos seleccionados y del que está bajo el ratón o el foco. */

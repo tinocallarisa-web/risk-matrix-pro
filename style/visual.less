@@ -149,3 +149,13 @@
 .rmp-arrow { opacity: .6; }
 .rmp-off { font-size: .8em; margin-left: 2px; }
 .rmp-marker.rmp-hot .rmp-shape { stroke: var(--rmp-focus, #252423); stroke-width: 3px; }
+
+// Guía de configuración (1.1): solo editando
+.rmp-guide { position: absolute; left: 8px; bottom: 8px; z-index: 6; max-width: min(320px, 70%); background: #FFFFFF; color: #3D3929;
+             border: 1px solid #C8C6C4; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, .14); padding: 8px 10px; line-height: 1.35; }
+.rmp-guide-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.rmp-guide-x { border: 0; background: transparent; cursor: pointer; font: inherit; color: inherit; padding: 0 2px; }
+.rmp-guide-x:focus-visible { outline: 2px solid var(--rmp-focus, #005A9E); }
+.rmp-guide-item { display: flex; gap: 6px; margin: 2px 0; }
+.rmp-guide-item .rmp-ok { color: #107C10; }
+.rmp-guide-note { margin-top: 5px; opacity: .8; }

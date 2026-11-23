@@ -220,6 +220,8 @@ export class Visual implements IVisual {
     private warningEl: HTMLElement;
     private panelEl: HTMLElement;
     private listEl: HTMLElement;
+    /** Guía de configuración en la esquina mientras se edita (1.1). */
+    private guideEl: HTMLElement;
     /** Formato en el lienzo (on-object, 1.1). */
     private subSelectionHelper: HtmlSubSelectionHelper;
     public visualOnObjectFormatting?: powerbi.extensibility.visual.VisualOnObjectFormatting;
@@ -317,6 +319,11 @@ export class Visual implements IVisual {
         this.bodyEl.appendChild(this.panelEl);
 
         this.wm = createProWatermark(this.target);
+        this.guideEl = document.createElement("div");
+        this.guideEl.className = "rmp-guide";
+        this.guideEl.style.display = "none";
+        this.guideEl.addEventListener("click", ev => ev.stopPropagation());
+        this.target.appendChild(this.guideEl);
 
         this.subSelectionHelper = HtmlSubSelectionHelper.createHtmlSubselectionHelper({
             hostElement: options.element,
@@ -411,11 +418,13 @@ export class Visual implements IVisual {
             this.data = null;
             this.attemptedPro = [];
             this.updateWatermark();
+            this.guideEl.style.display = "none";
             this.renderLanding(!!riskCol, !!lCol, !!iCol);
             return;
         }
 
         this.data = this.parse(dataView, riskCol, lCol, iCol, values);
+        this.renderGuide(dataView, values);
         this.attemptedPro = this.isPro ? [] : this.collectAttempted(this.data, dataView);
         this.updateWatermark();
 
@@ -1173,6 +1182,63 @@ export class Visual implements IVisual {
         const hc = (this.host as any).hostCapabilities;
         const permitido = (hc && typeof hc.allowInteractions === "boolean") ? hc.allowInteractions : (this.host as any).allowInteractions !== false;
         return permitido && !this.formatMode;
+    }
+
+    /**
+     * Guía de configuración (1.1): mientras se edita, una tarjeta en la esquina con los pozos opcionales (marcados si
+     * ya están) y los estilos. Se cierra con ✕ (guarda Style template → Setup guide = off). Nunca en lectura ni en modo
+     * formato. Solo textContent.
+     */
+    private renderGuide(dataView: powerbi.DataView, values: DataViewValueColumn[]): void {
+        const el = this.guideEl;
+        const ver = this.isEditing() && !this.formatMode && !!this.settings.style.guide.value;
+        if (!ver) { el.style.display = "none"; return; }
+        clearElement(el);
+        el.style.display = "block";
+        el.style.fontSize = this.fz(11) + "px";
+        el.style.background = this.isHighContrast ? this.hcBackground : "";
+        el.style.color = this.isHighContrast ? this.hcForeground : "";
+        el.style.borderColor = this.isHighContrast ? this.hcForeground : "";
+        const tiene = (rol: string) => values.some(v => hasRole(v, rol)) || !!dataView.categorical.categories?.some(c => hasRole(c, rol));
+        const cab = document.createElement("div");
+        cab.className = "rmp-guide-head";
+        const t = document.createElement("b");
+        t.textContent = "Setup guide";
+        const x = document.createElement("button");
+        x.type = "button";
+        x.className = "rmp-guide-x";
+        x.textContent = "✕";
+        x.setAttribute("aria-label", "Close the setup guide");
+        x.addEventListener("click", () => {
+            el.style.display = "none";
+            this.host.persistProperties({ merge: [{ objectName: "style", selector: null, properties: { guide: false } }] });
+        });
+        cab.append(t, x);
+        el.appendChild(cab);
+        const items: [boolean, string, string][] = [
+            [tiene("category"), "Category", "colour and shape by group"],
+            [tiene("residualLikelihood") && tiene("residualImpact"), "Residual likelihood + impact (Pro)", "where each risk is after controls"],
+            [tiene("targetLikelihood") && tiene("targetImpact"), "Target likelihood + impact (Pro)", "where you want it to be"],
+            [tiene("tooltips"), "Tooltips", "extra measures on hover"],
+        ];
+        for (const [hecho, nombre, porque] of items) {
+            const f = document.createElement("div");
+            f.className = "rmp-guide-item";
+            const m = document.createElement("span");
+            m.textContent = hecho ? "✓" : "○";
+            m.className = hecho ? "rmp-ok" : "";
+            m.setAttribute("aria-label", hecho ? "added" : "not added");
+            const n = document.createElement("span");
+            const b = document.createElement("b");
+            b.textContent = nombre;
+            n.append(b, document.createTextNode(" — " + porque));
+            f.append(m, n);
+            el.appendChild(f);
+        }
+        const nota = document.createElement("div");
+        nota.className = "rmp-guide-note";
+        nota.textContent = "Style template: Report theme or Classic; Boardroom, Ledger, Editorial, Signal, Aurora and Terrace (Pro). Risk list (Pro) ranks the risks beside the matrix.";
+        el.appendChild(nota);
     }
 
     // ---- Formato en el lienzo (on-object) ------------------------------------------------------

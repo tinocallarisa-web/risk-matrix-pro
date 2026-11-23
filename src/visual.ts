@@ -498,7 +498,7 @@ export class Visual implements IVisual {
                 highlighted,
                 tooltipExtras: tipCols.map(tc => ({
                     name: tc.source.displayName,
-                    value: valueFormatter.format(tc.values[i], valueFormatter.getFormatStringByColumn(tc.source as any))
+                    value: this.fmtFila(tc, i, tc.values[i])
                 })),
                 px: 0, py: 0, size: 0, hidden: false
             });
@@ -1089,7 +1089,7 @@ export class Visual implements IVisual {
             meta.className = "rmp-panel-meta";
             const parts = [
                 r.category,
-                `L ${valueFormatter.format(r.likelihood, fmtL)} · I ${valueFormatter.format(r.impact, fmtI)}`,
+                `L ${this.fmtFila(d.likelihoodColumn, r.index, r.likelihood, fmtL)} · I ${this.fmtFila(d.impactColumn, r.index, r.impact, fmtI)}`,
                 r.residual ? `residual score ${r.residual.x * r.residual.y}` : null,
                 r.target ? `target ${r.target.x * r.target.y}${r.offTarget ? " (not reached)" : " (reached)"}` : null
             ].filter(Boolean);
@@ -1316,8 +1316,8 @@ export class Visual implements IVisual {
         ];
         if (r.category !== null) { items.push({ displayName: d.categoryColumn.source.displayName, value: r.category }); }
         items.push(
-            { displayName: d.likelihoodColumn.source.displayName, value: `${valueFormatter.format(r.likelihood, fmtL)} (${xl[r.level.x - 1]})` },
-            { displayName: d.impactColumn.source.displayName, value: `${valueFormatter.format(r.impact, fmtI)} (${yl[r.level.y - 1]})` },
+            { displayName: d.likelihoodColumn.source.displayName, value: `${this.fmtFila(d.likelihoodColumn, r.index, r.likelihood, fmtL)} (${xl[r.level.x - 1]})` },
+            { displayName: d.impactColumn.source.displayName, value: `${this.fmtFila(d.impactColumn, r.index, r.impact, fmtI)} (${yl[r.level.y - 1]})` },
             { displayName: "Score", value: `${r.level.x * r.level.y} · ${BAND_NAMES[band]}` }
         );
         if (r.residual && this.isProActive()) {
@@ -1445,6 +1445,16 @@ export class Visual implements IVisual {
         const guardado = (this.objetos as any)?.[obj]?.[prop] !== undefined;
         if (!guardado && token) { return token; }
         return safeColor((actual as any)?.value ?? actual, def);
+    }
+
+    /**
+     * Formato de un valor de la fila i: la cadena dinámica de esa fila (general.formatString, declarado en 1.1) o la de la
+     * columna, con el idioma del informe.
+     */
+    private fmtFila(col: DataViewValueColumn, i: number, v: unknown, porDefecto?: string): string {
+        const dyn = (col as any)?.objects?.[i]?.general?.formatString;
+        const f = (typeof dyn === "string" && dyn) ? dyn : (porDefecto ?? valueFormatter.getFormatStringByColumn(col.source as any));
+        return valueFormatter.format(v as any, f, false, this.host.locale);
     }
 
     /** Tamaño de letra escalado: encoge con el visual, nunca por debajo de 8 px ni del mínimo de Accesibilidad. */

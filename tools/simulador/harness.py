@@ -200,6 +200,16 @@ async def main():
         check("tamaño mínimo 12: ningún texto por debajo", min(q["fs"]) >= 12, str(min(q["fs"])))
         await pg.close()
 
+        print("Formato dinámico")
+        dvd = dataview()
+        dvd["categorical"]["values"][0]["objects"] = [{"general": {"formatString": "0.0 'pts'"}}] * len(RIESGOS)
+        pg = await page(b, dvd)
+        await pg.hover("#host .rmp-marker >> nth=0")
+        await pg.wait_for_timeout(100)
+        t = await pg.evaluate("() => (window.__tip && window.__tip.dataItems || []).map(d => d.value).join(' | ')")
+        check("la cadena dinámica de la fila manda en el tooltip", "pts" in t, t[:80])
+        await pg.close()
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

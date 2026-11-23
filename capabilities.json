@@ -160,6 +160,17 @@
     }
   ],
   "objects": {
+    "general": {
+      "properties": {
+        "formatString": {
+          "type": {
+            "formatting": {
+              "formatString": true
+            }
+          }
+        }
+      }
+    },
     "style": {
       "displayName": "Style template",
       "displayNameKey": "Obj_style",

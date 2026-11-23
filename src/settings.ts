@@ -11,6 +11,30 @@ import FormattingSettingsModel = formattingSettings.Model;
 /** Etiqueta de las opciones de pago. Cada etiqueta necesita su puerta en visual.ts. */
 export const PRO = " (Pro)";
 
+/** Plantillas (1.1): Report theme y Classic gratis; los seis estilos de la colección TCViz, Pro. */
+export const PRO_STYLES = ["boardroom", "ledger", "editorial", "signal", "aurora", "terrace"];
+class StyleCard extends FormattingSettingsCard {
+    template = new formattingSettings.ItemDropdown({
+        name: "template",
+        displayName: "Template",
+        items: [
+            { value: "report", displayName: "Report theme" },
+            { value: "classic", displayName: "Classic" },
+            { value: "boardroom", displayName: "Boardroom" + PRO },
+            { value: "ledger", displayName: "Ledger" + PRO },
+            { value: "editorial", displayName: "Editorial" + PRO },
+            { value: "signal", displayName: "Signal" + PRO },
+            { value: "aurora", displayName: "Aurora" + PRO },
+            { value: "terrace", displayName: "Terrace" + PRO }
+        ],
+        value: { value: "report", displayName: "Report theme" }
+    });
+    guide = new formattingSettings.ToggleSwitch({ name: "guide", displayName: "Setup guide", value: true });
+    name = "style";
+    displayName = "Style template";
+    slices: FormattingSettingsSlice[] = [this.template, this.guide];
+}
+
 class GridCard extends FormattingSettingsCard {
     size = new formattingSettings.ItemDropdown({
         name: "size",
@@ -240,6 +264,7 @@ class CategoryColorsCard extends FormattingSettingsCard {
 }
 
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
+    style = new StyleCard();
     grid = new GridCard();
     bands = new BandsCard();
     appetite = new AppetiteCard();
@@ -250,5 +275,5 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     axes = new AxesCard();
     legend = new LegendCard();
 
-    cards = [this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.detail, this.axes, this.legend];
+    cards = [this.style, this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.detail, this.axes, this.legend];
 }

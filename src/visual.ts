@@ -17,7 +17,9 @@ import DataViewCategoryColumn = powerbi.DataViewCategoryColumn;
 import DataViewValueColumn = powerbi.DataViewValueColumn;
 import IVisualLicenseManager = powerbi.extensibility.IVisualLicenseManager;
 
-import { VisualFormattingSettingsModel } from "./settings";
+import { VisualFormattingSettingsModel, PRO_STYLES } from "./settings";
+import { createProWatermark, renderProWatermark } from "./comun/watermark";
+import { styleSeriesColor } from "./comun/paleta";
 
 // ------------------------------------------------------------------------------------------
 // Licensing
@@ -47,8 +49,47 @@ const ES_LABELS: Record<string, string> = {
     "conditional marker colors": "los colores condicionales de marcador",
     "category shapes": "las formas por categoría",
     "the cell detail panel": "el panel de detalle de celda",
-    "target tracking": "el seguimiento del objetivo"
+    "target tracking": "el seguimiento del objetivo",
+    "the Boardroom style": "el estilo Boardroom", "the Ledger style": "el estilo Ledger", "the Editorial style": "el estilo Editorial",
+    "the Signal style": "el estilo Signal", "the Aurora style": "el estilo Aurora", "the Terrace style": "el estilo Terrace"
 };
+
+// ------------------------------------------------------------------------------------------
+// Estilos de la colección (1.1)
+// ------------------------------------------------------------------------------------------
+
+/**
+ * Tokens de los seis estilos de la colección TCViz (los mismos fondo, texto y ejes que Bar Chart, Line Chart o KPI Card).
+ * bands = los cuatro colores de riesgo en el tono del estilo: siguen leyendo verde → rojo (decisión de Tino, 23-11-2026),
+ * el color cambia de tono, no de significado. marker/label = marcador y su etiqueta, con contraste sobre las bandas.
+ */
+interface StyleTokens {
+    bg: string; grad?: string; text: string; axis: string; cellText: string; marker: string; label: string;
+    bands: [string, string, string, string]; font?: string; panel: string;
+    /** Colores de categoría (los de serie de la colección; más allá de 5, comun/paleta los aclara u oscurece). */
+    series: string[];
+}
+const STYLE_TOKENS: Record<string, StyleTokens> = {
+    boardroom: { bg: "#16263D", text: "#F2F0E8", axis: "#9FB0C6", cellText: "#F2F0E8", marker: "#F2F0E8", label: "#16263D", panel: "#1E3150",
+                 series: ["#C9A45C", "#8FB8E8", "#EB8A7B", "#6FCF97", "#C5D3E3"],
+                 bands: ["#3E7C5A", "#A8924A", "#B9703F", "#A8473F"] },
+    ledger: { bg: "#FBF8EF", text: "#231F16", axis: "#6E6652", cellText: "#3A3528", marker: "#231F16", label: "#FBF8EF", panel: "#F3EEDF",
+              series: ["#7A1F1F", "#3A3528", "#2F6B3B", "#946A10", "#6E6652"],
+                 bands: ["#B3C6A0", "#E6D48F", "#DDA472", "#C46A5C"], font: "Georgia, serif" },
+    editorial: { bg: "#FFFFFF", text: "#111111", axis: "#5F5F5F", cellText: "#111111", marker: "#111111", label: "#FFFFFF", panel: "#F4F4F4",
+                 series: ["#111111", "#D7263D", "#5F5F5F", "#8C1C2B", "#9E9E9E"],
+                 bands: ["#E4E4E4", "#C9C9C9", "#9C9C9C", "#D7263D"], font: "Georgia, serif" },
+    signal: { bg: "#FFFFFF", text: "#14202B", axis: "#566472", cellText: "#14202B", marker: "#14202B", label: "#FFFFFF", panel: "#F2F4F7",
+              series: ["#1F4E80", "#1F7A4D", "#B7791F", "#C0392B", "#566472"],
+                 bands: ["#7FC29B", "#F2D16B", "#F0995A", "#D9534F"] },
+    aurora: { bg: "#10395E", grad: "linear-gradient(135deg, #1B1147, #10395E 50%, #0B5A5E)", text: "#FFFFFF", axis: "#C5D3E3", cellText: "#FFFFFF",
+              marker: "#FFFFFF", label: "#10395E", panel: "#1A4570", series: ["#7CE7D0", "#FFD27D", "#FF9DB0", "#9DB7FF", "#FFFFFF"],
+                 bands: ["#2E8C80", "#AE9C55", "#C2735C", "#BE4D6B"] },
+    terrace: { bg: "#FBF5EC", text: "#3A2A1E", axis: "#7A6450", cellText: "#3A2A1E", marker: "#3A2A1E", label: "#FBF5EC", panel: "#F3E9DA",
+               series: ["#B5532A", "#5E7128", "#B5782A", "#3A2A1E", "#7A6450"],
+                 bands: ["#A3B676", "#E0C47C", "#D3915A", "#B5372A"] },
+};
+const STYLE_NAMES: Record<string, string> = { boardroom: "Boardroom", ledger: "Ledger", editorial: "Editorial", signal: "Signal", aurora: "Aurora", terrace: "Terrace" };
 
 // ------------------------------------------------------------------------------------------
 // Model
@@ -163,7 +204,16 @@ export class Visual implements IVisual {
     private messageEl: HTMLElement;
     private warningEl: HTMLElement;
     private panelEl: HTMLElement;
-    private watermarkEl: HTMLElement;
+    /** Marca de agua "Pro preview" común de la cartera (utillaje/comun/watermark.ts). */
+    private wm: HTMLDivElement;
+    /** Estilo de la colección que se pinta (null = Report theme, Classic o sin licencia). */
+    private look: StyleTokens | null = null;
+    /** Estilo Pro elegido en el panel, se pinte o no (para el aviso de compra). */
+    private estiloPedido: string | null = null;
+    /** Report theme activo (plantilla por defecto): textos y ejes con la tinta del tema del informe. */
+    private temaInforme = false;
+    /** objects guardados en el informe: un ajuste escrito manda siempre sobre la plantilla. */
+    private objetos: powerbi.DataViewObjects = {};
     private readonly uid = "rmp" + crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
 
     private data: ParsedData | null = null;
@@ -235,16 +285,7 @@ export class Visual implements IVisual {
         this.panelEl.style.display = "none";
         this.bodyEl.appendChild(this.panelEl);
 
-        // Marca de agua de la vista previa Pro: solo sobre funciones de pago usadas sin licencia
-        this.watermarkEl = document.createElement("div");
-        this.watermarkEl.setAttribute("aria-hidden", "true");
-        this.watermarkEl.textContent = "Pro preview";
-        this.watermarkEl.style.cssText =
-            "position:absolute;left:0;top:0;right:0;bottom:0;display:none;align-items:center;" +
-            "justify-content:center;pointer-events:none;z-index:5;font:700 32px 'Segoe UI',sans-serif;" +
-            "color:#FFFFFF;opacity:0.55;transform:rotate(-20deg);" +
-            "text-shadow:0 0 2px rgba(51,51,51,0.85),0 1px 3px rgba(51,51,51,0.65);";
-        this.target.appendChild(this.watermarkEl);
+        this.wm = createProWatermark(this.target);
 
         // Clic en vacío limpia la selección; menú contextual a nivel de visual
         this.svgEl.addEventListener("click", (ev: MouseEvent) => {
@@ -310,6 +351,7 @@ export class Visual implements IVisual {
         this.lastDataView = dataView;
         this.readHighContrast();
         this.settings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
+        this.resolverEstilo(dataView);
         const cat = dataView && dataView.categorical;
         const riskCol = cat?.categories?.find(c => hasRole(c, "risk"));
         const values = (cat?.values || []) as unknown as DataViewValueColumn[];
@@ -367,7 +409,7 @@ export class Visual implements IVisual {
         const plotAt = pro ? String(s.movement.plotAt.value.value) : "inherent";
         const useRuleColors = pro;
         const shapeByCat = pro && s.markers.shapeByCategory.value;
-        const constantFill = safeColor(s.markers.fill.value?.value, "#3D3929");
+        const constantFill = this.tinta("markers", "fill", s.markers.fill.value, "#3D3929", this.look?.marker);
 
         // Categorías: color de paleta, sobrescrito por el panel
         const categories: CategoryInfo[] = [];
@@ -382,7 +424,8 @@ export class Visual implements IVisual {
                 categories.push({
                     name,
                     firstIndex: i,
-                    color: safeColor(custom, this.host.colorPalette.getColor(name).value),
+                    // Con un estilo de la colección, la paleta del estilo; si no, la del tema del informe. Un color elegido manda.
+                    color: safeColor(custom, this.look ? styleSeriesColor(this.look.series, idx) : this.host.colorPalette.getColor(name).value),
                     shape: shapeByCat ? SHAPES[idx % SHAPES.length] : "circle"
                 });
             });
@@ -520,10 +563,11 @@ export class Visual implements IVisual {
         if (d.hasTarget && s.movement.flagOffTarget.value) { out.push("target tracking"); }
         if (s.bands.customThresholds.value) { out.push("custom score thresholds"); }
         if (s.appetite.show.value) { out.push("the risk appetite line"); }
-        const constant = safeColor(s.markers.fill.value?.value, "#3D3929").toLowerCase();
+        const constant = this.tinta("markers", "fill", s.markers.fill.value, "#3D3929", this.look?.marker).toLowerCase();
         if (d.risks.some(r => r.ruleColor && r.ruleColor.toLowerCase() !== constant)) { out.push("conditional marker colors"); }
         if (s.markers.shapeByCategory.value && d.categories.length > 0) { out.push("category shapes"); }
         if (s.detail.show.value) { out.push("the cell detail panel"); }
+        if (this.estiloPedido) { out.push("the " + STYLE_NAMES[this.estiloPedido] + " style"); }
         void dataView;
         return out;
     }
@@ -551,8 +595,9 @@ export class Visual implements IVisual {
 
     private bandColor(b: Band): string {
         const s = this.settings.bands;
-        const c = [s.lowColor, s.mediumColor, s.highColor, s.criticalColor][b].value?.value;
-        return safeColor(c, ["#8BC48A", "#F2D16B", "#F29E5C", "#E0605A"][b]);
+        const props = ["lowColor", "mediumColor", "highColor", "criticalColor"];
+        const c = [s.lowColor, s.mediumColor, s.highColor, s.criticalColor][b].value;
+        return this.tinta("bands", props[b], c, ["#8BC48A", "#F2D16B", "#F29E5C", "#E0605A"][b], this.look?.bands[b]);
     }
 
     // ==========================================================================================
@@ -585,6 +630,9 @@ export class Visual implements IVisual {
         const s = this.settings;
         const pro = this.isProActive();
         const N = this.gridSize;
+        // Fondo del estilo de la colección (el alto contraste manda sobre el estilo).
+        const look = this.isHighContrast ? null : this.look;
+        this.target.style.background = look ? (look.grad || look.bg) : "";
         this.messageEl.style.display = "none";
         this.svgEl.style.display = "block";
 
@@ -601,7 +649,7 @@ export class Visual implements IVisual {
         const defs = svg("defs");
         const arrowId = this.uid + "-arrow";
         const marker = svg("marker", { id: arrowId, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" });
-        const arrowColor = this.isHighContrast ? this.hcForeground : safeColor(s.movement.color.value?.value, "#535146");
+        const arrowColor = this.isHighContrast ? this.hcForeground : this.tinta("movement", "color", s.movement.color.value, "#535146", this.look?.axis ?? this.tintaTema());
         marker.appendChild(svg("path", { d: "M0,0 L10,5 L0,10 z", fill: arrowColor }));
         defs.appendChild(marker);
         root.appendChild(defs);
@@ -609,8 +657,8 @@ export class Visual implements IVisual {
         // ---- Márgenes ------------------------------------------------------------------------
         const ax = s.axes;
         const fs = Math.max(8, Math.min(24, ax.fontSize.value || 11));
-        const font = safeFont(ax.fontFamily.value);
-        const axisColor = this.isHighContrast ? this.hcForeground : safeColor(ax.color.value?.value, "#535146");
+        const font = (this.look?.font && (this.objetos as any)?.axes?.fontFamily === undefined) ? this.look.font : safeFont(ax.fontFamily.value);
+        const axisColor = this.isHighContrast ? this.hcForeground : this.tinta("axes", "color", ax.color.value, "#535146", this.look?.axis ?? this.tintaTema());
         const xLabels = this.levelLabels(ax.xLabels.value, N);
         const yLabels = this.levelLabels(ax.yLabels.value, N);
         const maxYLabel = Math.max(...yLabels.map(l => l.length));
@@ -663,7 +711,7 @@ export class Visual implements IVisual {
                 rect.appendChild(title);
                 cellsG.appendChild(rect);
 
-                const textColor = this.isHighContrast ? this.hcForeground : safeColor(s.grid.textColor.value?.value, "#5C5847");
+                const textColor = this.isHighContrast ? this.hcForeground : this.tinta("grid", "textColor", s.grid.textColor.value, "#5C5847", this.look?.cellText);
                 if (s.grid.showScore.value) {
                     const t = svg("text", { x: cellX(x) + gap / 2 + 4, y: cellY(y) + gap / 2 + fs, class: "rmp-cell-text", fill: textColor, "font-size": fs * 0.9, "font-family": font });
                     t.textContent = String(x * y);
@@ -693,7 +741,7 @@ export class Visual implements IVisual {
             if (parts.length) {
                 root.appendChild(svg("path", {
                     d: parts.join(""), fill: "none", "stroke-linecap": "round", class: "rmp-appetite",
-                    stroke: this.isHighContrast ? this.hcForeground : safeColor(s.appetite.color.value?.value, "#252423"),
+                    stroke: this.isHighContrast ? this.hcForeground : this.tinta("appetite", "color", s.appetite.color.value, "#252423", this.look?.text),
                     "stroke-width": Math.max(1, Math.min(8, s.appetite.width.value)),
                     "stroke-dasharray": this.isHighContrast ? "6 3" : ""
                 }));
@@ -828,7 +876,7 @@ export class Visual implements IVisual {
 
         // ---- Marcadores ----------------------------------------------------------------------
         const markersG = svg("g", { class: "rmp-markers", role: "list" });
-        const labelColor = this.isHighContrast ? this.hcBackground : safeColor(s.markers.labelColor.value?.value, "#FFFFFF");
+        const labelColor = this.isHighContrast ? this.hcBackground : this.tinta("markers", "labelColor", s.markers.labelColor.value, "#FFFFFF", this.look?.label);
         const maxChars = Math.max(1, Math.min(12, s.markers.labelMaxChars.value));
         for (const r of d.risks) {
             if (r.hidden) { continue; }
@@ -940,7 +988,7 @@ export class Visual implements IVisual {
         const lfs = Math.max(8, Math.min(32, s.fontSize.value || 11));
         this.legendEl.style.fontFamily = safeFont(s.fontFamily.value);
         this.legendEl.style.fontSize = lfs + "px";
-        this.legendEl.style.color = this.isHighContrast ? this.hcForeground : safeColor(s.color.value?.value, "#535146");
+        this.legendEl.style.color = this.isHighContrast ? this.hcForeground : this.tinta("legend", "color", s.color.value, "#535146", this.look?.axis ?? this.tintaTema());
         const sws = Math.round(lfs * 1.1);
         for (const c of d.categories) {
             const item = document.createElement("button");
@@ -986,8 +1034,8 @@ export class Visual implements IVisual {
             this.panelEl.style.borderColor = this.hcForeground;
         } else {
             const det = this.settings.detail;
-            this.panelEl.style.background = safeColor(det.background.value?.value, "#FFFFFF");
-            this.panelEl.style.color = safeColor(det.textColor.value?.value, "#3D3929");
+            this.panelEl.style.background = this.tinta("detail", "background", det.background.value, "#FFFFFF", this.look?.panel);
+            this.panelEl.style.color = this.tinta("detail", "textColor", det.textColor.value, "#3D3929", this.look?.text);
             this.panelEl.style.borderColor = "";
         }
         this.panelEl.style.fontSize = Math.max(8, Math.min(24, this.settings.detail.fontSize.value || 12)) + "px";
@@ -1351,12 +1399,40 @@ export class Visual implements IVisual {
 
     private updateWatermark(): void {
         const show = this.isPreview() && this.attemptedPro.length > 0;
-        this.watermarkEl.style.display = show ? "flex" : "none";
-        if (!show) { return; }
-        const width = this.target.clientWidth || 0;
-        const size = Math.max(20, Math.min(72, Math.round(width * 0.09)));
-        this.watermarkEl.style.fontSize = `${size}px`;
+        renderProWatermark(this.wm, show ? {
+            width: this.target.clientWidth || 0, height: this.target.clientHeight || 0,
+            title: "Pro preview", features: this.attemptedPro,
+            highContrast: this.isHighContrast ? { foreground: this.hcForeground, background: this.hcBackground } : null
+        } : null);
     }
+
+    /**
+     * Plantilla (1.1): Report theme por defecto; Classic = el aspecto de la 1.0; los seis estilos de la colección son Pro
+     * (con licencia, o en la vista previa mientras se edita; sin ninguna de las dos se pinta Report theme).
+     */
+    private resolverEstilo(dataView: powerbi.DataView): void {
+        this.objetos = dataView?.metadata?.objects || {};
+        const tpl = String(this.settings.style.template.value?.value || "report");
+        const esPro = PRO_STYLES.indexOf(tpl) >= 0;
+        this.estiloPedido = esPro ? tpl : null;
+        this.look = esPro && this.isProActive() ? STYLE_TOKENS[tpl] : null;
+        this.temaInforme = tpl === "report" || (esPro && !this.look);
+    }
+
+    /** Color final de una propiedad: lo guardado manda; si no hay nada guardado, el del estilo o el del tema; si no, el de siempre. */
+    private tinta(obj: string, prop: string, actual: unknown, def: string, token?: string | null): string {
+        const guardado = (this.objetos as any)?.[obj]?.[prop] !== undefined;
+        if (!guardado && token) { return token; }
+        return safeColor((actual as any)?.value ?? actual, def);
+    }
+
+    /** Tinta del tema del informe para textos secundarios (Report theme). */
+    private tintaTema(): string | null {
+        if (!this.temaInforme) { return null; }
+        const pal: any = this.host.colorPalette;
+        return pal?.foregroundNeutralSecondary?.value || pal?.foreground?.value || null;
+    }
+
 
     /** Pide la licencia una vez, fuera del camino critico. Si no resuelve, se queda en Free. */
     private requestLicenseDeferred(): void {

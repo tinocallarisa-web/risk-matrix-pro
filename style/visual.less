@@ -1,3 +1,4 @@
+@import (less) "comun/watermark.less";
 .rmp-root {
     display: flex;
     flex-direction: column;
@@ -129,3 +130,6 @@
 @media (forced-colors: active) {
     .rmp-warning { background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
 }
+
+// Marca de agua común encima de la matriz y la leyenda (1.1).
+.rmp-root .tcviz-wm { z-index: 5; }

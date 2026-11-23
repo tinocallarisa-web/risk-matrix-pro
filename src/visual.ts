@@ -20,6 +20,10 @@ import IVisualLicenseManager = powerbi.extensibility.IVisualLicenseManager;
 import { VisualFormattingSettingsModel, PRO_STYLES } from "./settings";
 import { createProWatermark, renderProWatermark } from "./comun/watermark";
 import { styleSeriesColor } from "./comun/paleta";
+import {
+    HtmlSubSelectableClass, HtmlSubSelectionHelper, SubSelectableDisplayNameAttribute,
+    SubSelectableObjectNameAttribute, SubSelectableTypeAttribute,
+} from "powerbi-visuals-utils-onobjectutils";
 
 // ------------------------------------------------------------------------------------------
 // Licensing
@@ -216,6 +220,10 @@ export class Visual implements IVisual {
     private warningEl: HTMLElement;
     private panelEl: HTMLElement;
     private listEl: HTMLElement;
+    /** Formato en el lienzo (on-object, 1.1). */
+    private subSelectionHelper: HtmlSubSelectionHelper;
+    public visualOnObjectFormatting?: powerbi.extensibility.visual.VisualOnObjectFormatting;
+    private formatMode = false;
     /** Marca de agua "Pro preview" común de la cartera (utillaje/comun/watermark.ts). */
     private wm: HTMLDivElement;
     /** Estilo de la colección que se pinta (null = Report theme, Classic o sin licencia). */
@@ -310,6 +318,17 @@ export class Visual implements IVisual {
 
         this.wm = createProWatermark(this.target);
 
+        this.subSelectionHelper = HtmlSubSelectionHelper.createHtmlSubselectionHelper({
+            hostElement: options.element,
+            subSelectionService: options.host.subSelectionService,
+            selectionIdCallback: () => undefined,
+        });
+        this.visualOnObjectFormatting = {
+            getSubSelectionStyles: (subs) => this.getSubSelectionStyles(subs),
+            getSubSelectionShortcuts: (subs) => this.getSubSelectionShortcuts(subs),
+            getSubSelectables: (filter) => this.subSelectionHelper.getAllSubSelectables(filter),
+        };
+
         // Clic en vacío limpia la selección; menú contextual a nivel de visual
         this.svgEl.addEventListener("click", (ev: MouseEvent) => {
             if (ev.target === this.svgEl) { this.clearSelection(); }
@@ -339,8 +358,14 @@ export class Visual implements IVisual {
     public update(options: VisualUpdateOptions): void {
         this.events.renderingStarted(options);
         this.lastOptions = options;
+        this.formatMode = !!(options as any).formatMode;
+        this.subSelectionHelper.setFormatMode(this.formatMode);
         try {
             this.renderFromDataView(options.dataViews && options.dataViews[0]);
+            this.markSubSelectables();
+            if (this.formatMode) {
+                this.subSelectionHelper.updateOutlinesFromSubSelections((options as any).subSelections ?? [], true);
+            }
             this.events.renderingFinished(options);
         } catch (error) {
             console.error("Risk Matrix Pro: render error", error);
@@ -1143,8 +1168,67 @@ export class Visual implements IVisual {
     // Interaction
     // ==========================================================================================
 
+    /** allowInteractions se lee de hostCapabilities (1.1); en modo formato un clic nunca filtra la página. */
     private interactionsAllowed(): boolean {
-        return (this.host as any).allowInteractions !== false;
+        const hc = (this.host as any).hostCapabilities;
+        const permitido = (hc && typeof hc.allowInteractions === "boolean") ? hc.allowInteractions : (this.host as any).allowInteractions !== false;
+        return permitido && !this.formatMode;
+    }
+
+    // ---- Formato en el lienzo (on-object) ------------------------------------------------------
+
+    private markSubSelectables(): void {
+        const marcar = (sel: string, objeto: string, nombre: string, tipo: powerbi.visuals.SubSelectionStylesType) => {
+            this.target.querySelectorAll(sel).forEach(el => {
+                if (!this.formatMode) { el.classList.remove(HtmlSubSelectableClass); return; }
+                el.classList.add(HtmlSubSelectableClass);
+                el.setAttribute(SubSelectableObjectNameAttribute, objeto);
+                el.setAttribute(SubSelectableDisplayNameAttribute, nombre);
+                el.setAttribute(SubSelectableTypeAttribute, String(tipo));
+            });
+        };
+        marcar(".rmp-cell", "bands", "Risk bands", powerbi.visuals.SubSelectionStylesType.Shape);
+        marcar(".rmp-marker", "markers", "Markers", powerbi.visuals.SubSelectionStylesType.Shape);
+        marcar(".rmp-axes", "axes", "Axes", powerbi.visuals.SubSelectionStylesType.Text);
+        marcar(".rmp-legend", "legend", "Legend", powerbi.visuals.SubSelectionStylesType.Text);
+        marcar(".rmp-list", "riskList", "Risk list", powerbi.visuals.SubSelectionStylesType.Text);
+    }
+
+    private getSubSelectionStyles(subs: powerbi.visuals.CustomVisualSubSelection[]): powerbi.visuals.SubSelectionStyles | undefined {
+        const name = subs[0]?.customVisualObjects[0]?.objectName;
+        const ref = (objectName: string, propertyName: string, label: string) => ({ reference: { objectName, propertyName }, label });
+        switch (name) {
+            case "markers": return { type: powerbi.visuals.SubSelectionStylesType.Shape, fill: ref("markers", "fill", "Marker color") } as any;
+            case "bands": return { type: powerbi.visuals.SubSelectionStylesType.Shape, fill: ref("bands", "lowColor", "Low") } as any;
+            case "axes": return { type: powerbi.visuals.SubSelectionStylesType.Text, fontFamily: ref("axes", "fontFamily", "Font"), fontSize: ref("axes", "fontSize", "Font size"), fontColor: ref("axes", "color", "Color") } as any;
+            case "legend": return { type: powerbi.visuals.SubSelectionStylesType.Text, fontFamily: ref("legend", "fontFamily", "Font"), fontSize: ref("legend", "fontSize", "Font size"), fontColor: ref("legend", "color", "Text color") } as any;
+            case "riskList": return { type: powerbi.visuals.SubSelectionStylesType.Text } as any;
+        }
+        return undefined;
+    }
+
+    private getSubSelectionShortcuts(subs: powerbi.visuals.CustomVisualSubSelection[]): powerbi.visuals.VisualSubSelectionShortcuts | undefined {
+        const name = subs[0]?.customVisualObjects[0]?.objectName;
+        const id = (objectName: string, propertyName: string) => ({ objectName, propertyName });
+        const toggle = (o: string, pr: string, label: string) => ({ type: powerbi.visuals.VisualShortcutType.Toggle, ...id(o, pr), relatedToggledFormattingIds: [id(o, pr)], disabledLabel: label, enabledLabel: label });
+        const picker = (o: string, pr: string, label: string) => ({ type: powerbi.visuals.VisualShortcutType.Picker, ...id(o, pr), label });
+        const reset = (o: string, props: string[]) => ({ type: powerbi.visuals.VisualShortcutType.Reset, relatedResetFormattingIds: props.map(pr => id(o, pr)) });
+        const nav = (o: string, label: string) => ({ type: powerbi.visuals.VisualShortcutType.Navigate, destinationInfo: { cardUid: "Visual-" + o + "_card" }, label });
+        switch (name) {
+            case "bands":
+                return [picker("grid", "size", "Grid size"), toggle("grid", "showScore", "Show cell score"), toggle("grid", "showCount", "Show risk count"),
+                    { type: powerbi.visuals.VisualShortcutType.Divider }, reset("bands", ["lowColor", "mediumColor", "highColor", "criticalColor"]), nav("bands", "Risk bands")] as any;
+            case "markers":
+                return [toggle("markers", "showLabels", "Show labels"), picker("movement", "arrows", "Movement arrows"), picker("movement", "plotAt", "Place markers at"),
+                    { type: powerbi.visuals.VisualShortcutType.Divider }, reset("markers", ["fill", "size", "labelColor"]), nav("markers", "Markers")] as any;
+            case "axes":
+                return [{ type: powerbi.visuals.VisualShortcutType.Divider }, reset("axes", ["fontFamily", "fontSize", "color"]), nav("axes", "Axes")] as any;
+            case "legend":
+                return [picker("legend", "position", "Position"), { type: powerbi.visuals.VisualShortcutType.Divider }, reset("legend", ["fontFamily", "fontSize", "color"]), nav("legend", "Legend")] as any;
+            case "riskList":
+                return [picker("riskList", "sortBy", "Sort by"), nav("riskList", "Risk list")] as any;
+        }
+        return undefined;
     }
 
     private onCellClick(x: number, y: number, list: RiskPoint[], ev: MouseEvent): void {

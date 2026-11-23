@@ -238,6 +238,16 @@ async def main():
         check("sin licencia editando: vista previa con marca que la nombra", bool(i["wm"]) and "risk list" in i["wm"], str(i["wm"]))
         await pg.close()
 
+        print("Formato en el lienzo")
+        pg = await page(b, dataview({"riskList": {"show": True}}), W=960, H=480)
+        r = await pg.evaluate("""(dv) => { __v.update({ dataViews: [dv], viewport: {width: 960, height: 480}, type: 2, operationKind: 0, viewMode: 1, formatMode: true, jsonFilters: [] });
+            const n = o => document.querySelectorAll(`#host [subselectable], #host .subselectable, #host [data-sub-selection-object-name='${o}']`).length;
+            const sc = __v.visualOnObjectFormatting.getSubSelectionShortcuts([{ customVisualObjects: [{ objectName: 'markers' }] }]);
+            return { celdas: n('bands'), marcadores: n('markers'), ejes: n('axes'), lista: n('riskList'), atajos: (sc || []).length }; }""", dataview({"riskList": {"show": True}}))
+        check("modo formato: celdas, marcadores, ejes y lista seleccionables, con atajos", r["celdas"] >= 25 and r["marcadores"] >= 12 and r["ejes"] >= 1 and r["lista"] >= 1 and r["atajos"] >= 4, str(r))
+        await eventos(pg, "formato")
+        await pg.close()
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

@@ -170,6 +170,21 @@ async def main():
         check("alto contraste gana al estilo", not i["bg"], str(i))
         await pg.close()
 
+        print("Texto que encoge con el visual")
+        medir = """() => { const h = document.getElementById('host');
+            const t = Array.from(h.querySelectorAll('svg text')).filter(e => e.textContent.trim() && e.getBBox().width > 0);
+            const fs = e => parseFloat(e.getAttribute('font-size') || e.closest('[font-size]')?.getAttribute('font-size') || getComputedStyle(e).fontSize);
+            const ley = parseFloat(getComputedStyle(h.querySelector('.rmp-legend')).fontSize);
+            return { n: t.length, fs: t.map(fs).concat([ley]) }; }"""
+        g = await (await page(b, dataview(), W=760, H=480)).evaluate(medir)
+        pq = await page(b, dataview(), W=456, H=288, name="tamano_456x288")
+        q = await pq.evaluate(medir)
+        await eventos(pq, "pequeño")
+        await pq.close()
+        check("al 60 %: el mayor texto encoge", max(q["fs"]) < max(g["fs"]), f"{max(g['fs'])} -> {max(q['fs'])}")
+        check("al 60 %: nada por debajo de 8 px", min(q["fs"]) >= 8, str(min(q["fs"])))
+        check("al 60 %: no se quita ningún texto", q["n"] >= g["n"] - 2, f"{g['n']} -> {q['n']}")
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

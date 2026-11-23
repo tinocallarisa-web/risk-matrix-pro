@@ -212,6 +212,10 @@ export class Visual implements IVisual {
     private estiloPedido: string | null = null;
     /** Report theme activo (plantilla por defecto): textos y ejes con la tinta del tema del informe. */
     private temaInforme = false;
+    /** Factor de tamaño del visual (0,6–1): el texto y los marcadores encogen con el visual. */
+    private escala = 1;
+    /** Tamaño mínimo de texto (tarjeta Accesibilidad). */
+    private minTexto = 0;
     /** objects guardados en el informe: un ajuste escrito manda siempre sobre la plantilla. */
     private objetos: powerbi.DataViewObjects = {};
     private readonly uid = "rmp" + crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
@@ -633,6 +637,12 @@ export class Visual implements IVisual {
         // Fondo del estilo de la colección (el alto contraste manda sobre el estilo).
         const look = this.isHighContrast ? null : this.look;
         this.target.style.background = look ? (look.grad || look.bg) : "";
+        // Texto que encoge con el visual (norma de la cartera, 1.1): a tamaño de informe (760×480 o más) el elegido; por
+        // debajo, todo encoge a la vez hasta el 60 %, nunca por debajo de 8 px ni del mínimo de Accesibilidad. Los
+        // marcadores encogen igual. No se quita nada para hacer sitio.
+        const vw = this.lastOptions?.viewport?.width || this.target.clientWidth || 760;
+        const vh = this.lastOptions?.viewport?.height || this.target.clientHeight || 480;
+        this.escala = Math.min(1, Math.max(0.6, Math.min(vw / 760, vh / 480)));
         this.messageEl.style.display = "none";
         this.svgEl.style.display = "block";
 
@@ -656,7 +666,7 @@ export class Visual implements IVisual {
 
         // ---- Márgenes ------------------------------------------------------------------------
         const ax = s.axes;
-        const fs = Math.max(8, Math.min(24, ax.fontSize.value || 11));
+        const fs = this.fz(Math.min(24, ax.fontSize.value || 11));
         const font = (this.look?.font && (this.objetos as any)?.axes?.fontFamily === undefined) ? this.look.font : safeFont(ax.fontFamily.value);
         const axisColor = this.isHighContrast ? this.hcForeground : this.tinta("axes", "color", ax.color.value, "#535146", this.look?.axis ?? this.tintaTema());
         const xLabels = this.levelLabels(ax.xLabels.value, N);
@@ -713,12 +723,12 @@ export class Visual implements IVisual {
 
                 const textColor = this.isHighContrast ? this.hcForeground : this.tinta("grid", "textColor", s.grid.textColor.value, "#5C5847", this.look?.cellText);
                 if (s.grid.showScore.value) {
-                    const t = svg("text", { x: cellX(x) + gap / 2 + 4, y: cellY(y) + gap / 2 + fs, class: "rmp-cell-text", fill: textColor, "font-size": fs * 0.9, "font-family": font });
+                    const t = svg("text", { x: cellX(x) + gap / 2 + 4, y: cellY(y) + gap / 2 + fs, class: "rmp-cell-text", fill: textColor, "font-size": Math.max(8, this.minTexto, fs * 0.9), "font-family": font });
                     t.textContent = String(x * y);
                     cellsG.appendChild(t);
                 }
                 if (s.grid.showCount.value && inCell.length > 0) {
-                    const t = svg("text", { x: cellX(x) + cw - gap / 2 - 4, y: cellY(y) + gap / 2 + fs, "text-anchor": "end", class: "rmp-cell-text", fill: textColor, "font-size": fs * 0.9, "font-weight": 600, "font-family": font });
+                    const t = svg("text", { x: cellX(x) + cw - gap / 2 - 4, y: cellY(y) + gap / 2 + fs, "text-anchor": "end", class: "rmp-cell-text", fill: textColor, "font-size": Math.max(8, this.minTexto, fs * 0.9), "font-weight": 600, "font-family": font });
                     t.textContent = String(inCell.length);
                     cellsG.appendChild(t);
                 }
@@ -774,7 +784,7 @@ export class Visual implements IVisual {
         root.appendChild(axesG);
 
         // ---- Colocación de marcadores --------------------------------------------------------
-        const baseSize = Math.max(8, Math.min(60, s.markers.size.value));
+        const baseSize = Math.max(8, Math.round(Math.min(60, s.markers.size.value) * this.escala));
         const overflowG = svg("g", { class: "rmp-overflow" });
         counts.forEach((list, k) => {
             const [x, y] = k.split(",").map(Number);
@@ -811,7 +821,7 @@ export class Visual implements IVisual {
                 const by = offY + Math.floor(slot / usedCols) * (size + 3);
                 const g = svg("g", { class: "rmp-more" });
                 g.appendChild(svg("circle", { cx: bx, cy: by, r: size / 2, fill: this.isHighContrast ? this.hcBackground : "#FFFFFF", stroke: this.isHighContrast ? this.hcForeground : "#83827D", "stroke-width": 1 }));
-                const t = svg("text", { x: bx, y: by, "text-anchor": "middle", "dominant-baseline": "central", "font-size": Math.max(7, size * 0.4), "font-family": font, fill: this.isHighContrast ? this.hcForeground : "#3D3929" });
+                const t = svg("text", { x: bx, y: by, "text-anchor": "middle", "dominant-baseline": "central", "font-size": Math.max(8, this.minTexto, size * 0.4), "font-family": font, fill: this.isHighContrast ? this.hcForeground : "#3D3929" });
                 t.textContent = "+" + overflow;
                 g.appendChild(t);
                 const title = svg("title");
@@ -891,12 +901,12 @@ export class Visual implements IVisual {
                 }));
             }
             g.appendChild(this.shapeElement(r.shape, r.px, r.py, r.size, fill));
-            if (s.markers.showLabels.value && r.size >= 14) {
+            if (s.markers.showLabels.value && r.size >= 12) {  // 1.1: a 12 px aún cabe una sigla; al encoger no se quitan
                 // El texto tiene que caber dentro del marcador: se reduce la letra y, si no basta, los caracteres
                 const text = this.truncate(r.name, maxChars, "");
                 const inner = r.size * 0.82;
-                let lfs = Math.max(7, r.size * 0.4);
-                if (text.length * lfs * 0.6 > inner) { lfs = Math.max(7, inner / (text.length * 0.6)); }
+                let lfs = Math.max(8, this.minTexto, r.size * 0.4);
+                if (text.length * lfs * 0.6 > inner) { lfs = Math.max(8, this.minTexto, inner / (text.length * 0.6)); }
                 const fits = Math.max(1, Math.floor(inner / (lfs * 0.6)));
                 const t = svg("text", {
                     x: r.px, y: r.py, "text-anchor": "middle", "dominant-baseline": "central",
@@ -985,8 +995,8 @@ export class Visual implements IVisual {
         }
         this.legendEl.style.display = "flex";
         this.legendEl.style.order = String(s.position.value.value) === "bottom" ? "2" : "0";
-        const lfs = Math.max(8, Math.min(32, s.fontSize.value || 11));
-        this.legendEl.style.fontFamily = safeFont(s.fontFamily.value);
+        const lfs = this.fz(Math.min(32, s.fontSize.value || 11));
+        this.legendEl.style.fontFamily = (this.look?.font && (this.objetos as any)?.legend?.fontFamily === undefined) ? this.look.font : safeFont(s.fontFamily.value);
         this.legendEl.style.fontSize = lfs + "px";
         this.legendEl.style.color = this.isHighContrast ? this.hcForeground : this.tinta("legend", "color", s.color.value, "#535146", this.look?.axis ?? this.tintaTema());
         const sws = Math.round(lfs * 1.1);
@@ -1038,7 +1048,7 @@ export class Visual implements IVisual {
             this.panelEl.style.color = this.tinta("detail", "textColor", det.textColor.value, "#3D3929", this.look?.text);
             this.panelEl.style.borderColor = "";
         }
-        this.panelEl.style.fontSize = Math.max(8, Math.min(24, this.settings.detail.fontSize.value || 12)) + "px";
+        this.panelEl.style.fontSize = this.fz(Math.min(24, this.settings.detail.fontSize.value || 12)) + "px";
 
         const head = document.createElement("div");
         head.className = "rmp-panel-head";
@@ -1424,6 +1434,12 @@ export class Visual implements IVisual {
         const guardado = (this.objetos as any)?.[obj]?.[prop] !== undefined;
         if (!guardado && token) { return token; }
         return safeColor((actual as any)?.value ?? actual, def);
+    }
+
+    /** Tamaño de letra escalado: encoge con el visual, nunca por debajo de 8 px ni del mínimo de Accesibilidad. */
+    private fz(px: number): number {
+        const v = Number(px) || 0;
+        return Math.round(Math.max(this.minTexto, Math.min(v, 8), v * this.escala) * 2) / 2;
     }
 
     /** Tinta del tema del informe para textos secundarios (Report theme). */

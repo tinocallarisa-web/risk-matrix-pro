@@ -281,6 +281,25 @@ async def main():
             check(f"{W}x{H}: ninguna etiqueta del color de su marcador", r["mal"] == 0, str(r["mal"]))
             await pg.close()
 
+        print("Selección")
+        pg = await page(b, dataview(), W=760, H=480, edit=False, name="seleccion")
+        celda = "#host .rmp-cell[data-cell='4,4']"
+        estado = "() => [document.querySelectorAll('#host .rmp-marker[opacity=\"0.3\"]').length, (document.querySelector(\"#host .rmp-cell[data-cell='4,4']\") || {getAttribute(){return null;}}).getAttribute('stroke-width'), document.querySelectorAll('#host .rmp-cell[opacity=\"0.45\"]').length]"
+        for i in range(3):
+            await pg.click(celda, position={"x": 8, "y": 30}); await pg.wait_for_timeout(80)
+            e = await pg.evaluate(estado)
+            if i % 2 == 0:
+                check(f"clic {i + 1} en una celda: se selecciona, borde y resto atenuado", e[0] > 0 and e[1] == "3" and e[2] == 24, str(e))
+            else:
+                check(f"clic {i + 1} en la misma celda: se quita la selección", e[0] == 0 and e[1] == "0" and e[2] == 0, str(e))
+        m = "#host .rmp-marker >> nth=3"
+        await pg.click(m); await pg.wait_for_timeout(80)
+        a1 = await pg.evaluate(estado)
+        await pg.click(m); await pg.wait_for_timeout(80)
+        a2 = await pg.evaluate(estado)
+        check("segundo clic en el mismo marcador: se quita la selección", a1[0] == 11 and a2[0] == 0, f"{a1} -> {a2}")
+        await pg.close()
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

@@ -759,7 +759,7 @@ export class Visual implements IVisual {
                 const rect = svg("rect", {
                     x: cellX(x) + gap / 2, y: cellY(y) + gap / 2,
                     width: Math.max(0, cw - gap), height: Math.max(0, ch - gap),
-                    rx: s.grid.cellRadius.value, class: "rmp-cell"
+                    rx: s.grid.cellRadius.value, class: "rmp-cell", "data-cell": x + "," + y
                 });
                 if (this.isHighContrast) {
                     // En alto contraste el significado no puede ir en el relleno: grosor de borde por banda
@@ -1315,12 +1315,19 @@ export class Visual implements IVisual {
             this.clearSelection();
             return;
         }
-        this.selectMany(list.map(r => r.selectionId), ev.ctrlKey || ev.metaKey);
+        const multi = ev.ctrlKey || ev.metaKey;
+        // 1.1: segundo clic en la misma celda = quitar la selección (antes dependía de cómo Power BI tratara la lista).
+        const keys = new Set(list.map(r => r.key));
+        const misma = !multi && keys.size === this.selectedKeys.size && [...keys].every(k => this.selectedKeys.has(k));
+        if (misma) { this.clearSelection(); return; }
+        this.selectMany(list.map(r => r.selectionId), multi);
     }
 
     private selectRisk(r: RiskPoint, multi: boolean): void {
         if (!this.interactionsAllowed()) { return; }
         this.focusedKey = r.key;
+        // Volver a pulsar el único riesgo seleccionado lo deselecciona (receta de Calendar y Box & Whisker).
+        if (!multi && this.selectedKeys.size === 1 && this.selectedKeys.has(r.key)) { this.clearSelection(); return; }
         this.selectionManager.select(r.selectionId, multi).then((ids: ISelectionId[]) => {
             this.selectedKeys = new Set(ids.map(id => id.getKey()));
             this.applySelectionStyles();
@@ -1348,6 +1355,19 @@ export class Visual implements IVisual {
         if (!d) { return; }
         const anySelected = this.selectedKeys.size > 0;
         const byKey = new Map(d.risks.map(r => [r.key, r]));
+        // 1.1: la selección se ve también en la matriz: la celda con riesgos seleccionados lleva borde y las demás se atenúan.
+        const celdasSel = new Set(d.risks.filter(r => this.selectedKeys.has(r.key)).map(r => r.plotted.x + "," + r.plotted.y));
+        const borde = this.isHighContrast ? this.hcSelected : (this.look ? this.look.text : "#252423");
+        this.svgEl.querySelectorAll<SVGRectElement>(".rmp-cell").forEach(c => {
+            const sel = celdasSel.has(c.getAttribute("data-cell"));
+            c.setAttribute("opacity", anySelected && !sel ? "0.45" : "1");
+            if (!this.isHighContrast) {
+                c.setAttribute("stroke", sel ? borde : "none");
+                c.setAttribute("stroke-width", sel ? "3" : "0");
+            } else {
+                c.setAttribute("stroke", sel ? this.hcSelected : this.hcForeground);
+            }
+        });
         this.svgEl.querySelectorAll<SVGGElement>(".rmp-marker").forEach(g => {
             const r = byKey.get(g.getAttribute("data-key"));
             if (!r) { return; }

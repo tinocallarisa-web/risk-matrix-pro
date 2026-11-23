@@ -261,6 +261,14 @@ async def main():
         check("en lectura no hay guía", not g, str(g))
         await pg.close()
 
+        print("Idiomas")
+        for loc, cab, tarjeta in (("fr-FR", "Risques (12)", "Liste des risques"), ("ja-JP", "リスク (12)", "リスク一覧")):
+            pg = await page(b, dataview({"riskList": {"show": True}}), W=960, H=480, locale=loc, name=f"idioma_{loc}")
+            h = await pg.evaluate("() => document.querySelector('#host .rmp-list-head').textContent")
+            m = await pg.evaluate("() => __v.getFormattingModel().cards.map(c => c.displayName).join(' | ')")
+            check(f"{loc}: lista y panel en su idioma", h == cab and tarjeta in m, f"{h} · {m[:90]}")
+            await pg.close()
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

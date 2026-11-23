@@ -20,6 +20,7 @@ import IVisualLicenseManager = powerbi.extensibility.IVisualLicenseManager;
 import { VisualFormattingSettingsModel, PRO_STYLES } from "./settings";
 import { createProWatermark, renderProWatermark } from "./comun/watermark";
 import { styleSeriesColor } from "./comun/paleta";
+import { STRINGS } from "./strings";
 import {
     HtmlSubSelectableClass, HtmlSubSelectionHelper, SubSelectableDisplayNameAttribute,
     SubSelectableObjectNameAttribute, SubSelectableTypeAttribute,
@@ -45,19 +46,6 @@ function matchesPlan(spIdentifier: unknown, planId: string): boolean {
     return sp === planId || sp.endsWith("." + planId);
 }
 
-// La API de licencias exige localizar el texto del aviso (maximo 500 caracteres).
-const ES_LABELS: Record<string, string> = {
-    "movement arrows": "las flechas de movimiento",
-    "custom score thresholds": "los umbrales personalizados",
-    "the risk appetite line": "la línea de apetito de riesgo",
-    "conditional marker colors": "los colores condicionales de marcador",
-    "category shapes": "las formas por categoría",
-    "the cell detail panel": "el panel de detalle de celda",
-    "target tracking": "el seguimiento del objetivo",
-    "the risk list": "la lista de riesgos",
-    "the Boardroom style": "el estilo Boardroom", "the Ledger style": "el estilo Ledger", "the Editorial style": "el estilo Editorial",
-    "the Signal style": "el estilo Signal", "the Aurora style": "el estilo Aurora", "the Terrace style": "el estilo Terrace"
-};
 
 // ------------------------------------------------------------------------------------------
 // Estilos de la colección (1.1)
@@ -399,7 +387,15 @@ export class Visual implements IVisual {
             }
         }
         cc.visible = cc.slices.length > 0;
-        return this.formattingSettingsService.buildFormattingModel(s);
+        const modelo = this.formattingSettingsService.buildFormattingModel(s);
+        // Las categorías son datos del autor: sus nombres no se traducen.
+        const catNames = new Set((this.data?.categories || []).map(c => c.name));
+        const guardar = (modelo.cards || []).map((c: any) => c.groups?.map((g: any) => g.slices?.map((sl: any) => catNames.has(sl.displayName) ? sl.displayName : null)));
+        this.traducirModelo(modelo);
+        (modelo.cards || []).forEach((c: any, i: number) => c.groups?.forEach((g: any, j: number) => g.slices?.forEach((sl: any, k: number) => {
+            const n = guardar[i]?.[j]?.[k]; if (n) { sl.displayName = n; }
+        })));
+        return modelo;
     }
 
     private renderFromDataView(dataView: powerbi.DataView): void {
@@ -625,7 +621,7 @@ export class Visual implements IVisual {
         if (s.markers.shapeByCategory.value && d.categories.length > 0) { out.push("category shapes"); }
         if (s.detail.show.value) { out.push("the cell detail panel"); }
         if (s.riskList.show.value && d.risks.length > 0) { out.push("the risk list"); }
-        if (this.estiloPedido) { out.push("the " + STYLE_NAMES[this.estiloPedido] + " style"); }
+        if (this.estiloPedido) { out.push(this.t("the {0} style", STYLE_NAMES[this.estiloPedido])); }
         void dataView;
         return out;
     }
@@ -668,16 +664,16 @@ export class Visual implements IVisual {
         this.legendEl.style.display = "none";
         this.warningEl.style.display = "none";
         this.closePanel();
-        const missing = [!hasRisk && "Risk", !hasL && "Likelihood", !hasI && "Impact"].filter(Boolean);
+        const missing = [!hasRisk && this.t("Risk"), !hasL && this.t("Likelihood"), !hasI && this.t("Impact")].filter(Boolean);
         clearElement(this.messageEl);
         const h = document.createElement("div");
         h.className = "rmp-message-title";
         h.textContent = "Risk Matrix Pro";
         const p = document.createElement("div");
-        p.textContent = "Add " + missing.join(", ") + " to plot each risk by likelihood and impact.";
+        p.textContent = this.t("Add {0} to plot each risk by likelihood and impact.", missing.join(", "));
         const p2 = document.createElement("div");
         p2.className = "rmp-message-hint";
-        p2.textContent = "Values can be levels (1–5), fractions (0–1) or percentages (0–100).";
+        p2.textContent = this.t("Values can be levels (1–5), fractions (0–1) or percentages (0–100).");
         this.messageEl.append(h, p, p2);
         this.messageEl.style.display = "flex";
         this.svgEl.style.display = "none";
@@ -732,8 +728,8 @@ export class Visual implements IVisual {
         const yLabels = this.levelLabels(ax.yLabels.value, N);
         const maxYLabel = Math.max(...yLabels.map(l => l.length));
         const yLabelW = Math.min(width * 0.25, maxYLabel * fs * 0.6 + 8);
-        const padL = (ax.yTitle.value ? fs * 1.6 : 0) + yLabelW + 4;
-        const padB = (ax.xTitle.value ? fs * 1.8 : 0) + fs * 1.6 + 4;
+        const padL = (this.tituloEje("yTitle") ? fs * 1.6 : 0) + yLabelW + 4;
+        const padB = (this.tituloEje("xTitle") ? fs * 1.8 : 0) + fs * 1.6 + 4;
         const padT = 6;
         const padR = 8;
         const plotW = Math.max(0, width - padL - padR);
@@ -776,7 +772,7 @@ export class Visual implements IVisual {
                 const inCell = counts.get(x + "," + y) || [];
                 rect.addEventListener("click", (ev: MouseEvent) => this.onCellClick(x, y, inCell, ev));
                 const title = svg("title");
-                title.textContent = `Likelihood ${xLabels[x - 1]}, impact ${yLabels[y - 1]}: score ${x * y} (${BAND_NAMES[band]}), ${inCell.length} risk${inCell.length === 1 ? "" : "s"}`;
+                title.textContent = this.t("Likelihood {0}, impact {1}: score {2} ({3})", xLabels[x - 1], yLabels[y - 1], x * y, this.t(BAND_NAMES[band])) + " · " + this.t("Risks: {0}", inCell.length);
                 rect.appendChild(title);
                 cellsG.appendChild(rect);
 
@@ -828,16 +824,16 @@ export class Visual implements IVisual {
             ty.textContent = this.truncate(yLabels[i - 1], Math.max(3, Math.floor((yLabelW - 8) / (fs * 0.6))));
             axesG.appendChild(ty);
         }
-        if (ax.xTitle.value) {
+        if (this.tituloEje("xTitle")) {
             const t = svg("text", { x: padL + plotW / 2, y: height - 4, "text-anchor": "middle", "font-weight": 600 });
-            t.textContent = ax.xTitle.value;
+            t.textContent = this.tituloEje("xTitle");
             axesG.appendChild(t);
         }
-        if (ax.yTitle.value) {
+        if (this.tituloEje("yTitle")) {
             const cx = fs;
             const cy = padT + plotH / 2;
             const t = svg("text", { x: cx, y: cy, "text-anchor": "middle", "font-weight": 600, transform: `rotate(-90 ${cx} ${cy})` });
-            t.textContent = ax.yTitle.value;
+            t.textContent = this.tituloEje("yTitle");
             axesG.appendChild(t);
         }
         root.appendChild(axesG);
@@ -884,7 +880,7 @@ export class Visual implements IVisual {
                 t.textContent = "+" + overflow;
                 g.appendChild(t);
                 const title = svg("title");
-                title.textContent = `${overflow} more risk${overflow === 1 ? "" : "s"} in this cell`;
+                title.textContent = this.t("{0} more in this cell", overflow);
                 g.appendChild(title);
                 g.addEventListener("click", (ev: MouseEvent) => this.onCellClick(x, y, list, ev));
                 overflowG.appendChild(g);
@@ -996,7 +992,7 @@ export class Visual implements IVisual {
         clearElement(this.svgEl);
         this.svgEl.appendChild(root);
         this.svgEl.setAttribute("aria-label",
-            `Risk matrix ${N} by ${N} with ${d.risks.length} risks. Use arrow keys to move between risks, Enter to select, Escape to clear.`);
+            this.t("Risk matrix {0} by {0} with {1} risks. Use arrow keys to move between risks, Enter to select, Escape to clear.", N, d.risks.length));
 
         // Roving tabindex: una sola parada de Tab
         const visible = d.risks.filter(r => !r.hidden);
@@ -1021,13 +1017,13 @@ export class Visual implements IVisual {
         const mode = String(this.settings.grid.dataWarnings.value.value);
         const parts: string[] = [];
         if (d.incompletePairs.length > 0) {
-            parts.push("add " + d.incompletePairs.join(" and ") + " to draw the movement");
+            parts.push(this.t("add {0} to draw the movement", d.incompletePairs.map(x => this.t(x)).join(", ")));
         }
         if (d.skipped > 0) {
-            parts.push(`${d.skipped} risk${d.skipped === 1 ? "" : "s"} without likelihood or impact not shown`);
+            parts.push(this.t("not shown, without likelihood or impact: {0}", d.skipped));
         }
         if (d.clamped > 0) {
-            parts.push(`${d.clamped} risk${d.clamped === 1 ? "" : "s"} with values outside the scale placed at the edge`);
+            parts.push(this.t("placed at the edge, values outside the scale: {0}", d.clamped));
         }
         const show = parts.length > 0 && (mode === "always" || (mode === "edit" && this.isEditing()));
         this.warningEl.style.display = show ? "block" : "none";
@@ -1072,7 +1068,7 @@ export class Visual implements IVisual {
             const label = document.createElement("span");
             label.textContent = c.name;
             item.append(sw, label);
-            item.setAttribute("aria-label", `Select all risks in ${c.name}`);
+            item.setAttribute("aria-label", this.t("Select all risks in {0}", c.name));
             item.addEventListener("click", (ev: MouseEvent) => {
                 const ids = d.risks.filter(r => r.category === c.name).map(r => r.selectionId);
                 this.selectMany(ids, ev.ctrlKey || ev.metaKey);
@@ -1096,7 +1092,7 @@ export class Visual implements IVisual {
 
         clearElement(this.panelEl);
         this.panelEl.style.display = "flex";
-        this.panelEl.setAttribute("aria-label", "Cell detail");
+        this.panelEl.setAttribute("aria-label", this.t("Cell detail"));
         if (this.isHighContrast) {
             this.panelEl.style.background = this.hcBackground;
             this.panelEl.style.color = this.hcForeground;
@@ -1113,15 +1109,15 @@ export class Visual implements IVisual {
         head.className = "rmp-panel-head";
         const title = document.createElement("div");
         title.className = "rmp-panel-title";
-        title.textContent = `${this.settings.axes.xTitle.value || "Likelihood"}: ${xl} · ${this.settings.axes.yTitle.value || "Impact"}: ${yl}`;
+        title.textContent = `${this.tituloEje("xTitle")}: ${xl} · ${this.tituloEje("yTitle")}: ${yl}`;
         const sub = document.createElement("div");
         sub.className = "rmp-panel-sub";
-        sub.textContent = `Score ${x * y} · ${BAND_NAMES[band]} · ${list.length} risk${list.length === 1 ? "" : "s"}`;
+        sub.textContent = this.t("Score {0}", x * y) + " · " + this.t(BAND_NAMES[band]) + " · " + this.t("Risks: {0}", list.length);
         const close = document.createElement("button");
         close.type = "button";
         close.className = "rmp-panel-close";
         close.textContent = "×";
-        close.setAttribute("aria-label", "Close detail panel");
+        close.setAttribute("aria-label", this.t("Close detail panel"));
         close.addEventListener("click", () => { this.openCell = null; this.closePanel(); this.svgEl.focus(); });
         const titles = document.createElement("div");
         titles.append(title, sub);
@@ -1203,12 +1199,12 @@ export class Visual implements IVisual {
         const cab = document.createElement("div");
         cab.className = "rmp-guide-head";
         const t = document.createElement("b");
-        t.textContent = "Setup guide";
+        t.textContent = this.t("Setup guide");
         const x = document.createElement("button");
         x.type = "button";
         x.className = "rmp-guide-x";
         x.textContent = "✕";
-        x.setAttribute("aria-label", "Close the setup guide");
+        x.setAttribute("aria-label", this.t("Close the setup guide"));
         x.addEventListener("click", () => {
             el.style.display = "none";
             this.host.persistProperties({ merge: [{ objectName: "style", selector: null, properties: { guide: false } }] });
@@ -1216,10 +1212,10 @@ export class Visual implements IVisual {
         cab.append(t, x);
         el.appendChild(cab);
         const items: [boolean, string, string][] = [
-            [tiene("category"), "Category", "colour and shape by group"],
-            [tiene("residualLikelihood") && tiene("residualImpact"), "Residual likelihood + impact (Pro)", "where each risk is after controls"],
-            [tiene("targetLikelihood") && tiene("targetImpact"), "Target likelihood + impact (Pro)", "where you want it to be"],
-            [tiene("tooltips"), "Tooltips", "extra measures on hover"],
+            [tiene("category"), this.t("Category"), this.t("colour and shape by group")],
+            [tiene("residualLikelihood") && tiene("residualImpact"), this.t("Residual likelihood + impact (Pro)"), this.t("where each risk is after controls")],
+            [tiene("targetLikelihood") && tiene("targetImpact"), this.t("Target likelihood + impact (Pro)"), this.t("where you want it to be")],
+            [tiene("tooltips"), this.t("Tooltips"), this.t("extra measures on hover")],
         ];
         for (const [hecho, nombre, porque] of items) {
             const f = document.createElement("div");
@@ -1227,7 +1223,7 @@ export class Visual implements IVisual {
             const m = document.createElement("span");
             m.textContent = hecho ? "✓" : "○";
             m.className = hecho ? "rmp-ok" : "";
-            m.setAttribute("aria-label", hecho ? "added" : "not added");
+            m.setAttribute("aria-label", hecho ? this.t("added") : this.t("not added"));
             const n = document.createElement("span");
             const b = document.createElement("b");
             b.textContent = nombre;
@@ -1237,7 +1233,7 @@ export class Visual implements IVisual {
         }
         const nota = document.createElement("div");
         nota.className = "rmp-guide-note";
-        nota.textContent = "Style template: Report theme or Classic; Boardroom, Ledger, Editorial, Signal, Aurora and Terrace (Pro). Risk list (Pro) ranks the risks beside the matrix.";
+        nota.textContent = this.t("Style template: Report theme or Classic; Boardroom, Ledger, Editorial, Signal, Aurora and Terrace (Pro). Risk list (Pro) ranks the risks beside the matrix.");
         el.appendChild(nota);
     }
 
@@ -1413,7 +1409,7 @@ export class Visual implements IVisual {
         });
         const cab = document.createElement("div");
         cab.className = "rmp-list-head";
-        cab.textContent = `Risks (${lista.length})`;
+        cab.textContent = this.t("Risks ({0})", lista.length);
         el.appendChild(cab);
         const chip = (p: { x: number; y: number }) => {
             const b = this.bandOf(p.x, p.y);
@@ -1423,7 +1419,7 @@ export class Visual implements IVisual {
             c.style.background = this.isHighContrast ? this.hcBackground : this.bandColor(b);
             c.style.color = this.isHighContrast ? this.hcForeground : textoSobre(this.bandColor(b));
             if (this.isHighContrast) { c.style.border = "1px solid " + this.hcForeground; }
-            c.title = BAND_NAMES[b];
+            c.title = this.t(BAND_NAMES[b]);
             return c;
         };
         for (const r of lista) {
@@ -1451,7 +1447,7 @@ export class Visual implements IVisual {
                 const aviso = document.createElement("span");
                 aviso.className = "rmp-off";
                 aviso.textContent = "●";
-                aviso.title = "Above target";
+                aviso.title = this.t("Above target");
                 aviso.style.color = this.isHighContrast ? this.hcForeground : safeColor(s.movement.offTargetColor.value?.value, "#C00000");
                 ruta.appendChild(aviso);
             }
@@ -1580,21 +1576,21 @@ export class Visual implements IVisual {
         const fmtI = valueFormatter.getFormatStringByColumn(d.impactColumn.source as any);
         const band = this.bandOf(r.level.x, r.level.y);
         const items: powerbi.extensibility.VisualTooltipDataItem[] = [
-            { displayName: "Risk", value: r.name, color: r.color }
+            { displayName: this.t("Risk"), value: r.name, color: r.color }
         ];
         if (r.category !== null) { items.push({ displayName: d.categoryColumn.source.displayName, value: r.category }); }
         items.push(
             { displayName: d.likelihoodColumn.source.displayName, value: `${this.fmtFila(d.likelihoodColumn, r.index, r.likelihood, fmtL)} (${xl[r.level.x - 1]})` },
             { displayName: d.impactColumn.source.displayName, value: `${this.fmtFila(d.impactColumn, r.index, r.impact, fmtI)} (${yl[r.level.y - 1]})` },
-            { displayName: "Score", value: `${r.level.x * r.level.y} · ${BAND_NAMES[band]}` }
+            { displayName: this.t("Score"), value: `${r.level.x * r.level.y} · ${this.t(BAND_NAMES[band])}` }
         );
         if (r.residual && this.isProActive()) {
             const rb = this.bandOf(r.residual.x, r.residual.y);
-            items.push({ displayName: "Residual score", value: `${r.residual.x * r.residual.y} · ${BAND_NAMES[rb]}` });
+            items.push({ displayName: this.t("Residual score"), value: `${r.residual.x * r.residual.y} · ${this.t(BAND_NAMES[rb])}` });
         }
         if (r.target && this.isProActive()) {
             const tb = this.bandOf(r.target.x, r.target.y);
-            items.push({ displayName: "Target score", value: `${r.target.x * r.target.y} · ${BAND_NAMES[tb]} · ${r.offTarget ? "not reached" : "reached"}` });
+            items.push({ displayName: this.t("Target score"), value: `${r.target.x * r.target.y} · ${this.t(BAND_NAMES[tb])} · ${r.offTarget ? this.t("not reached") : this.t("reached")}` });
         }
         for (const e of r.tooltipExtras) { items.push({ displayName: e.name, value: e.value }); }
         return items;
@@ -1627,11 +1623,11 @@ export class Visual implements IVisual {
     // ==========================================================================================
 
     private describe(r: RiskPoint): string {
-        const band = BAND_NAMES[this.bandOf(r.plotted.x, r.plotted.y)];
+        const band = this.t(BAND_NAMES[this.bandOf(r.plotted.x, r.plotted.y)]);
         const cat = r.category !== null ? `, ${r.category}` : "";
-        const res = (r.residual && this.isProActive() ? `, residual score ${r.residual.x * r.residual.y}` : "") +
-            (r.target && this.isProActive() ? `, target score ${r.target.x * r.target.y}${r.offTarget ? ", target not reached" : ""}` : "");
-        return `${r.name}${cat}: likelihood ${r.level.x}, impact ${r.level.y}, score ${r.level.x * r.level.y} (${band})${res}`;
+        const res = (r.residual && this.isProActive() ? ", " + this.t("residual score {0}", r.residual.x * r.residual.y) : "") +
+            (r.target && this.isProActive() ? ", " + this.t("target score {0}", r.target.x * r.target.y) + (r.offTarget ? ", " + this.t("target not reached") : "") : "");
+        return `${r.name}${cat}: ` + this.t("likelihood {0}, impact {1}, score {2} ({3})", r.level.x, r.level.y, r.level.x * r.level.y, band) + res;
     }
 
     private levelLabels(text: string, N: number): string[] {
@@ -1690,7 +1686,7 @@ export class Visual implements IVisual {
         const show = this.isPreview() && this.attemptedPro.length > 0;
         renderProWatermark(this.wm, show ? {
             width: this.target.clientWidth || 0, height: this.target.clientHeight || 0,
-            title: "Pro preview", features: this.attemptedPro,
+            title: this.t("Pro preview"), features: this.attemptedPro.map(a => this.t(a)),
             highContrast: this.isHighContrast ? { foreground: this.hcForeground, background: this.hcBackground } : null
         } : null);
     }
@@ -1723,6 +1719,39 @@ export class Visual implements IVisual {
         const dyn = (col as any)?.objects?.[i]?.general?.formatString;
         const f = (typeof dyn === "string" && dyn) ? dyn : (porDefecto ?? valueFormatter.getFormatStringByColumn(col.source as any));
         return valueFormatter.format(v as any, f, false, this.host.locale);
+    }
+
+    /** Texto en el idioma del informe (12 idiomas; src/strings.ts lo genera tools/i18n.py). {0}, {1}… se sustituyen. */
+    private t(en: string, ...a: unknown[]): string {
+        const loc = (this.host?.locale || "en").toLowerCase();
+        const lang = loc.startsWith("zh") ? "zh" : loc.slice(0, 2);
+        const tabla = STRINGS[lang];
+        let out = (tabla && tabla[en]) || en;
+        a.forEach((v, i) => { out = out.split("{" + i + "}").join(String(v)); });
+        return out;
+    }
+
+    /** Título de eje: el escrito por el autor, o el de por defecto traducido ("Likelihood", "Impact"). */
+    private tituloEje(prop: "xTitle" | "yTitle"): string {
+        const guardado = (this.objetos as any)?.axes?.[prop];
+        if (guardado !== undefined) { return String(guardado); }
+        return this.t(prop === "xTitle" ? "Likelihood" : "Impact");
+    }
+
+    /** Traduce un modelo de formato ya montado: displayName y description de tarjetas, grupos, opciones y desplegables. */
+    private traducirModelo(o: any, prof = 0): void {
+        if (!o || typeof o !== "object" || prof > 12) { return; }
+        if (Array.isArray(o)) { o.forEach(x => this.traducirModelo(x, prof + 1)); return; }
+        for (const k of Object.keys(o)) {
+            const v = o[k];
+            if ((k === "displayName" || k === "description" || k === "placeholder") && typeof v === "string") {
+                const pro = v.endsWith(" (Pro)");
+                const base = pro ? v.slice(0, -6) : v;
+                o[k] = this.t(base) + (pro ? " (Pro)" : "");
+            } else if (typeof v === "object") {
+                this.traducirModelo(v, prof + 1);
+            }
+        }
     }
 
     /** Tamaño de letra escalado: encoge con el visual, nunca por debajo de 8 px ni del mínimo de Accesibilidad. */
@@ -1809,14 +1838,9 @@ export class Visual implements IVisual {
             if (added.length === 0) { return; }
             this.noticeShown = true;
 
-            const n = added.length;
-            const es = (this.host.locale || "").toLowerCase().startsWith("es");
-            const items = es ? added.map(a => ES_LABELS[a] || a) : added;
-            const list = n === 1 ? items[0]
-                : items.slice(0, -1).join(", ") + (es ? " y " : " and ") + items[n - 1];
-            const msg = es
-                ? `Risk Matrix Pro: ${list} ${n === 1 ? "forma" : "forman"} parte del plan Pro y se ${n === 1 ? "muestra" : "muestran"} como vista previa con marca de agua mientras editas.`
-                : `Risk Matrix Pro: ${list} ${n === 1 ? "is" : "are"} part of the Pro plan, shown as a watermarked preview while editing.`;
+            // La API de licencias exige el texto del aviso en el idioma del informe (máximo 500 caracteres).
+            const list = added.map(a => this.t(a)).join(", ");
+            const msg = this.t("Risk Matrix Pro: {0} — part of the Pro plan, shown as a watermarked preview while editing.", list);
 
             // Power BI no pinta una notificación nueva mientras hay otra activa: se retira antes.
             const show = () => {

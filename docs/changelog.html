@@ -23,12 +23,39 @@
 </head>
 <body>
   <h1>Changelog — Risk Matrix Pro</h1>
-  <p class="meta">Current version <strong>1.0.0.0</strong> &nbsp;|&nbsp;
+  <p class="meta">Current version <strong>1.1.0.0</strong> &nbsp;|&nbsp;
     <a href="support.html">Support</a> &nbsp;|&nbsp;
     <a href="mailto:support@tcviz.com">support@tcviz.com</a></p>
 
   <p>All notable changes to Risk Matrix Pro are documented here.</p>
   <p>This project follows <a href="https://keepachangelog.com/en/1.1.0/" target="_blank" rel="noopener">Keep a Changelog</a> and the Power BI four-part version scheme (<code>major.minor.patch.build</code>).</p>
+  <h2 id="v1.1.0.0">1.1.0.0 <span class="date">2026-11-23</span></h2>
+  <h3 class="kind kind-added">Added</h3>
+  <ul>
+  <li><strong>Risk list (Pro).</strong> Format → Risk list → Show risk list: the risks ranked beside the matrix by inherent score, residual score or gap to target, each with its band and its path (inherent → residual → target) in the band colours, and a red dot when it is still above target. Point at a row to light up its marker; click a row to select the risk. Width adjustable (20–50 %).</li>
+  <li><strong>The six collection styles (Pro).</strong> Style template → Boardroom, Ledger, Editorial, Signal, Aurora or Terrace, the same styles as the rest of the TCViz visuals. Each style brings its own version of the four risk colours: they still read green → red, in the tone of the style. Category colours follow the style palette. Without a licence a style is drawn while you edit, under the "Pro preview" watermark; reading view shows Report theme.</li>
+  <li><strong>Report theme and Classic templates (free).</strong> Report theme (the default) takes text and axis colours from the report theme; Classic is the look of 1.0.</li>
+  <li><strong>Text that scales with the visual.</strong> Below report size (760 × 480 px) axes, cell scores, legend, labels, the detail panel and the markers shrink together, down to 60 % and never under 8 px. No label is removed to make room.</li>
+  <li><strong>Accessibility card.</strong> High contrast Automatic (Windows) or On, focus colour and width for keyboard navigation, minimum text size.</li>
+  <li><strong>Format on the canvas (on-object formatting).</strong> In format mode, click the cells, the markers, an axis, the legend or the risk list to format them where they are. A click in format mode never filters the page.</li>
+  <li><strong>Setup guide.</strong> While you edit, a card in the corner lists the optional fields (Category, Residual, Target, Tooltips) with a tick when each is in place, and the styles. Close it with ✕; turn it back on under Style template. It is hidden on tiles smaller than 420 × 280 px.</li>
+  <li><strong>12 languages.</strong> English, Spanish, Portuguese (Brazil and Portugal), French, German, Italian, Dutch, Polish, Japanese, Chinese (Simplified) and Korean: the format pane, the field wells and every text drawn by the visual.</li>
+  <li><strong>Dynamic format strings</strong> are declared: tooltips and the detail panel use the format of each row, in the report language.</li>
+  </ul>
+  <h3 class="kind kind-changed">Changed</h3>
+  <ul>
+  <li><strong>Movement shown by default.</strong> With residual or target fields, markers now sit at the inherent position and every risk's path is drawn (Movement arrows → All risks). Before, markers sat at the residual position and the path appeared only for the hovered or selected risk. *Reports that never changed these settings will show the paths.*</li>
+  <li><strong>One marker size.</strong> All markers share the size that fits the busiest cell, so a lone risk is no longer drawn larger than its neighbours when the visual shrinks.</li>
+  <li><strong>Marker labels</strong> switch between black and white to contrast with their marker, unless you set a label colour.</li>
+  <li><strong>Selection.</strong> Clicking the same cell or marker again clears the selection; the selected cell gets a border and the other cells dim.</li>
+  <li><strong>Interactions</strong> follow the report setting read from the host capabilities.</li>
+  <li><strong>"Pro preview" watermark</strong> is the same as in the rest of the collection.</li>
+  </ul>
+  <h2 id="v1.0.1.0">1.0.1.0 <span class="date">2026-09-21</span></h2>
+  <h3 class="kind kind-changed">Changed</h3>
+  <ul>
+  <li>Localization connected (English and Spanish), brand icon and resubmission fixes.</li>
+  </ul>
   <h2 id="v1.0.0.0">1.0.0.0 <span class="date">2026-09-16</span></h2>
   <p>First public release.</p>
   <h3 class="kind kind-added">Added</h3>

@@ -353,8 +353,8 @@ export class Visual implements IVisual {
 
     private renderFromDataView(dataView: powerbi.DataView): void {
         this.lastDataView = dataView;
-        this.readHighContrast();
         this.settings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
+        this.readHighContrast();
         this.resolverEstilo(dataView);
         const cat = dataView && dataView.categorical;
         const riskCol = cat?.categories?.find(c => hasRole(c, "risk"));
@@ -1377,11 +1377,22 @@ export class Visual implements IVisual {
 
     private readHighContrast(): void {
         const palette = this.host.colorPalette;
-        this.isHighContrast = !!(palette && palette.isHighContrast);
-        if (!this.isHighContrast) { return; }
+        // Alto contraste: el de Windows, o "On" en la tarjeta Accesibilidad (1.1) con el primer plano y el fondo del tema.
+        const forzado = String(this.settings?.accessibility?.highContrast?.value?.value ?? "auto") === "on";
+        this.isHighContrast = !!(palette && palette.isHighContrast) || forzado;
+        const acc = this.settings?.accessibility;
+        this.minTexto = Math.min(24, Math.max(6, Number(acc?.minTextSize?.value) || 8));
+        const w = Math.min(6, Math.max(1, Math.round(Number(acc?.focusWidth?.value) || 3)));
+        if (!this.isHighContrast) {
+            this.target.style.setProperty("--rmp-focus", safeColor(acc?.focusColor?.value?.value, "#005A9E"));
+            this.target.style.setProperty("--rmp-focus-w", w + "px");
+            return;
+        }
         this.hcForeground = (palette.foreground && palette.foreground.value) || "#000000";
         this.hcBackground = (palette.background && palette.background.value) || "#FFFFFF";
         this.hcSelected = (palette.foregroundSelected && palette.foregroundSelected.value) || this.hcForeground;
+        this.target.style.setProperty("--rmp-focus", this.hcSelected);
+        this.target.style.setProperty("--rmp-focus-w", w + "px");
     }
 
     // ==========================================================================================

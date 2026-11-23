@@ -782,6 +782,55 @@
           }
         }
       }
+    },
+    "accessibility": {
+      "displayName": "Accessibility",
+      "displayNameKey": "Obj_accessibility",
+      "properties": {
+        "highContrast": {
+          "displayName": "High contrast",
+          "displayNameKey": "Prop_acc_highContrast",
+          "type": {
+            "enumeration": [
+              {
+                "value": "auto",
+                "displayName": "Automatic (Windows setting)",
+                "displayNameKey": "Enum_hc_auto"
+              },
+              {
+                "value": "on",
+                "displayName": "On",
+                "displayNameKey": "Enum_hc_on"
+              }
+            ]
+          }
+        },
+        "focusColor": {
+          "displayName": "Focus color",
+          "displayNameKey": "Prop_acc_focusColor",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
+        "focusWidth": {
+          "displayName": "Focus width",
+          "displayNameKey": "Prop_acc_focusWidth",
+          "type": {
+            "numeric": true
+          }
+        },
+        "minTextSize": {
+          "displayName": "Minimum text size",
+          "displayNameKey": "Prop_acc_minTextSize",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
     }
   },
   "supportsHighlight": true,

@@ -256,6 +256,26 @@ class LegendCard extends FormattingSettingsCard {
     slices: FormattingSettingsSlice[] = [this.position, this.fontFamily, this.fontSize, this.color];
 }
 
+class AccessibilityCard extends FormattingSettingsCard {
+    highContrast = new formattingSettings.ItemDropdown({
+        name: "highContrast", displayName: "High contrast",
+        items: [{ value: "auto", displayName: "Automatic (Windows setting)" }, { value: "on", displayName: "On" }],
+        value: { value: "auto", displayName: "Automatic (Windows setting)" }
+    });
+    focusColor = new formattingSettings.ColorPicker({ name: "focusColor", displayName: "Focus color", value: { value: "#005A9E" } });
+    focusWidth = new formattingSettings.NumUpDown({
+        name: "focusWidth", displayName: "Focus width", value: 3,
+        options: { minValue: { type: powerbi.visuals.ValidatorType.Min, value: 1 }, maxValue: { type: powerbi.visuals.ValidatorType.Max, value: 6 } }
+    });
+    minTextSize = new formattingSettings.NumUpDown({
+        name: "minTextSize", displayName: "Minimum text size", value: 8,
+        options: { minValue: { type: powerbi.visuals.ValidatorType.Min, value: 6 }, maxValue: { type: powerbi.visuals.ValidatorType.Max, value: 24 } }
+    });
+    name = "accessibility";
+    displayName = "Accessibility";
+    slices: FormattingSettingsSlice[] = [this.highContrast, this.focusColor, this.focusWidth, this.minTextSize];
+}
+
 /** Un selector de color por categoría; las slices se crean en cada update. */
 class CategoryColorsCard extends FormattingSettingsCard {
     name = "categoryColors";
@@ -265,6 +285,7 @@ class CategoryColorsCard extends FormattingSettingsCard {
 
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     style = new StyleCard();
+    accessibility = new AccessibilityCard();
     grid = new GridCard();
     bands = new BandsCard();
     appetite = new AppetiteCard();
@@ -275,5 +296,5 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     axes = new AxesCard();
     legend = new LegendCard();
 
-    cards = [this.style, this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.detail, this.axes, this.legend];
+    cards = [this.style, this.grid, this.bands, this.appetite, this.markers, this.categoryColors, this.movement, this.detail, this.axes, this.legend, this.accessibility];
 }

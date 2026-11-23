@@ -269,6 +269,18 @@ async def main():
             check(f"{loc}: lista y panel en su idioma", h == cab and tarjeta in m, f"{h} · {m[:90]}")
             await pg.close()
 
+        print("Marcadores: un tamaño y etiquetas legibles")
+        for W, H in ((760, 480), (300, 220)):
+            pg = await page(b, dataview({"style": {"template": "editorial"}}), W=W, H=H, name=f"editorial_{W}")
+            r = await pg.evaluate("""() => {
+                const tam = Array.from(document.querySelectorAll('#host .rmp-marker circle.rmp-shape, #host .rmp-marker .rmp-shape')).map(e => Math.round(e.getBBox().width));
+                const mal = Array.from(document.querySelectorAll('#host .rmp-marker')).filter(g => { const sh = g.querySelector('.rmp-shape'), t = g.querySelector('text');
+                    return sh && t && (sh.getAttribute('fill') || '').toLowerCase() === (t.getAttribute('fill') || '').toLowerCase(); }).length;
+                return { tamanos: [...new Set(tam)], mal }; }""")
+            check(f"{W}x{H}: todos los marcadores del mismo tamaño", len(r["tamanos"]) <= 2, str(r["tamanos"]))
+            check(f"{W}x{H}: ninguna etiqueta del color de su marcador", r["mal"] == 0, str(r["mal"]))
+            await pg.close()
+
         await b.close()
     print()
     print("TODO OK" if not FALLOS else f"{len(FALLOS)} FALLO(S): " + "; ".join(FALLOS))

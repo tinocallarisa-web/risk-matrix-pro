@@ -841,21 +841,26 @@ export class Visual implements IVisual {
         // ---- Colocación de marcadores --------------------------------------------------------
         const baseSize = Math.max(8, Math.round(Math.min(60, s.markers.size.value) * this.escala));
         const overflowG = svg("g", { class: "rmp-overflow" });
+        // 1.1: un solo tamaño para todos los marcadores: el que cabe en la celda más llena (antes cada celda encogía por su
+        // cuenta y, al reducir el visual, los riesgos solos se quedaban grandes junto a celdas llenas de marcadores pequeños).
+        const huecoW = cw - gap - 6;
+        const huecoH = ch - gap - 6 - (s.grid.showScore.value || s.grid.showCount.value ? fs : 0);
+        let tamano = baseSize;
+        counts.forEach(list => {
+            let sz = tamano;
+            while (sz > 8 && Math.max(1, Math.floor(huecoW / (sz + 3))) * Math.max(1, Math.floor(huecoH / (sz + 3))) < list.length) { sz = Math.max(8, sz - 2); }
+            tamano = Math.min(tamano, sz);
+        });
         counts.forEach((list, k) => {
             const [x, y] = k.split(",").map(Number);
             const innerW = cw - gap - 6;
             const innerH = ch - gap - 6 - (s.grid.showScore.value || s.grid.showCount.value ? fs : 0);
             const top = cellY(y) + gap / 2 + 3 + (s.grid.showScore.value || s.grid.showCount.value ? fs : 0);
             const left = cellX(x) + gap / 2 + 3;
-            let size = baseSize;
-            let cols = 1, rows = 1;
-            // Encoge hasta 8px; si aun así no caben, se muestran los que caben y un "+n"
-            for (; ;) {
-                cols = Math.max(1, Math.floor(innerW / (size + 3)));
-                rows = Math.max(1, Math.floor(innerH / (size + 3)));
-                if (cols * rows >= list.length || size <= 8) { break; }
-                size = Math.max(8, size - 2);
-            }
+            const size = tamano;
+            // Con el tamaño común; si aun así no caben, se muestran los que caben y un "+n"
+            const cols = Math.max(1, Math.floor(innerW / (size + 3)));
+            const rows = Math.max(1, Math.floor(innerH / (size + 3)));
             const capacity = cols * rows;
             const overflow = list.length > capacity ? list.length - capacity + 1 : 0;
             const shown = overflow ? capacity - 1 : list.length;
@@ -963,10 +968,14 @@ export class Visual implements IVisual {
                 let lfs = Math.max(8, this.minTexto, r.size * 0.4);
                 if (text.length * lfs * 0.6 > inner) { lfs = Math.max(8, this.minTexto, inner / (text.length * 0.6)); }
                 const fits = Math.max(1, Math.floor(inner / (lfs * 0.6)));
+                // 1.1: sin color de etiqueta guardado, blanco o negro según el marcador (en Editorial, Signal o Ledger hay
+                // marcadores negros, rojos y grises: un color fijo dejaba etiquetas invisibles).
+                const etiquetaGuardada = (this.objetos as any)?.markers?.labelColor !== undefined;
+                const tinta = this.isHighContrast ? labelColor : (etiquetaGuardada ? labelColor : textoSobre(fill));
                 const t = svg("text", {
                     x: r.px, y: r.py, "text-anchor": "middle", "dominant-baseline": "central",
                     "font-size": lfs, "font-family": font, "font-weight": 600,
-                    fill: labelColor, "pointer-events": "none"
+                    fill: tinta, "pointer-events": "none"
                 });
                 t.textContent = text.slice(0, fits);
                 g.appendChild(t);
@@ -1187,7 +1196,9 @@ export class Visual implements IVisual {
      */
     private renderGuide(dataView: powerbi.DataView, values: DataViewValueColumn[]): void {
         const el = this.guideEl;
-        const ver = this.isEditing() && !this.formatMode && !!this.settings.style.guide.value;
+        // En un mosaico pequeño la guía taparía la matriz: solo se enseña con sitio (420×280 o más).
+        const vw = this.lastOptions?.viewport?.width || 0, vh = this.lastOptions?.viewport?.height || 0;
+        const ver = this.isEditing() && !this.formatMode && !!this.settings.style.guide.value && vw >= 420 && vh >= 280;
         if (!ver) { el.style.display = "none"; return; }
         clearElement(el);
         el.style.display = "block";
